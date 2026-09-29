@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>P5b 적 기지와 전선 설계서 · CraftDefenseDungeon</title>
+<meta name="description" content="설계서 — P5b 적 기지와 전선 설계서">
+<link rel="stylesheet" href="../assets/site.css">
+<script src="../assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html" aria-label="CraftDefenseDungeon 소개"><svg class="brand-mark" viewBox="0 0 24 26" width="22" height="24" aria-hidden="true"><path d="M12 1.5 22.5 7.5v11L12 24.5 1.5 18.5v-11z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 6.5 17 9.5v6l-5 3-5-3v-6z" fill="currentColor" opacity=".85"/></svg><span>CraftDefenseDungeon</span></a>
+    <nav class="site-nav" aria-label="사이트"><a href="../index.html">소개</a><a href="../game-plan.html">기획서</a><a href="../index.html#docs">문서 목록</a><a href="../index.html#roadmap">로드맵</a></nav>
+  </div>
+</header>
+<div class="wrap doc-layout">
+<aside class="doc-aside"><details class="toc" open><summary>목차</summary><nav aria-label="목차"><ol><li><a href="#1-목적과-범위">1. 목적과 범위</a><ol><li><a href="#11-왜">1.1 왜</a></li><li><a href="#12-목표-성공-기준">1.2 목표 (성공 기준)</a></li><li><a href="#13-범위">1.3 범위</a></li></ol></li><li><a href="#2-새-결정-d138d146">2. 새 결정 (D138~D146)</a></li><li><a href="#3-맵과-적-기지-배치-d140d142">3. 맵과 적 기지 배치 (D140·D142)</a></li><li><a href="#4-적-기지-구조와-가짜-경제-d139d145">4. 적 기지 구조와 가짜 경제 (D139·D145)</a></li><li><a href="#5-적-굴착-d143">5. 적 굴착 (D143)</a></li><li><a href="#6-처치-보상-d141">6. 처치 보상 (D141)</a></li><li><a href="#7-우리-쪽-변화">7. 우리 쪽 변화</a></li><li><a href="#8-포탈위협도-정리">8. 포탈·위협도 정리</a></li><li><a href="#9-화면">9. 화면</a></li><li><a href="#10-구조-구현-방향">10. 구조 (구현 방향)</a></li><li><a href="#11-수치-가정--회색-박스에서-조정">11. 수치 [가정 — 회색 박스에서 조정]</a></li><li><a href="#12-테스트와-검증">12. 테스트와 검증</a></li><li><a href="#13-남은-가정과-열린-점">13. 남은 가정과 열린 점</a></li></ol></nav></details></aside>
+<main id="main" class="doc-main">
+<nav class="crumbs" aria-label="현재 위치"><a href="../index.html">소개</a><span aria-hidden="true">/</span><a href="../index.html#docs">설계서</a><span aria-hidden="true">/</span><span aria-current="page">P5b 적 기지와 전선 설계서</span></nav>
+<p class="doc-src">원본 <code>docs/superpowers/specs/2026-09-29-p5b-enemy-bases-design.md</code> · 231줄</p>
+<article class="md">
+<h1 id="p5b-적-기지와-전선-설계서">P5b 적 기지와 전선 설계서</h1>
+<ul>
+<li><p>상태: <strong>승인</strong> (2026-09-29)</p></li>
+<li><p>작성: 2026-09-29</p></li>
+<li><p>상위 문서: <a href="../game-plan.html">게임 기획서</a> — 결정 번호(D…)는 기획서 2장 &quot;결정 기록&quot;을 따른다.</p></li>
+<li><p>앞 단계: <a href="2026-09-25-p2-digging-design.html">P2 굴착</a>, <a href="2026-09-25-p3-economy-design.html">P3 경제</a>, <a href="2026-09-25-p4-units-design.html">P4 유닛</a>, <a href="2026-09-25-p5-encounters-design.html">P5 조우·침공</a> — P5 회색 박스는 main 2ad0abb에 구현됨</p></li>
+<li><p>이 단계의 결정: D138~D145 (바꾸는 결정: D50·D99·D110, P5 설계서 3.3·3.7)</p></li>
+</ul>
+<hr>
+<h2 id="1-목적과-범위">1. 목적과 범위</h2>
+<h3 id="11-왜">1.1 왜</h3>
+<p>P5 회색 박스를 실제로 돌려 본 뒤 사용자 피드백: <strong>맵이 너무 작고 교전이 너무 짧다. 키우기 게임은 교전이 길게 이어지고 그동안 재화가 계속 벌려야 한다. 한 판을 2시간(D16)으로 잡았는데 지금이면 10분도 안 된다.</strong></p>
+<p>수치로 본 원인:</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">무엇</th><th scope="col">지금</th><th scope="col">결과</th></tr></thead>
+<tbody>
+<tr><td>굴착 가능 반경</td><td>12칸 고정 — 판 안 레벨(P8)이 없어 넓어지지 않는다</td><td>맵이 좁다</td></tr>
+<tr><td>포탈</td><td>체력 2000을 소총병 8명이 25초에 부순다</td><td>교전이 금방 끝난다</td></tr>
+<tr><td>적</td><td>소형 감염체 체력 30(소총 3발), 무리 60초에 3마리</td><td>압박이 없다</td></tr>
+<tr><td>위협도 새 포탈</td><td>첫 임계가 31분째</td><td>그 사이가 빈다</td></tr>
+</tbody></table></div>
+<h3 id="12-목표-성공-기준">1.2 목표 (성공 기준)</h3>
+<ul>
+<li><p>적 기지 하나를 무너뜨리는 교전이 <strong>10~20분</strong> 이어진다. 한 판에 기지 <strong>5~6개</strong> → 약 2시간 (D144).</p></li>
+<li><p>교전 동안 <strong>처치 보상(판 안 자원)이 계속 흘러</strong> 우리가 싸우면서 강해진다 (D141).</p></li>
+<li><p>가만히 있어도 <strong>적이 굴을 파고 온다</strong> — 버티기만으로는 살아남을 수 없다(기획서 1.8)와 맞는다 (D143).</p></li>
+<li><p>맵은 <strong>전선을 밀어낸 만큼</strong> 넓어진다 (D142).</p></li>
+</ul>
+<h3 id="13-범위">1.3 범위</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">포함</th><th scope="col">포함하지 않음 (담당)</th></tr></thead>
+<tbody>
+<tr><td>맵 곳곳에 잠든 퓨라 기지(감염 핵 + 번식 둥지)</td><td>판 안 레벨과 그 쓰임 (P8)</td></tr>
+<tr><td>깨어남(가까움·위협도), 가짜 수입, 둥지 생산</td><td>시온·오라클, 죽은 유닛 감염, 적 영웅, 원수 진영</td></tr>
+<tr><td>새 퓨라 유닛: 가시 감염체(원거리), 굴착체(굴착 이동)</td><td>적이 새 기지를 세우기, 무너진 기지 재건</td></tr>
+<tr><td>적 굴착, 처치 보상(판 안 자원), 점령(굴착 영역 확장)</td><td>다지역 진출 (P2 지역)</td></tr>
+<tr><td>포탈 → 적 기지 대체, 위협도는 적 수입 배율로</td><td>방치(오프라인) 보상</td></tr>
+<tr><td>화면·에디터 통로·균형 검사</td><td>이름·연출 다듬기 (P7)</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="2-새-결정-d138d146">2. 새 결정 (D138~D146)</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">결정</th><th scope="col">내용</th><th scope="col">바꾸는 것</th></tr></thead>
+<tbody>
+<tr><td>D138</td><td>교전은 <strong>끊기지 않는 전선</strong>. 적은 포탈 무리 대신 <strong>기지에서 RTS식으로 유닛을 생산</strong>한다</td><td>P5 3.3 포탈</td></tr>
+<tr><td>D139</td><td>적 경제는 <strong>가짜</strong> — 캐지 않고 정해진 수입이 흐른다. 수입 곡선이 난이도 손잡이다</td><td><strong>D99</strong>(&quot;적 기지의 레벨·병력 예산 같은 추상 값은 쓰지 않는다&quot;)</td></tr>
+<tr><td>D140</td><td>적 기지는 <strong>처음부터 맵 곳곳</strong>에 있다. 멀수록 강하다. 우리가 가까워지거나 위협도가 오르면 깨어난다</td><td>P5 3.2 위협도 임계 포탈</td></tr>
+<tr><td>D141</td><td>적을 쓰러뜨리면 <strong>판 안 자원</strong>을 준다</td><td><strong>P5 3.7</strong>(&quot;적은 자원을 떨어뜨리지 않는다&quot;)</td></tr>
+<tr><td>D142</td><td>맵은 <strong>적 기지를 부수면 그 둘레가 열려</strong> 넓어진다</td><td><strong>D50·D110</strong>(판 안 레벨로 반경 확장) — 레벨은 P8에서 능력치 보너스로 [가정]</td></tr>
+<tr><td>D143</td><td>적도 <strong>굴을 판다</strong> (굴착체)</td><td>P5 3.1의 &quot;적 굴착은 나중&quot;</td></tr>
+<tr><td>D144</td><td>기지 하나 교전 <strong>10~20분</strong>, 한 판 기지 <strong>5~6개</strong></td><td>—</td></tr>
+<tr><td>D145</td><td>적 기지 = <strong>감염 핵 1 + 번식 둥지 2~3</strong>. 둥지를 부수면 압박이 줄고, 핵을 부수면 점령</td><td>—</td></tr>
+<tr><td>D146</td><td>적이 판 <strong>굴은 넓힐 수 있다</strong> — 판 칸과 둘레 1칸은 영역 밖이어도 굴착병이 판다. 벽·건물은 영역 안의 보이는 빈 칸에만 (실행 관찰, 사용자 요청)</td><td>D143의 &quot;길은 누구나&quot;를 보완</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="3-맵과-적-기지-배치-d140d142">3. 맵과 적 기지 배치 (D140·D142)</h2>
+<ul>
+<li><p><strong>지역</strong>: 128×128과 시작 굴착 반경 12칸은 그대로다. 한 판 기지 5~6개면 한 지역으로 충분하다.</p></li>
+<li><p><strong>배치</strong> [가정]: 지형을 만든 뒤 본부를 중심으로 고리 셋에 기지를 둔다.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">고리</th><th scope="col">본부에서</th><th scope="col">등급</th><th scope="col">수</th><th scope="col">둥지</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>24칸</td><td>1</td><td>2</td><td>2</td></tr>
+<tr><td>2</td><td>38칸</td><td>2</td><td>2</td><td>2</td></tr>
+<tr><td>3</td><td>52칸</td><td>3</td><td>2</td><td>3</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>방향은 판 시드로 정한다. 같은 고리의 두 기지는 180°±30° 떨어진다(90° 이상 보장).</p></li>
+</ul></li>
+<li><p><strong>기지 모양</strong>: 반경 6칸 동굴(빈 칸)을 파 두고, 가운데에 <strong>감염 핵(3×3)</strong>, 동굴 안에 <strong>번식 둥지(2×2)</strong>를 핵 둘레에 고르게 둔다. 동굴 둘레 2칸 고리의 빈 칸은 1등급 암반으로 채워 <strong>처음엔 닫혀 있다</strong>. 동굴 안 광맥·유물은 지운다. 처음엔 보이지 않는다.</p></li>
+<li><p><strong>깨어남</strong> — 둘 중 먼저 닿는 쪽 [가정]:</p>
+<ul>
+<li><p>가까움: 우리 유닛·굴착병이 기지 가운데에서 <strong>16칸</strong>(동굴 6 + 10) 안에 들어온다 — 먼저 쳐들어갈 수 있다.</p></li>
+<li><p>시간: 행성 위협도가 등급 기준에 닿는다 — 1등급 <strong>4</strong>(약 5분), 2등급 <strong>20</strong>(약 25분), 3등급 <strong>45</strong>(약 56분). 가만히 있어도 압박이 온다.</p></li>
+</ul></li>
+<li><p><strong>점령</strong>: 핵을 부수면 기지 가운데를 중심으로 <strong>반경 16칸</strong>이 우리 굴착 가능 영역에 더해지고 동굴이 드러난다. 1고리를 부수면 2고리 쪽으로 팔 수 있다. 굴착 가능 영역은 중심마다 반경을 갖는다(본부 12, 점령한 기지 16).</p></li>
+<li><p><strong>굴 둘레 (D146)</strong>: 위 영역에 더해, 적 굴착체가 판 굴과 그 둘레 1칸도 굴착 가능하다(5장).</p></li>
+<li><p><strong>포탈 봉인</strong>: 지형에 더는 만들지 않는다. 블록 종류는 남겨 둔다.</p></li>
+<li><p>판 안 레벨이 굴착 반경을 넓히는 규칙(D50·D110)은 쓰지 않는다. 회색 박스의 레벨 명령은 검증용으로 남긴다.</p></li>
+</ul>
+<hr>
+<h2 id="4-적-기지-구조와-가짜-경제-d139d145">4. 적 기지 구조와 가짜 경제 (D139·D145)</h2>
+<ul>
+<li><p><strong>구조물</strong> (구조물 방어 유형, 체력은 등급마다 +25% — 유닛과 같은 규칙) [가정]:</p>
+<ul>
+<li><p>감염 핵 3×3, 체력 <strong>60000</strong> [가정 — B9 조정: 초안 12000의 5배]</p></li>
+<li><p>번식 둥지 2×2, 체력 <strong>20000</strong> [가정 — B9 조정: 초안 4000의 5배]</p></li>
+<li><p>유닛은 우리 건물처럼 구조물 칸 위를 지날 수 있다(기존 이동 모델).</p></li>
+</ul></li>
+<li><p><strong>가짜 수입</strong> — 기지마다 <strong>생체질량</strong>이 매초 쌓인다 [가정]:</p>
+<p><code>수입(초당) = 4 × 1.6^(등급−1) × (1 + 위협도/100) × 난이도(기본 100%)</code></p>
+<ul>
+<li><p>캐지 않는다. 결정성을 위해 정수(×1000)로 센다.</p></li>
+<li><p>쌓아 두는 양은 <strong>그때 수입의 5분치</strong>까지.</p></li>
+<li><p>잠든 기지는 쌓지 않는다. 깨어난 뒤부터 쌓는다.</p></li>
+</ul></li>
+<li><p><strong>생산</strong>: 둥지마다 한 번에 하나씩, 값을 내고 시간이 차면 둥지 둘레 <strong>2칸</strong> 안 빈자리에 내보낸다(자리가 없으면 기다린다 — P5 포탈과 같은 규칙). 유닛 등급 = 기지 등급.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">유닛</th><th scope="col">값</th><th scope="col">시간</th><th scope="col">누가</th></tr></thead>
+<tbody>
+<tr><td>소형 감염체 (기존)</td><td>10</td><td>4초</td><td>둥지</td></tr>
+<tr><td>가시 감염체 (새)</td><td>25</td><td>6초</td><td>둥지</td></tr>
+<tr><td>굴착체 (새)</td><td>30</td><td>10초</td><td>핵 — 기지당 살아 있는 굴착체 2마리까지</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>둥지는 <strong>소형 3 → 가시 1</strong>을 되풀이한다.</p></li>
+<li><p>기지마다 살아 있는 적은 <strong>40</strong>까지(성능). 넘으면 생산을 멈추고 기다린다.</p></li>
+</ul></li>
+<li><p><strong>부수면</strong>:</p>
+<ul>
+<li><p>둥지: 생산 줄이 하나 준다. 보상을 준다(6장).</p></li>
+<li><p>핵: 기지가 끝난다. 남은 둥지도 함께 무너지고(보상 포함), 쌓인 생체질량은 사라진다. 이미 나온 적은 끝까지 싸운다. 점령이 일어난다(3장).</p></li>
+</ul></li>
+<li><p><strong>목표</strong>: 1등급 기지와 1등급 소총병 12명이 맞붙으면 핵이 <strong>10~20분 사이</strong>에 무너진다. 위 [가정] 수치는 이 목표에 맞춰 조정한다(균형 검사, 11장). <strong>B9 조정 결과</strong>: 수입·생산 시간은 초안 그대로 두고 구조물 체력만 5배로 올려 약 13분(초안 수치로는 약 3분에 무너졌다).</p></li>
+</ul>
+<hr>
+<h2 id="5-적-굴착-d143">5. 적 굴착 (D143)</h2>
+<ul>
+<li><p><strong>굴착체</strong>: 전함과 같은 <strong>굴착 이동</strong>(앞의 암반을 뚫으며 걷기)을 쓴다. 파는 속도는 기존 규칙(블록 등급·유닛 등급·<code>TunnelTicksPerBlock</code>).</p></li>
+<li><p><strong>목적지</strong>: 적 AI 그대로(P5 3.4) — 가장 가까운 우리 유닛·굴착병·건물. 뚫린 굴은 <strong>누구나 걷는 길</strong>이 되어 뒤따르는 적이 그 길로 온다.</p></li>
+<li><p><strong>벽 (D46)</strong>: 굴착체도 벽을 판다. 다만 <strong>암반보다 2배 느리다</strong> [가정] — 벽이 시간을 번다.</p></li>
+<li><p><strong>수확 없음</strong>: 적이 판 블록은 우리 창고에 들어오지 않는다(지금 굴착 이동은 우리 수확으로 친다 → 편에 따라 나눈다).</p></li>
+<li><p><strong>길은 누구나</strong>: 적이 판 굴은 우리 굴착 영역 밖이어도 걸을 수 있다. 우리 병력이 그 굴을 따라 적 기지로 쳐들어간다. (굴착 가능 영역은 <strong>우리 굴착병이 팔 수 있는 곳</strong>만 정한다.)</p></li>
+<li><p><strong>굴 넓히기 (D146)</strong>: 다만 <strong>적 굴착체가 판 칸과 그 둘레 1칸</strong>(<code>CorridorMargin</code>)은 영역 밖이어도 우리 굴착병이 판다 — 한 줄 굴에서 유닛이 서로 막히지 않게 굴을 넓힌다 [가정, 사용자 요청]. 굴에서 두 칸 밖은 그대로 영역 밖이다. 굴 둘레는 영역 바깥 가장자리라 다른 후보(본부 반경 안)가 바닥난 뒤에 넓혀진다. <strong>벽·건물</strong>은 굴착 영역 안의 <strong>보이는 빈 칸</strong>에만 놓는다 — 적이 판 동굴·굴은 빈 칸이지만 우리 땅이 아니고, 적 구조물 위·가려진 잠든 기지 동굴에 놓아 기지를 멈추거나 드러내지 못하게 한다(최종 리뷰 I-1).</p></li>
+</ul>
+<hr>
+<h2 id="6-처치-보상-d141">6. 처치 보상 (D141)</h2>
+<ul>
+<li><p><strong>적 유닛</strong>: 쓰러지면 생체질량 값의 절반만큼 <strong>금속 원석(기지 등급)</strong>이 창고로 [가정] — 소형 5, 가시 12, 굴착체 15.</p></li>
+<li><p><strong>구조물</strong>: 둥지 100, 핵 400 — <strong>금속·결정 원석 반반</strong>(기지 등급) [가정].</p></li>
+<li><p>높은 등급 기지 → 높은 등급 원석 → 높은 등급 도구 → 재무장으로 강해지는 <strong>키우기 순환</strong>.</p></li>
+<li><p>창고가 넘치면 기존 규칙(D62)대로 제국 송금. 경험치·영구 재화 셈은 지금처럼 이어진다(쓰임은 P8).</p></li>
+</ul>
+<hr>
+<h2 id="7-우리-쪽-변화">7. 우리 쪽 변화</h2>
+<ul>
+<li><p>전투 방침 &quot;포탈 공격&quot;은 <strong>&quot;적 기지 공격&quot;</strong>: 보이는 깨어난 기지의 가장 가까운 구조물로 간다. 기본 순서(방어 → 목표 지점 → 적 기지 → 호위)는 그대로.</p></li>
+<li><p>전투 대상에 적 구조물(핵·둥지)이 들어간다. <strong>구조물보다 유닛(D137)</strong>, <strong>나를 친 적이 먼저(D136)</strong> 규칙은 그대로.</p></li>
+<li><p>굴착병은 우리 굴착 영역 안에서만 판다(그대로). 점령으로 영역이 넓어지면 방침(확장 등)이 새 영역도 판다.</p></li>
+</ul>
+<hr>
+<h2 id="8-포탈위협도-정리">8. 포탈·위협도 정리</h2>
+<ul>
+<li><p>포탈(무리·포탈 체력·위협도 임계 포탈·봉인 판 자리에 열림)은 <strong>없앤다</strong>. 검증된 부분 — 둘레에서만 나오고 막히면 기다리기, 위협도 계산 — 은 적 기지 쪽으로 옮겨 쓴다.</p></li>
+<li><p><strong>위협도</strong>: 분당 0.8, 줄지 않음(P5 3.2 그대로). 쓰임은 <strong>적 수입 배율</strong>과 <strong>등급별 깨어남 기준</strong>.</p></li>
+<li><p>포탈 테스트는 적 기지 테스트로 옮긴다. 방침 이름은 바뀐다(7장).</p></li>
+</ul>
+<hr>
+<h2 id="9-화면">9. 화면</h2>
+<ul>
+<li><p><strong>적 기지</strong>: 핵(큰 상자)·둥지(작은 상자), 체력 막대. 동굴이 드러나기 전(가운데 칸이 보이지 않을 때)에는 그리지 않는다. 무너지면 어둡게.</p></li>
+<li><p><strong>새 유닛</strong>: 퓨라 초록, 모양으로 구분 — 굴착체와 가시 감염체는 소형 감염체와 다른 모양.</p></li>
+<li><p><strong>병력 탭</strong>: 위협도, 기지 목록(등급·상태: 잠듦/깨어남/무너짐·생체질량), 처치·보상 셈.</p></li>
+</ul>
+<hr>
+<h2 id="10-구조-구현-방향">10. 구조 (구현 방향)</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">부분</th><th scope="col">맡는 일</th></tr></thead>
+<tbody>
+<tr><td><code>EnemyBaseConfig</code></td><td>이 설계서의 수치 전부 ([Serializable], 설정에서 조정)</td></tr>
+<tr><td><code>EnemyBase</code>, <code>EnemyStructure</code></td><td>기지(등급·가운데·상태·생체질량·핵·둥지) / 구조물(종류·자리·크기·체력·생산 진행)</td></tr>
+<tr><td><code>BasePlacer</code></td><td>지형을 만든 뒤 고리에 동굴을 파고 기지 자리를 돌려준다 — 판 시드로 결정</td></tr>
+<tr><td><code>EnemyBaseSystem</code> (<code>World.Bases</code>)</td><td>위협도, 깨어남, 수입, 생산·내보내기, 무너짐·점령. 포탈 체계를 대신한다</td></tr>
+<tr><td><code>DigArea</code></td><td>중심마다 반경 (<code>AddCenter(x, y, radius)</code>)</td></tr>
+<tr><td><code>CombatSim</code></td><td>대상 종류 &quot;구조물&quot;(포탈 대신), 처치 보상을 창고로, 셈</td></tr>
+<tr><td><code>Army</code></td><td>굴착 이동의 수확은 제국 편만, 적 굴착체는 벽을 2배 느리게. 둥지 둘레에 내보내기(기존 <code>AddUnit</code> 반경)</td></tr>
+<tr><td><code>UnitCatalog</code></td><td>가시 감염체·굴착체</td></tr>
+<tr><td>없애는 것</td><td><code>Portals.cs</code>, 포탈 설정 수치, <code>RemoveBlock</code>의 봉인 처리, 지형의 봉인 배치</td></tr>
+<tr><td>에디터 통로</td><td><code>bases</code>(목록), <code>wake &lt;id&gt;</code>(검증용 깨우기), <code>threat</code> 요약 갱신</td></tr>
+<tr><td>화면</td><td>적 기지 그리기, 유닛 모양, 병력 탭</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>결정성: 무작위는 모두 판 시드. Simulation 안에서 사전 순회 금지(찾기만). 판 지문(WorldHash)에 기지 상태를 넣는다.</p></li>
+</ul>
+<hr>
+<h2 id="11-수치-가정--회색-박스에서-조정">11. 수치 [가정 — 회색 박스에서 조정]</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">항목</th><th scope="col">값</th></tr></thead>
+<tbody>
+<tr><td>기지 고리</td><td>24칸 1등급 ×2, 38칸 2등급 ×2, 52칸 3등급 ×2</td></tr>
+<tr><td>동굴</td><td>반경 6, 둘레 2칸 1등급 암반</td></tr>
+<tr><td>깨어남</td><td>가운데에서 16칸 안 / 위협도 4·20·45</td></tr>
+<tr><td>점령 반경</td><td>16</td></tr>
+<tr><td>핵 / 둥지 체력</td><td>60000 / 20000 (등급마다 +25%) [가정 — B9 조정: 초안 12000 / 4000]</td></tr>
+<tr><td>수입</td><td>4/초 × 1.6^(등급−1) × (1+위협도/100) × 난이도 100%</td></tr>
+<tr><td>쌓아 두기</td><td>수입 5분치</td></tr>
+<tr><td>가시 감염체</td><td>크기 1, 체력 60, 관통 8, 사거리 4, 간격 1초, 10틱/칸, 생체, 높이 0~5</td></tr>
+<tr><td>굴착체</td><td>크기 1, 체력 120, 근접 3, 사거리 1, 간격 1초, 굴착 이동 14틱/칸, 생체, 높이 0~5</td></tr>
+<tr><td>기지당 살아 있는 적 / 굴착체</td><td>40 / 2</td></tr>
+<tr><td>내보내는 자리</td><td>둥지 둘레 2칸</td></tr>
+<tr><td>벽 파기</td><td>암반의 2배 시간</td></tr>
+<tr><td>처치 보상</td><td>소형 5·가시 12·굴착체 15 금속 / 둥지 100·핵 400 금속·결정 반반</td></tr>
+</tbody></table></div>
+<p><strong>균형 검사 (balance-checks.json)</strong>:</p>
+<ul>
+<li><p>1등급 기지 vs 1등급 소총병 12명 → 핵이 <strong>10~20분</strong> 사이에 무너진다(결정적 시뮬레이션). B9 결과: 13.2분, 소총병 10명 잃음, 적 172기 처치, 보상 금속 원석 1926·결정 원석 300.</p></li>
+<li><p>수입 식의 고정값(1등급 4/초, 3등급 10.24/초, 위협도 100이면 2배).</p></li>
+<li><p>성능: 깨어난 기지 6 + 적 240 + 우리 200이 싸워도 한 틱 <strong>3ms</strong> 안 [가정 목표].</p></li>
+</ul>
+<hr>
+<h2 id="12-테스트와-검증">12. 테스트와 검증</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">무엇을</th><th scope="col">어떻게</th></tr></thead>
+<tbody>
+<tr><td>배치</td><td>같은 시드면 같은 자리, 고리 거리, 같은 고리 간격, 동굴이 닫혀 있다</td></tr>
+<tr><td>깨어남</td><td>가까움(16칸)·위협도 기준, 잠든 기지는 수입·생산이 없다</td></tr>
+<tr><td>수입·생산</td><td>식대로 쌓이고, 값을 내고 만들고, 상한(40·굴착체 2)에서 멈춘다</td></tr>
+<tr><td>무너짐·점령</td><td>둥지를 부수면 생산 줄이 줄고, 핵을 부수면 둥지도 무너지고 굴착 영역이 반경 16으로 넓어진다</td></tr>
+<tr><td>굴착체</td><td>우리 쪽으로 굴을 판다, 판 블록이 우리 창고에 안 들어간다, 벽은 느리다</td></tr>
+<tr><td>처치 보상</td><td>쓰러질 때 창고에 기지 등급 원석이 들어온다</td></tr>
+<tr><td>방침</td><td>&quot;적 기지 공격&quot;이 보이는 깨어난 기지 구조물로 간다</td></tr>
+<tr><td>균형</td><td>1등급 기지 vs 소총병 12명 → 10~20분</td></tr>
+<tr><td>성능</td><td>기지 6·적 240·우리 200 → 틱 예산 안</td></tr>
+<tr><td>결정성</td><td>같은 시드·같은 명령이면 같은 판(지문에 기지 상태)</td></tr>
+<tr><td>실제 실행</td><td>에디터에서 20분 판 — 교전 길이·손실·보상 흐름을 보고 스크린샷</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="13-남은-가정과-열린-점">13. 남은 가정과 열린 점</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">항목</th><th scope="col">현재</th><th scope="col">결정 시점</th></tr></thead>
+<tbody>
+<tr><td>판 안 레벨의 쓰임 (D142 이후)</td><td>능력치 보너스 [가정]</td><td>P8</td></tr>
+<tr><td>종족 기믹(P5 4·5장: 감염 영역·합체, 시온 제단)과 가짜 경제의 관계</td><td>이번엔 퓨라 기지만. 시온은 같은 틀(가짜 수입)로 [가정]</td><td>다음 종족 계획</td></tr>
+<tr><td>적이 새 기지를 세우거나 무너진 기지를 되찾기</td><td>없음</td><td>회색 박스 뒤</td></tr>
+<tr><td>점령한 동굴에 우리 건물 짓기</td><td>된다(빈 칸) [가정]</td><td>회색 박스</td></tr>
+<tr><td>다지역 진출</td><td>한 지역만</td><td>P2 지역 계획</td></tr>
+</tbody></table></div>
+</article>
+<nav class="pager" aria-label="같은 종류의 문서"><a class="prev" href="2026-09-28-p7-lore-design.html"><span>← 이전 설계서</span>P7 세계관·서사 설계서</a><a class="next" href="2026-09-29-p5c-movement-collision-design.html"><span>다음 설계서 →</span>P5c 이동·충돌 모델 개편 설계서 (연속 좌표·히트박스)</a></nav>
+</main>
+</div>
+<footer class="site-footer">
+  <div class="wrap">
+    <p><strong>CraftDefenseDungeon</strong>(작업용 이름) — 기획서 v0.63 · 2026-09-29 기준.</p>
+    <p>이 저장소는 소개 페이지와 기획·설계 문서만 공개합니다. 게임 소스 코드와 구현 계획서는 비공개 저장소에서 관리합니다. 라이선스 미정.</p>
+  </div>
+</footer>
+</body>
+</html>

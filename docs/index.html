@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>CraftDefenseDungeon — 파고, 만들고, 지켜라</title>
+<meta name="description" content="인류 제국의 장교 한 명이 행성 지하를 파 넓히며 종족을 재건하는 그림다크 쿼터뷰 굴착·건설·디펜스 게임(키우기 + 로그라이트)의 소개와 개발 문서.">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="CraftDefenseDungeon 소개"><svg class="brand-mark" viewBox="0 0 24 26" width="22" height="24" aria-hidden="true"><path d="M12 1.5 22.5 7.5v11L12 24.5 1.5 18.5v-11z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 6.5 17 9.5v6l-5 3-5-3v-6z" fill="currentColor" opacity=".85"/></svg><span>CraftDefenseDungeon</span></a>
+    <nav class="site-nav" aria-label="사이트"><a href="#world">세계관</a><a href="#loop">루프</a><a href="#factions">종족</a><a href="#forces">병력</a><a href="#roadmap">로드맵</a><a href="#tech">기술</a><a href="#docs">문서</a><a href="#repo">저장소</a><a href="game-plan.html">기획서</a></nav>
+  </div>
+</header>
+<main id="main">
+<section class="hero" aria-labelledby="hero-title">
+<div class="wrap hero-grid">
+<div class="hero-copy">
+<p class="eyebrow">그림다크 스페이스 오페라 · 쿼터뷰 굴착 디펜스</p>
+<h1 id="hero-title" class="title"><span>Craft</span><span>Defense</span><span>Dungeon</span></h1>
+<p class="motto"><span class="c-dig">파고</span><i aria-hidden="true">·</i><span class="c-craft">만들고</span><i aria-hidden="true">·</i><span class="c-defend">지켜라</span></p>
+<p class="lede">인류 제국이 파견한 <strong>장교 한 명</strong>이 행성의 지하를 파 넓히며 종족을 재건하고, 굴착 중 끝없이 나타나는 다른 종족들과 싸운다. 본부가 무너지면 제국은 새 능력을 가진 다음 장교를 보낸다 — <strong>키우기 + 로그라이트</strong>.</p>
+<div class="cta"><a class="btn btn-primary" href="game-plan.html">기획서 읽기 <span aria-hidden="true">→</span></a><a class="btn btn-ghost" href="#roadmap">개발 진행 상태</a></div>
+<dl class="hero-facts">
+<div><dt>기획서</dt><dd>v0.63 · 2026-09-29</dd></div>
+<div><dt>결정 기록</dt><dd>D1–D151</dd></div>
+<div><dt>엔진</dt><dd>Unity 6000.3.25f1</dd></div>
+<div><dt>EditMode 시험</dt><dd>308개 · 실패 0</dd></div>
+</dl>
+</div>
+<figure class="hero-art">
+<svg class="burrow" viewBox="0 0 640 520" width="640" height="520" role="img" aria-labelledby="bw-title bw-desc">
+<title id="bw-title">카르케르 지하 단면</title>
+<desc id="bw-desc">지표 아래 암반층을 파 넓힌 굴. 가운데 본부(프라이토리움)에서 결정 광맥까지 연결선이 이어지고, 병력과 전차가 오른쪽 퓨라 감염 둥지로 나아간다. 굴착병은 아래쪽 암반을 파고, 지표 위에는 시온의 감시 고리와 퓨라의 포자가 떠 있다.</desc>
+<defs>
+<linearGradient id="bw-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c1446"/><stop offset="1" stop-color="#0c0b20"/></linearGradient>
+<linearGradient id="bw-rock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c1d3a"/><stop offset=".55" stop-color="#11122a"/><stop offset="1" stop-color="#08091a"/></linearGradient>
+<linearGradient id="bw-beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#efe6cf" stop-opacity=".4"/><stop offset="1" stop-color="#efe6cf" stop-opacity="0"/></linearGradient>
+<radialGradient id="bw-core"><stop offset="0" stop-color="#eaffc9"/><stop offset=".35" stop-color="#7be04a"/><stop offset="1" stop-color="#2d6a12" stop-opacity="0"/></radialGradient>
+<radialGradient id="bw-red"><stop offset="0" stop-color="#ff6b86" stop-opacity=".3"/><stop offset="1" stop-color="#ff6b86" stop-opacity="0"/></radialGradient>
+<radialGradient id="bw-vignette" cx=".5" cy=".45" r=".75"><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient>
+<pattern id="bw-scan" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="1" fill="#fff" opacity=".035"/></pattern>
+<filter id="bw-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="bw-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="8"/></filter>
+<clipPath id="bw-clip"><rect width="640" height="520" rx="22"/></clipPath>
+<path id="bw-t0" d="M312 60V236"/>
+<path id="bw-t1" d="M224 300C186 304 162 328 126 350"/>
+<path id="bw-t2" d="M404 292C448 290 490 298 552 300"/>
+<path id="bw-t3" d="M356 316C370 360 400 392 446 418"/>
+<path id="bw-t4" d="M556 268C532 230 502 214 466 206"/>
+<path id="bw-hall" d="M214 252Q214 226 240 226H384Q410 226 410 252V296Q410 318 388 318H236Q214 318 214 296Z"/>
+<ellipse id="bw-mine" cx="106" cy="356" rx="44" ry="28"/>
+<path id="bw-nest" d="M546 264C566 236 614 240 630 268C646 298 634 340 604 346C578 352 548 342 538 318C530 300 532 280 546 264Z"/>
+<g id="bw-man"><circle cx="0" cy="-11" r="2.7"/><path d="M-2.8-8H2.8L3.2 1H-3.2Z"/><path d="M-2 1-2.6 8M2 1 2.6 8" fill="none" stroke-width="1.9" stroke-linecap="round"/><path d="M1-5.5 10-6.5" fill="none" stroke-width="1.5" stroke-linecap="round"/></g>
+</defs>
+<g clip-path="url(#bw-clip)">
+<rect width="640" height="520" fill="url(#bw-rock)"/>
+<rect width="640" height="84" fill="url(#bw-sky)"/>
+<g fill="#fff" opacity=".7"><circle cx="40" cy="18" r=".9"/><circle cx="96" cy="44" r=".7"/><circle cx="150" cy="14" r="1"/><circle cx="214" cy="30" r=".7"/><circle cx="262" cy="12" r=".9"/><circle cx="360" cy="40" r=".7"/><circle cx="400" cy="16" r="1"/><circle cx="572" cy="18" r=".8"/><circle cx="612" cy="46" r=".7"/></g>
+<g class="bw-halo"><path d="M468 40 442 84H530L504 40Z" fill="url(#bw-beam)" opacity=".5"/><ellipse cx="486" cy="34" rx="42" ry="9" fill="none" stroke="#efe6cf" stroke-width="1.6" filter="url(#bw-glow)"/><ellipse cx="486" cy="34" rx="26" ry="5" fill="none" stroke="#e0b552" stroke-opacity=".7"/><path d="M486 28 492 34 486 40 480 34Z" fill="#efe6cf"/></g>
+<g fill="#7be04a" filter="url(#bw-glow)"><circle class="bw-spore" cx="66" cy="54" r="2.2"/><circle class="bw-spore" cx="120" cy="32" r="1.6"/><circle class="bw-spore" cx="170" cy="60" r="2.4"/><circle class="bw-spore" cx="218" cy="48" r="1.5"/><circle class="bw-spore" cx="598" cy="62" r="1.8"/></g>
+<path d="M0 78 40 70 78 77 120 65 170 75 214 68 262 77 300 72 336 77 380 66 430 75 480 70 530 79 584 68 640 75V96H0Z" fill="#141530"/>
+<path d="M0 78 40 70 78 77 120 65 170 75 214 68 262 77 300 72 336 77 380 66 430 75 480 70 530 79 584 68 640 75" fill="none" stroke="#6d5bd0" stroke-opacity=".6" stroke-width="1.4"/>
+<path d="M0 178C80 168 150 188 230 182S390 170 470 180 600 190 640 174V288C560 298 480 278 400 286S250 302 170 292 40 282 0 294Z" fill="#8a5cff" fill-opacity=".05"/>
+<path d="M0 402C90 392 170 414 260 406S430 390 520 402 610 416 640 406V520H0Z" fill="#000" fill-opacity=".22"/>
+<g fill="none" stroke="#b39bff" stroke-opacity=".2" stroke-width="1.2"><path d="M0 178C80 168 150 188 230 182S390 170 470 180 600 190 640 174"/><path d="M640 288C560 298 480 278 400 286S250 302 170 292 40 282 0 294"/><path d="M0 402C90 392 170 414 260 406S430 390 520 402 610 416 640 406"/></g>
+<g fill="none" stroke="#c8d0ff" stroke-opacity=".09"><path d="M40 132l14 6 8-4 12 10"/><path d="M520 118l10 8 14-2"/><path d="M84 252l10 6 6-6 12 4"/><path d="M566 380l-12 8-6-4"/><path d="M250 474l16-6 8 6 10-4"/><path d="M470 474l12 8 10-2"/><path d="M380 140l8 10 12-4"/><path d="M160 420l10-8 8 4"/></g>
+<path d="M0 130h8M0 180h14M0 230h8M0 280h14M0 330h8M0 380h14M0 430h8M0 480h14" stroke="#3de0ff" stroke-opacity=".35"/>
+<g fill="none" stroke="#e0b552" stroke-linecap="round"><path d="M118 128C150 120 170 142 204 134S250 126 270 140" stroke-opacity=".55" stroke-width="2.2"/><path d="M470 424C500 414 520 436 558 428S604 418 628 430" stroke-opacity=".4" stroke-width="2"/></g>
+<g fill="#e0b552"><path d="M158 124l5 3-3 5-5-2z"/><path d="M232 128l6 2-2 6-5-3z"/><path d="M540 424l5 3-3 4-4-2z"/></g>
+<g filter="url(#bw-glow)"><path d="M70 226 76 200 84 226Z" fill="#3de0ff"/><path d="M80 228 90 208 96 230Z" fill="#8a5cff"/><path d="M62 230 68 214 74 232Z" fill="#9befff"/><path d="M540 166 546 140 554 166Z" fill="#8a5cff"/><path d="M552 168 560 150 566 170Z" fill="#3de0ff"/></g>
+<ellipse cx="214" cy="452" rx="24" ry="15" fill="#05060d" stroke="#e0b552" stroke-opacity=".35"/>
+<g class="bw-pulse" filter="url(#bw-glow)"><path d="M214 439 222 452 214 465 206 452Z" fill="#e0b552"/><path d="M214 444 218 452 214 460 210 452Z" fill="#fff3c4"/></g>
+<circle cx="64" cy="486" r="96" fill="url(#bw-red)"/>
+<circle cx="64" cy="486" r="46" fill="none" stroke="#ff6b86" stroke-opacity=".35" stroke-dasharray="3 5"/>
+<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+<g stroke="#3de0ff" stroke-opacity=".32" filter="url(#bw-glow)"><use href="#bw-t0" stroke-width="30"/><use href="#bw-t1" stroke-width="30"/><use href="#bw-t2" stroke-width="36"/><use href="#bw-t3" stroke-width="26"/><use href="#bw-hall" stroke-width="4"/><use href="#bw-mine" stroke-width="4"/></g>
+<g stroke="#7be04a" stroke-opacity=".45" filter="url(#bw-glow)"><use href="#bw-t4" stroke-width="18"/><use href="#bw-nest" stroke-width="4"/></g>
+<g stroke="#05060d"><use href="#bw-t0" stroke-width="26"/><use href="#bw-t1" stroke-width="26"/><use href="#bw-t2" stroke-width="32"/><use href="#bw-t3" stroke-width="22"/></g>
+<use href="#bw-t4" stroke="#070c07" stroke-width="14"/>
+</g>
+<use href="#bw-hall" fill="#05060d"/>
+<use href="#bw-mine" fill="#05060d"/>
+<use href="#bw-nest" fill="#0a1808"/>
+<ellipse cx="312" cy="318" rx="84" ry="7" fill="#e0b552" opacity=".18" filter="url(#bw-blur)"/>
+<g filter="url(#bw-glow)"><path d="M70 378 78 344 88 378Z" fill="#3de0ff"/><path d="M82 380 92 354 100 380Z" fill="#8a5cff"/><path d="M62 380 67 362 74 382Z" fill="#9befff"/></g>
+<g><path d="M110 382V366H130V382Z" fill="#1b1e3c" stroke="#3de0ff" stroke-opacity=".7"/><path d="M114 366 96 352" stroke="#e0b552" stroke-width="2" stroke-linecap="round"/><rect x="114" y="372" width="12" height="3" fill="#3de0ff"/></g>
+<path class="bw-flow" d="M134 352C166 330 190 310 228 308H262" fill="none" stroke="#3de0ff" stroke-width="2" stroke-dasharray="3 6" stroke-linecap="round"/>
+<g><rect x="224" y="298" width="26" height="20" rx="2" fill="#191b38" stroke="#3de0ff" stroke-opacity=".6"/><rect x="229" y="304" width="16" height="3" fill="#3de0ff" opacity=".9"/><path d="M231 298V290H237V298" fill="#191b38" stroke="#3de0ff" stroke-opacity=".5"/></g>
+<g><rect x="372" y="296" width="28" height="22" rx="2" fill="#191b38" stroke="#8a5cff" stroke-opacity=".9"/><rect x="378" y="302" width="16" height="3" fill="#b39bff"/><rect x="378" y="308" width="10" height="3" fill="#b39bff" opacity=".6"/></g>
+<g><path d="M262 318V292H276V278H294V262H330V278H348V292H362V318Z" fill="#171a36" stroke="#e0b552" stroke-opacity=".75" stroke-width="1.2"/><path d="M306 262V246L312 238 318 246V262Z" fill="#20244a" stroke="#e0b552" stroke-opacity=".85"/><g fill="#3de0ff" opacity=".9"><rect x="282" y="298" width="7" height="4" rx="1"/><rect x="296" y="298" width="7" height="4" rx="1"/><rect x="321" y="298" width="7" height="4" rx="1"/><rect x="335" y="298" width="7" height="4" rx="1"/><rect x="302" y="283" width="20" height="3" rx="1"/></g><rect x="304" y="306" width="16" height="12" fill="#0a0b18" stroke="#e0b552" stroke-opacity=".5"/><circle class="bw-pulse" cx="312" cy="234" r="3.4" fill="#ffe29a" filter="url(#bw-glow)"/></g>
+<ellipse cx="570" cy="318" rx="44" ry="6" fill="#7be04a" opacity=".14"/>
+<g fill="none" stroke="#7be04a" stroke-opacity=".38" stroke-width="1.6" stroke-linecap="round"><path d="M620 262C632 230 612 206 628 178"/><path d="M606 346C618 382 598 404 614 436"/><path d="M546 332C528 362 540 390 520 412"/><path d="M632 300C646 304 640 318 648 324"/></g>
+<g class="bw-tracer" stroke="#3de0ff" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="7 30"><path d="M520 294.5H586"/><path d="M481 294 588 293"/><path d="M465 292 590 291"/></g>
+<circle class="bw-pulse" cx="598" cy="294" r="30" fill="url(#bw-core)"/>
+<circle cx="598" cy="294" r="17" fill="none" stroke="#b6f58a" stroke-opacity=".6"/>
+<circle cx="598" cy="294" r="6" fill="#eaffc9"/>
+<g fill="#7be04a"><ellipse cx="556" cy="306" rx="6" ry="4"/><ellipse cx="566" cy="292" rx="5" ry="3.6"/><ellipse cx="560" cy="318" rx="5.5" ry="3.8"/><ellipse cx="574" cy="306" rx="4" ry="3"/></g>
+<g fill="#0a1808"><circle cx="553" cy="305" r="1.2"/><circle cx="563.5" cy="291" r="1.1"/><circle cx="557" cy="317" r="1.1"/></g>
+<g><ellipse cx="468" cy="206" rx="8" ry="5.5" fill="#7be04a"/><path d="M460 202 452 199M460 206H451M460 210 452 213" stroke="#b6f58a" stroke-width="1.3" stroke-linecap="round"/></g>
+<g fill="#b9c5e4" stroke="#b9c5e4"><use href="#bw-man" x="416" y="303"/><use href="#bw-man" x="432" y="301"/><use href="#bw-man" x="448" y="304"/><use href="#bw-man" x="464" y="302"/><use href="#bw-man" x="480" y="304"/></g>
+<g transform="translate(488 288)"><rect x="0" y="9" width="34" height="9" rx="4.5" fill="#262b52" stroke="#8fa3c7" stroke-opacity=".7"/><path d="M4 9 8 3H26L30 9Z" fill="#9fb0d4"/><rect x="12" y="-2" width="11" height="6" rx="2" fill="#c4cfea"/><path d="M22 .5H34" stroke="#c4cfea" stroke-width="2" stroke-linecap="round"/><g fill="#8fa3c7"><circle cx="6" cy="13.5" r="2"/><circle cx="13" cy="13.5" r="2"/><circle cx="20" cy="13.5" r="2"/><circle cx="27" cy="13.5" r="2"/></g></g>
+<use href="#bw-man" x="432" y="420" fill="#e8d6a8" stroke="#e8d6a8"/>
+<path d="M441 411 452 414 441 417Z" fill="#e0b552"/>
+<g class="bw-spark" stroke="#ffd98a" stroke-width="1.2" stroke-linecap="round"><path d="M455 410l5-4M456 414h6M455 418l4 4"/></g>
+<rect width="640" height="520" fill="url(#bw-scan)"/>
+<rect width="640" height="520" fill="url(#bw-vignette)"/>
+</g>
+<rect x=".75" y=".75" width="638.5" height="518.5" rx="21.5" fill="none" stroke="#8a5cff" stroke-opacity=".5" stroke-width="1.5"/>
+<path d="M18 46V18H46M594 18H622V46M622 474V502H594M46 502H18V474" fill="none" stroke="#3de0ff" stroke-opacity=".75" stroke-width="1.6" stroke-linecap="round"/>
+<text x="30" y="40" class="bw-hud">KD-417 · 카르케르</text>
+<text x="610" y="494" class="bw-hud" text-anchor="end">프리마 스트라타</text>
+</svg>
+<figcaption><span class="lg" style="--c: #e0b552">본부(프라이토리움)</span><span class="lg" style="--c: #3de0ff">결정 광맥·연결선</span><span class="lg" style="--c: #b9c5e4">병력</span><span class="lg" style="--c: #7be04a">퓨라 감염 둥지</span><span class="lg" style="--c: #efe6cf">시온의 감시</span></figcaption>
+</figure>
+</div>
+</section>
+<div class="rune" aria-hidden="true"><span></span></div>
+<section class="section" id="world" aria-labelledby="world-title">
+<div class="wrap">
+<header class="section-head"><p class="kicker" aria-hidden="true">I · Mundus</p><h2 id="world-title">제국의 가장 값싼 정복</h2><p class="section-lede">세계관 — 진지한 그림다크 (D117·D118, P7 설계서)</p></header>
+<div class="split">
+<div class="prose">
+<p>인류 제국은 정복 전쟁을 벌이고 있다. 제국은 행성마다 대군을 보내지 않는다. <strong>장교 한 명</strong>을 행성 지하로 내려보내고, 그 장교가 제국의 기술로 굴착하고, 제작하고, 병력을 찍어 내 <strong>스스로 불어나게</strong> 한다. 한 사람이 종족을 재건할 수 있는 기술은 제국에게 가장 값싼 정복 수단이다.</p>
+<p>지하인 이유는 하나다. 지표는 시온의 감시와 퓨라의 포자에 덮여 있어, 들키지 않고 불어날 수 있는 곳은 지하뿐이다.</p>
+<p>장교가 쓰러지면 제국은 다음 장교를 보내고, 전임자의 작전 기록이 그대로 넘어간다. 불어난 식민지의 산출은 공납으로 거둔다 — 공적을 쌓은 전선일수록 제국은 더 많이 돌려준다.</p>
+<blockquote class="quote"><p>유머는 없다. 제국은 장교를 소모품으로 셈하고, 보고서는 차갑다.</p><cite>P7 설계서 1.2 톤</cite></blockquote>
+</div>
+<aside class="card dossier" aria-labelledby="dossier-title">
+<p class="dossier-tag"><span>콘실리움 작전 명령</span><span>예시</span></p>
+<h3 id="dossier-title">카르케르 / 프리마 스트라타</h3>
+<dl>
+<div><dt>행성</dt><dd>카르케르 — 정복 목록 KD-417. 뜻은 "감옥", 시온이 악마를 가둔 곳</dd></div>
+<div><dt>파견</dt><dd>콘실리움(평의회) — 장교를 보내고 공납을 거두는 제국 행정 지성</dd></div>
+<div><dt>공납</dt><dd>트리부툼(공적금) · 시길룸(영입 인장) · 렐리퀴아 파편(유물 조각)</dd></div>
+<div><dt>등급</dt><dd>메리툼 등급 — 누적 송금액으로 오르고, 오를수록 세금이 줄다가 웃돈이 된다</dd></div>
+</dl>
+<p class="order">명령: 지하를 확보하고, 공납을 이행하라.</p>
+<p class="refs">P7 설계서 1.1·3.1·7.1 · D21 · D101</p>
+</aside>
+</div>
+</div>
+</section>
+<div class="rune" aria-hidden="true"><span></span></div>
+<section class="section" id="loop" aria-labelledby="loop-title">
+<div class="wrap">
+<header class="section-head"><p class="kicker" aria-hidden="true">II · Circulus</p><h2 id="loop-title">파고, 만들고, 지켜라</h2><p class="section-lede">두 고리가 맞물린다. 안쪽은 장교 한 명의 작전인 <strong>한 판</strong>, 바깥쪽은 <strong>판과 판 사이</strong>다. (기획서 1.4)</p></header>
+<ol class="loop">
+<li><div class="card step" style="--accent: var(--gold)"><p class="step-no" aria-hidden="true">01</p><h3><span class="c-dig">파고</span><small>굴착</small></h3><p>굴착병이 <strong>굴착 방침 우선순위</strong>(자원·특정 자원·확장·안전·목표 지점)대로 블록을 캔다. 도구보다 한 등급 위 암반은 아주 느리게, 두 등급 위는 못 판다 — 단단한 암반은 시간을 버는 벽이다.</p><p class="refs">D41 · D42 · D45 · D48</p></div></li>
+<li><div class="card step" style="--accent: var(--cyan)"><p class="step-no" aria-hidden="true">02</p><h3><span class="c-craft">만들고</span><small>제작·경제</small></h3><p>채굴기·제련소·조합 건물이 <strong>연결선</strong>으로 이어져 도구를 자동으로 조합한다. N등급 도구는 N등급 재료 + 한 등급 아래 재료 — 초반 광산을 끝까지 지킬 이유가 생긴다.</p><p class="refs">D53 · D54 · D57 · D63</p></div></li>
+<li><div class="card step" style="--accent: var(--violet-2)"><p class="step-no" aria-hidden="true">03</p><h3><span class="c-defend">지켜라</span><small>병력·전투</small></h3><p>병참 건물이 도구를 소비해 <strong>병종별 목표 수</strong>만큼 병력을 유지하고, 전투 유닛은 전투 방침 순서대로 싸운다. 적 기지를 부수면 판 안 자원이 흐르고 굴착 가능 영역이 넓어진다.</p><p class="refs">D68 · D72 · D141 · D142</p></div></li>
+</ol>
+<div class="card meta-loop"><h3>판과 판 사이</h3><p>스스로 끝내는 귀환은 없다. <strong>본부가 무너지면</strong> 판이 끝나고 맵도 처음부터다. 판 도중 번 영구 재화는 남고, 제국은 <strong>새 능력을 가진 다음 장교</strong>를 보낸다 — 처음부터 다시, 하지만 더 강하게.</p><ul class="tokens"><li><b>트리부툼</b>강화 트리</li><li><b>시길룸</b>장교·동료 영입</li><li><b>렐리퀴아 파편</b>유물 강화</li></ul><p class="refs">D12 · D13 · D14 · D18 · D100 · P7 3.1</p></div>
+<h3 class="sub-title">디자인 기둥</h3>
+<ul class="grid grid-3 pillars">
+<li class="card"><h4>정해두고 지켜보는 자동화</h4><p>플레이어는 생산 속도·병종·건물 우선순위 같은 방침을 정하고, 기지는 알아서 돌아간다. 돌아가는 모습 자체가 보는 맛이다.</p><p class="refs">D20</p></li>
+<li class="card"><h4>굴착이 곧 위험 선택</h4><p>어디를, 얼마나 멀리 팔지가 난이도를 정한다.</p><p class="refs">D4 · D15</p></li>
+<li class="card"><h4>무너져도 남는 성장</h4><p>본부가 무너져도 번 만큼은 남고, 다음 장교는 더 강하게 시작한다.</p><p class="refs">D11 · D18</p></li>
+</ul>
+</div>
+</section>
+<div class="rune" aria-hidden="true"><span></span></div>
+<section class="section" id="factions" aria-labelledby="factions-title">
+<div class="wrap">
+<header class="section-head"><p class="kicker" aria-hidden="true">III · Gentes</p><h2 id="factions-title">종족과 적</h2><p class="section-lede">1차 출시는 인류 제국만 플레이어블이다. 퓨라·시온은 적으로, 오라클은 종족이 아니라 맵 전체의 현상으로 등장한다. (D2·D5·D93)</p></header>
+<div class="grid grid-2">
+<article class="card faction" style="--accent: var(--gold)"><div class="faction-head"><svg class="emblem" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true"><path d="M20 3 35 11.5v17L20 37 5 28.5v-17z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 16c5 0 9 2 12 6 3-4 7-6 12-6-2 5-6 7-10 8l-2 7-2-7c-4-1-8-3-10-8z" fill="currentColor" opacity=".9"/><circle cx="20" cy="13" r="2.4" fill="currentColor"/></svg><div><h3>인류 제국</h3><p class="chip">플레이어블 · 1차 출시</p></div></div><p class="creed">자원만 있으면 한 사람이 종족 전체를 다시 재건할 수 있다.</p><p>워해머 40K 오마주. AI를 통한 기계공학의 정점. 장교의 병과(10개)가 이번 판 군대의 특성과 색·병과 마크를 정한다.</p><p class="names">라틴어풍 — 프라이토리움(본부) · 포소르(굴착병) · 밀레스(소총병) · 테스투도(전차)</p><p class="refs">기획서 1.3 · D66 · D71 · D119 · P7 3.5</p></article>
+<article class="card faction" style="--accent: var(--toxic)"><div class="faction-head"><svg class="emblem" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true"><circle cx="20" cy="20" r="8" fill="currentColor" fill-opacity=".22" stroke="currentColor" stroke-width="1.4"/><circle cx="20" cy="20" r="3" fill="currentColor"/><path d="M20 12V7M20 28v5M12 20H7M28 20h5M14.3 14.3l-3.5-3.5M25.7 25.7l3.5 3.5M25.7 14.3l3.5-3.5M14.3 25.7l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><g fill="currentColor"><circle cx="20" cy="5.5" r="1.8"/><circle cx="20" cy="34.5" r="1.8"/><circle cx="5.5" cy="20" r="1.8"/><circle cx="34.5" cy="20" r="1.8"/><circle cx="9.6" cy="9.6" r="1.6"/><circle cx="30.4" cy="30.4" r="1.6"/><circle cx="30.4" cy="9.6" r="1.6"/><circle cx="9.6" cy="30.4" r="1.6"/></g></svg><div><h3>퓨라</h3><p class="chip">적 · 회색 박스에 구현</p></div></div><p class="creed">바이러스로 모든 개체를 같은 개체로 만들어, 순수하게 "하나"가 되려는 하이퍼마인드.</p><p>감염 영역을 넓히며 광맥을 먹고, 감염 공격으로 죽인 유닛을 50% 스펙으로 되살려 쓴다. 회색 박스에서는 맵 곳곳에 잠든 <strong>감염 핵 + 번식 둥지</strong> 기지가 깨어나 가짜 수입(생체질량)으로 유닛을 찍어 내고, 굴착체가 우리 쪽으로 굴을 판다.</p><p class="names">생물학·바이러스 용어 — 게놈 핵 · 비리온 · 천공 비리온 · 영웅 원형체·산란 여왕·포식 군주</p><p class="refs">D84 · D87 · D91 · D94 · D97 · D138~D145</p></article>
+<article class="card faction" style="--accent: var(--ivory)"><div class="faction-head"><svg class="emblem" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true"><ellipse cx="20" cy="8.5" rx="8" ry="2.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M20 15c-3 4-9 5-15 4 3 5 8 7 13 6M20 15c3 4 9 5 15 4-3 5-8 7-13 6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M20 15l3 9-3 12-3-12z" fill="currentColor"/></svg><div><h3>시온</h3><p class="chip">적 · 설계 완료</p></div></div><p class="creed">자기 종족 외 모두를 저급 종족으로 보면서도, "고등 종족의 의무"로 우주 경찰을 지향한다.</p><p>성경 묘사 그대로의(인간형이 아닌) 천사 형상. 광물에 제단을 세워 제물로 채굴하고 신성영역에 유닛을 소환한다. 몰아붙이면 영웅이 <strong>강림</strong>하고, 본진을 부수면 가둬 두었던 악마 하나가 풀려난다 — 3분 안에 못 잡으면 본진이 체력 50%로 되살아난다.</p><p class="names">히브리어·성경풍 — 미크다쉬(본진) · 케두샤(신성영역) · 코헨(제사장) · 오파님·세라핌·케루빔 · 레비아탄·베엘제붑·맘몬·아스모데우스</p><p class="refs">기획서 1.3 · D85 · D88 · D92 · D97 · D98 · P7 4.1</p></article>
+<article class="card faction" style="--accent: var(--blood)"><div class="faction-head"><svg class="emblem" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true"><circle cx="20" cy="20" r="15.5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 3"/><path d="M6 20c4-6 9-9 14-9s10 3 14 9c-4 6-9 9-14 9S10 26 6 20z" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="20" cy="20" r="4.5" fill="currentColor"/></svg><div><h3>오라클</h3><p class="chip">현상 · 설계 완료</p></div></div><p class="creed">기쁨·증오·환희·빛·물·질량 같은 "개념 그 자체".</p><p>1차 버전에서는 종족이 아니라 <strong>맵 전체의 레드존</strong>이다. 5초 경고 뒤 20초 동안 모든 편에 개념별 효과를 걸고, 누적 사망이 쌓일수록 자주·강하게 온다. 가장 높은 구간에는 화신이 나타난다. 나중에 플레이어블이 되면 관전자 시점 플레이가 된다.</p><p class="names">한국어 개념어 — 원소의 화신 · 생사의 저울 · 감정의 합창</p><p class="refs">기획서 1.3 · D93 · D96 · D97 · D106 · D119</p></article>
+</div>
+</div>
+</section>
+<div class="rune" aria-hidden="true"><span></span></div>
+<section class="section" id="forces" aria-labelledby="forces-title">
+<div class="wrap">
+<header class="section-head"><p class="kicker" aria-hidden="true">IV · Legiones</p><h2 id="forces-title">병력과 전투</h2><p class="section-lede">도구가 곧 병사다. 드릴 계열 도구는 굴착병, 무기 계열 도구는 전투병이 되고, 유닛은 만들어질 때 쓴 도구의 등급을 그대로 가진다. (D42·D44·D65)</p></header>
+<div class="split">
+<div class="card roster">
+<h3>병종과 히트박스</h3>
+<p class="note">P5c에서 이동을 칸이 아닌 연속 좌표·원 히트박스로 바꾼다. 지름은 실제 크기에 비례해 압축해, 큰 유닛도 1칸 굴을 지난다. (D148·D149 — 설계 승인)</p>
+<div class="table-wrap plain" tabindex="0" role="region" aria-label="병종과 히트박스 표"><table class="roster-table">
+<thead><tr><th scope="col">병종</th><th scope="col">이름</th><th scope="col">지름</th><th scope="col"><span class="sr-only">1칸과 비교한 크기</span></th></tr></thead>
+<tbody>
+<tr><td>굴착병</td><td>포소르</td><td>0.25칸</td><td><svg class="hitbox" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true"><rect x="3" y="3" width="24" height="24"/><circle cx="15" cy="15" r="3"/></svg></td></tr>
+<tr><td>돌격병</td><td>글라디우스</td><td>0.25칸</td><td><svg class="hitbox" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true"><rect x="3" y="3" width="24" height="24"/><circle cx="15" cy="15" r="3"/></svg></td></tr>
+<tr><td>소총병</td><td>밀레스</td><td>0.25칸</td><td><svg class="hitbox" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true"><rect x="3" y="3" width="24" height="24"/><circle cx="15" cy="15" r="3"/></svg></td></tr>
+<tr><td>중화기병</td><td>발리스타</td><td>0.3칸</td><td><svg class="hitbox" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true"><rect x="3" y="3" width="24" height="24"/><circle cx="15" cy="15" r="3.5999999999999996"/></svg></td></tr>
+<tr><td>전차</td><td>테스투도</td><td>0.5칸</td><td><svg class="hitbox" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true"><rect x="3" y="3" width="24" height="24"/><circle cx="15" cy="15" r="6"/></svg></td></tr>
+<tr><td>비행선</td><td>누비스</td><td>0.75칸</td><td><svg class="hitbox" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true"><rect x="3" y="3" width="24" height="24"/><circle cx="15" cy="15" r="9"/></svg></td></tr>
+<tr><td>전함</td><td>콜로수스</td><td>0.9칸</td><td><svg class="hitbox" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true"><rect x="3" y="3" width="24" height="24"/><circle cx="15" cy="15" r="10.8"/></svg></td></tr>
+<tr class="foe"><td>소형 감염체</td><td>비리온</td><td>0.2칸</td><td><svg class="hitbox" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true"><rect x="3" y="3" width="24" height="24"/><circle cx="15" cy="15" r="2.4000000000000004"/></svg></td></tr>
+<tr class="foe"><td>가시 감염체</td><td>—</td><td>0.3칸</td><td><svg class="hitbox" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true"><rect x="3" y="3" width="24" height="24"/><circle cx="15" cy="15" r="3.5999999999999996"/></svg></td></tr>
+<tr class="foe"><td>굴착체</td><td>천공 비리온</td><td>0.4칸</td><td><svg class="hitbox" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true"><rect x="3" y="3" width="24" height="24"/><circle cx="15" cy="15" r="4.800000000000001"/></svg></td></tr>
+</tbody></table></div>
+<p class="refs">D149 · P7 3.5·4.2 · 초록 줄은 퓨라</p>
+</div>
+<div class="stack">
+<div class="card matrix">
+<h3>피해 유형표</h3>
+<p class="formula">피해 = 공격 × 유형 배율 × (1 + 병과)</p>
+<div class="table-wrap plain" tabindex="0" role="region" aria-label="피해 유형표"><table class="dmg">
+<thead><tr><th scope="col"><span class="sr-only">피해 유형</span></th><th scope="col">생체</th><th scope="col">중장갑</th><th scope="col">방어막</th><th scope="col">비물질</th><th scope="col">구조물</th></tr></thead>
+<tbody>
+<tr><th scope="row">근접</th><td class="mid">×1.0</td><td class="lo">×0.7</td><td class="hi">×1.5</td><td class="lo">×0.6</td><td class="lo">×0.7</td></tr>
+<tr><th scope="row">관통</th><td class="mid">×1.0</td><td class="hi">×1.5</td><td class="lo">×0.7</td><td class="lo">×0.6</td><td class="mid">×1.0</td></tr>
+<tr><th scope="row">폭발</th><td class="hi">×1.5</td><td class="lo">×0.7</td><td class="mid">×1.0</td><td class="lo">×0.6</td><td class="hi">×1.5</td></tr>
+<tr><th scope="row">에너지</th><td class="lo">×0.7</td><td class="mid">×1.0</td><td class="lo">×0.7</td><td class="hi">×1.5</td><td class="mid">×1.0</td></tr>
+</tbody></table></div>
+<p class="refs">D83 · D99 · 코드 <code>DamageTable</code>과 같다</p>
+</div>
+<div class="card" style="--accent: var(--gold)">
+<h3>전투 방침 기본 순서</h3>
+<ol class="policy"><li>본부·건물 방어</li><li>목표 지점 공격</li><li>적 기지 공격</li><li>굴착병 호위</li></ol>
+<p>대상은 사거리 안 가장 가까운 적이지만, <strong>나를 친 적 유닛</strong>이 먼저이고 구조물보다 <strong>적 유닛</strong>이 먼저다.</p>
+<p class="refs">D72 · D136 · D137 · P5b(포탈 공격 → 적 기지 공격)</p>
+</div>
+</div>
+</div>
+<div class="grid grid-2 forces-more">
+<div class="card" style="--accent: var(--violet-2)">
+<h3>병과 10개</h3>
+<p>장교는 주 병과(+20%), 동료는 부 병과(+8%)를 더한다. 병과는 병종뿐 아니라 적 종족 상성·환경·자동화 효율까지 다룬다.</p>
+<ul class="swatches">
+<li><i style="--c1: #2f6b3a" aria-hidden="true"></i><span>보병 <small>레기오 페디툼 · 짙은 녹색</small></span></li>
+<li><i style="--c1: #7d8796" aria-hidden="true"></i><span>기갑 <small>레기오 페레아 · 강철 회색</small></span></li>
+<li><i style="--c1: #7cc8f0" aria-hidden="true"></i><span>항공 <small>레기오 아퀼라 · 하늘색</small></span></li>
+<li><i style="--c1: #2b3a8c" aria-hidden="true"></i><span>함대 <small>클라시스 · 남색</small></span></li>
+<li><i style="--c1: #c08a3e" aria-hidden="true"></i><span>공병 <small>파브리 · 황토색</small></span></li>
+<li><i style="--c1: #f4f1e6; --c2: #d9b45a" aria-hidden="true"></i><span>군종 <small>사케르도테스 · 흰색과 금색</small></span></li>
+<li><i style="--c1: #8fe03a; --c2: #111111" aria-hidden="true"></i><span>화생방 <small>푸르가토레스 · 독성 녹색과 검정</small></span></li>
+<li><i style="--c1: #f4f4f4; --c2: #d33333" aria-hidden="true"></i><span>의무 <small>메디키 · 흰색과 붉은색</small></span></li>
+<li><i style="--c1: #f08a24" aria-hidden="true"></i><span>통신 <small>벡실라리이 · 주황색</small></span></li>
+<li><i style="--c1: #111111" aria-hidden="true"></i><span>정보 <small>스페쿨라토레스 · 검정</small></span></li>
+</ul>
+<p class="refs">D71 · D74 · D78 · P7 3.2</p>
+</div>
+<div class="card" style="--accent: var(--cyan)">
+<h3>좁은 굴의 규칙 <small class="chip tone-active">P5c · 설계 승인</small></h3>
+<ul class="ticks">
+<li><strong>연속 좌표</strong> — 고정소수점(1칸 = 256). 칸은 지형과 길 찾기 지도에만 쓴다.</li>
+<li><strong>밀어내기</strong> — 쉬는 같은 편은 지나가는 동료에게 밀리고, 싸우는·재무장·굴착 중인 몸은 버틴다. 적과는 밀지 않는다.</li>
+<li><strong>건물은 장애물</strong> — 우리 건물·적 핵·둥지 모두 지상 유닛이 못 지난다. 비행선은 위를 지난다.</li>
+<li><strong>목표</strong> — 폭 1칸 굴에 소총병 2명 이상 나란히(최대 4), 폭 3칸 굴에 12명이 정체 없이.</li>
+</ul>
+<p class="refs">D147 · D148 · D150 · P5c 설계서 1.2</p>
+</div>
+</div>
+</div>
+</section>
+<div class="rune" aria-hidden="true"><span></span></div>
+<section class="section" id="roadmap" aria-labelledby="roadmap-title">
+<div class="wrap">
+<header class="section-head"><p class="kicker" aria-hidden="true">V · Iter</p><h2 id="roadmap-title">개발 로드맵</h2><p class="section-lede">단계마다 대화로 설계 → 설계서 → 구현 계획 → 구현 순서로 간다. 기획서 표기는 기획서 0장 표(v0.63)에서, 구현 상태는 개발 기록에서 가져왔다.</p></header>
+<ul class="legend" aria-label="범례"><li class="tone-done"><span class="chip">구현 완료</span></li><li class="tone-wait"><span class="chip">병합 대기</span></li><li class="tone-active"><span class="chip">진행 중</span></li><li class="tone-design"><span class="chip">설계만</span></li><li class="tone-todo"><span class="chip">대기</span></li></ul>
+<ol class="roadmap">
+<li class="stage tone-done"><span class="stage-code">P0</span><div class="stage-body"><h3>비전·핵심 루프 정리</h3><p class="stage-line"><span class="chip">구현 완료</span>비전 확정</p><p class="stage-doc">기획서: <strong>완료</strong> — D1~D40, 2026-09-25 사용자 승인</p></div></li>
+<li class="stage tone-done"><span class="stage-code">P1</span><div class="stage-body"><h3>기술 스택·프로젝트 준비</h3><p class="stage-line"><span class="chip">구현 완료</span>Unity 프로젝트·asmdef·시험 스크립트</p><p class="stage-doc">기획서: <strong>완료</strong> — D122~D124·D129, <a href="specs/2026-09-28-p1-p9-setup-liveops-design.html">설계서</a> 승인. 도구는 &lt;개발 폴더&gt;에 설치됨</p></div></li>
+<li class="stage tone-done"><span class="stage-code">P2</span><div class="stage-body"><h3>지하 굴착·확장 시스템</h3><p class="stage-line"><span class="chip">구현 완료</span>회색 박스 구현</p><p class="stage-doc">기획서: <strong>완료</strong> — D41~D52, <a href="specs/2026-09-25-p2-digging-design.html">설계서</a> 승인</p></div></li>
+<li class="stage tone-done"><span class="stage-code">P3</span><div class="stage-body"><h3>자원·도구 제작 경제</h3><p class="stage-line"><span class="chip">구현 완료</span>회색 박스 구현</p><p class="stage-doc">기획서: <strong>완료</strong> — D53~D64, <a href="specs/2026-09-25-p3-economy-design.html">설계서</a> 승인</p></div></li>
+<li class="stage tone-done"><span class="stage-code">P4</span><div class="stage-body"><h3>유닛 생산·병참</h3><p class="stage-line"><span class="chip">구현 완료</span>회색 박스 구현</p><p class="stage-doc">기획서: <strong>완료</strong> — D65~D78, <a href="specs/2026-09-25-p4-units-design.html">설계서</a> 승인</p></div></li>
+<li class="stage tone-done"><span class="stage-code">P5</span><div class="stage-body"><h3>조우·침공 시스템 (포탈·적 종족 기지)</h3><p class="stage-line"><span class="chip">구현 완료</span>회색 박스 구현 (포탈 침공은 P5b에서 적 기지로 바뀜)</p><p class="stage-doc">기획서: <strong>완료</strong> — D79~D99, <a href="specs/2026-09-25-p5-encounters-design.html">설계서</a> 승인</p></div></li>
+<li class="stage tone-wait"><span class="stage-code">P5b</span><div class="stage-body"><h3>적 기지와 전선 (한 판 페이싱 재설계)</h3><p class="stage-line"><span class="chip">병합 대기</span>회색 박스 구현 완료</p><p class="stage-doc">기획서: <strong>구현 완료(병합 대기)</strong> — D138~D146, <a href="specs/2026-09-29-p5b-enemy-bases-design.html">설계서</a></p></div></li>
+<li class="stage tone-active"><span class="stage-code">P5c</span><div class="stage-body"><h3>이동·충돌 모델 개편 (연속 좌표·히트박스·건물 장애물)</h3><p class="stage-line"><span class="chip">진행 중</span>설계 승인, 구현 계획 완료(M0~M7)·실행 대기</p><p class="stage-doc">기획서: <strong>설계 승인</strong> — D147~D150, <a href="specs/2026-09-29-p5c-movement-collision-design.html">설계서</a></p></div></li>
+<li class="stage tone-todo"><span class="stage-code">P5d</span><div class="stage-body"><h3>전투력 환산 엔진 (스탯 재산정·밸런스 패치 체계)</h3><p class="stage-line"><span class="chip">대기</span>설계 전 (P5c 다음)</p><p class="stage-doc">기획서: <strong>설계 대기</strong> — D151 [원안], P5c 다음</p></div></li>
+<li class="stage tone-design"><span class="stage-code">P6</span><div class="stage-body"><h3>종족·지역 확장 프레임워크 + 관리자 도구</h3><p class="stage-line"><span class="chip">설계만</span>회색 박스 구현 전</p><p class="stage-doc">기획서: <strong>완료</strong> — D104~D106·D112~D116, <a href="specs/2026-09-26-p6-extension-design.html">설계서</a> 승인</p></div></li>
+<li class="stage tone-design"><span class="stage-code">P7</span><div class="stage-body"><h3>세계관·서사</h3><p class="stage-line"><span class="chip">설계만</span>회색 박스 구현 전</p><p class="stage-doc">기획서: <strong>완료</strong> — D117~D121, <a href="specs/2026-09-28-p7-lore-design.html">설계서</a> 승인</p></div></li>
+<li class="stage tone-design"><span class="stage-code">P8</span><div class="stage-body"><h3>성장·메타 진행 (레벨·영구 강화·유물·장교)</h3><p class="stage-line"><span class="chip">설계만</span>회색 박스 구현 전</p><p class="stage-doc">기획서: <strong>완료</strong> — D100~D111, <a href="specs/2026-09-26-p8-progression-design.html">설계서</a> 승인</p></div></li>
+<li class="stage tone-design"><span class="stage-code">P9</span><div class="stage-body"><h3>운영 서버 (관리자 통제·진행 확인)</h3><p class="stage-line"><span class="chip">설계만</span>구현 전</p><p class="stage-doc">기획서: <strong>완료</strong> — D125~D129, <a href="specs/2026-09-28-p1-p9-setup-liveops-design.html">설계서</a> 승인</p></div></li>
+</ol>
+</div>
+</section>
+<div class="rune" aria-hidden="true"><span></span></div>
+<section class="section" id="tech" aria-labelledby="tech-title">
+<div class="wrap">
+<header class="section-head"><p class="kicker" aria-hidden="true">VI · Machina</p><h2 id="tech-title">결정적 시뮬레이션 위의 회색 박스</h2><p class="section-lede">게임 규칙은 엔진 없는 순수 C# 시뮬레이션이고, 화면은 그것을 읽어 그린다. 멀티플레이를 뒤늦게 붙이지 않도록 처음부터 이렇게 나눴다. (기획서 4.1 · D8 · D124)</p></header>
+<ol class="pipeline" aria-label="World.Tick 한 틱의 순서"><li>명령 적용</li><li>굴착병 배정</li><li>굴착병 한 걸음</li><li><code>Economy.Tick</code></li><li><code>Army.Tick</code></li><li><code>Combat.Tick</code></li><li><code>Bases.Tick</code></li><li>틱 +1</li></ol>
+<p class="pipeline-note">초당 20번 도는 <code>World.Tick()</code>의 순서 (P5b 기준)</p>
+<div class="grid grid-4">
+<div class="card stat" style="--accent: var(--cyan)"><p class="stat-num">20<small>틱/초</small></p><h3>결정적</h3><p>같은 시드·같은 명령이면 같은 판. 규칙은 정수로 계산하고(배율 ×100, 수입 ×1000), 사전(Dictionary)을 순회하지 않는다. 버그가 난 판도 그대로 다시 만든다.</p></div>
+<div class="card stat" style="--accent: var(--violet-2)"><p class="stat-num">3<small>어셈블리</small></p><h3>규칙과 화면 분리</h3><p><code>Simulation</code>(엔진 참조 금지) · <code>View</code> · <code>Editor</code>. 입력은 명령 객체로 <code>World.Enqueue</code>에만 넣는다 — 나중에 명령을 네트워크로 보내면 멀티가 된다.</p></div>
+<div class="card stat" style="--accent: var(--gold)"><p class="stat-num">308<small>시험</small></p><h3>EditMode 시험</h3><p>마지막 전체 실행: 307개 통과 · 실패 0 · 1개 건너뜀(균형 조정용). 결정성·성능·수치 맞물림(<code>balance-checks.json</code>)을 잰다.</p></div>
+<div class="card stat" style="--accent: var(--toxic)"><p class="stat-num">3<small>ms</small></p><h3>성능 목표</h3><p>깨어난 적 기지 6 + 적 240 + 우리 200이 한꺼번에 싸워도 한 틱 3ms 안.</p></div>
+</div>
+<p class="stack-line">Unity 6000.3.25f1 (Unity 6.3 LTS) · URP 17 · Input System · Unity Test Framework (EditMode, NUnit) · C# 9 / .NET Standard 2.1 · Visual Studio 2022</p>
+</div>
+</section>
+<div class="rune" aria-hidden="true"><span></span></div>
+<section class="section" id="docs" aria-labelledby="docs-title">
+<div class="wrap">
+<header class="section-head"><p class="kicker" aria-hidden="true">VII · Tabulae</p><h2 id="docs-title">계획 문서</h2><p class="section-lede">기획서는 결정이 날 때마다 고치는 살아 있는 문서다. 설계서는 단계마다 하나씩 쓴다. 모두 이 사이트에서 바로 읽을 수 있다. (코드 전문이 든 구현 계획서는 비공개 저장소에서만 관리한다.)</p></header>
+<article class="card doc-feature">
+<div><p class="tag">기획서</p><h3><a class="stretch" href="game-plan.html">CraftDefenseDungeon 게임 기획서</a></h3></div>
+<dl class="doc-meta"><div><dt>버전</dt><dd>v0.63</dd></div><div><dt>최종 수정</dt><dd>2026-09-29</dd></div><div><dt>결정 기록</dt><dd>D1–D151</dd></div><div><dt>분량</dt><dd>1062줄</dd></div></dl>
+</article>
+<h3 class="sub-title">설계서 <span class="count">10</span></h3>
+<ul class="grid grid-3 doc-cards">
+<li class="card doc-card is-spec"><p class="doc-stage">P2</p><h4><a class="stretch" href="specs/2026-09-25-p2-digging-design.html">P2 지하 굴착·확장 설계서</a></h4><p class="doc-status"><strong>승인</strong> (2026-09-25)</p><p class="doc-dec">결정 D41~D52</p><p class="doc-foot">작성 2026-09-25 · 215줄</p></li>
+<li class="card doc-card is-spec"><p class="doc-stage">P3</p><h4><a class="stretch" href="specs/2026-09-25-p3-economy-design.html">P3 자원·도구 제작 경제 설계서</a></h4><p class="doc-status"><strong>승인</strong> (2026-09-25)</p><p class="doc-dec">결정 D53~D64</p><p class="doc-foot">작성 2026-09-25 · 287줄</p></li>
+<li class="card doc-card is-spec"><p class="doc-stage">P4</p><h4><a class="stretch" href="specs/2026-09-25-p4-units-design.html">P4 유닛 생산·병참 설계서</a></h4><p class="doc-status"><strong>승인</strong> (2026-09-25)</p><p class="doc-dec">결정 D65~D78</p><p class="doc-foot">작성 2026-09-25 · 314줄</p></li>
+<li class="card doc-card is-spec"><p class="doc-stage">P5</p><h4><a class="stretch" href="specs/2026-09-25-p5-encounters-design.html">P5 조우·침공 설계서</a></h4><p class="doc-status"><strong>승인</strong> (2026-09-25)</p><p class="doc-dec">결정 D79~D99</p><p class="doc-foot">작성 2026-09-25 · 398줄</p></li>
+<li class="card doc-card is-spec"><p class="doc-stage">P6</p><h4><a class="stretch" href="specs/2026-09-26-p6-extension-design.html">P6 종족·지역 확장 프레임워크 + 관리자 도구 설계서</a></h4><p class="doc-status"><strong>승인</strong> (2026-09-28)</p><p class="doc-dec">결정 D104~D106, D112~D116</p><p class="doc-foot">작성 2026-09-26 · 148줄</p></li>
+<li class="card doc-card is-spec"><p class="doc-stage">P8</p><h4><a class="stretch" href="specs/2026-09-26-p8-progression-design.html">P8 성장·메타 진행 설계서</a></h4><p class="doc-status"><strong>승인</strong> (2026-09-26)</p><p class="doc-dec">결정 D100~D103, D107~D111</p><p class="doc-foot">작성 2026-09-26 · 258줄</p></li>
+<li class="card doc-card is-spec"><p class="doc-stage">P1·P9</p><h4><a class="stretch" href="specs/2026-09-28-p1-p9-setup-liveops-design.html">P1 프로젝트 준비 + P9 운영 서버 설계서</a></h4><p class="doc-status"><strong>승인</strong> (2026-09-28, D129)</p><p class="doc-dec">결정 D122~D128</p><p class="doc-foot">작성 2026-09-28 · 170줄</p></li>
+<li class="card doc-card is-spec"><p class="doc-stage">P7</p><h4><a class="stretch" href="specs/2026-09-28-p7-lore-design.html">P7 세계관·서사 설계서</a></h4><p class="doc-status"><strong>승인</strong> (2026-09-28, D121)</p><p class="doc-dec">결정 D117~D120</p><p class="doc-foot">작성 2026-09-28 · 238줄</p></li>
+<li class="card doc-card is-spec"><p class="doc-stage">P5b</p><h4><a class="stretch" href="specs/2026-09-29-p5b-enemy-bases-design.html">P5b 적 기지와 전선 설계서</a></h4><p class="doc-status"><strong>승인</strong> (2026-09-29)</p><p class="doc-dec">결정 D138~D145</p><p class="doc-foot">작성 2026-09-29 · 231줄</p></li>
+<li class="card doc-card is-spec"><p class="doc-stage">P5c</p><h4><a class="stretch" href="specs/2026-09-29-p5c-movement-collision-design.html">P5c 이동·충돌 모델 개편 설계서 (연속 좌표·히트박스)</a></h4><p class="doc-status"><strong>승인</strong> (2026-09-29)</p><p class="doc-dec">결정 D147·D148 확정, D149~D151 새로</p><p class="doc-foot">작성 2026-09-29 · 334줄</p></li>
+</ul>
+
+</div>
+</section>
+<div class="rune" aria-hidden="true"><span></span></div>
+<section class="section" id="repo" aria-labelledby="repo-title">
+<div class="wrap">
+<header class="section-head"><p class="kicker" aria-hidden="true">VIII · Archivum</p><h2 id="repo-title">저장소 안내</h2><p class="section-lede">이 저장소는 소개 페이지와 기획·설계 문서만 공개한다. 게임 소스 코드는 비공개 저장소에서 관리한다.</p></header>
+<div class="grid grid-3">
+<div class="card" style="--accent: var(--cyan)"><h3>공개하는 것</h3><p>이 소개 페이지, 기획서(결정 기록 D1–D151), 설계서 10개.</p></div>
+<div class="card" style="--accent: var(--violet-2)"><h3>공개하지 않는 것</h3><p>Unity 프로젝트의 게임 소스 코드, 그리고 코드 전문이 들어 있는 구현 계획서. 개발 저장소는 비공개다.</p></div>
+<div class="card" style="--accent: var(--gold)"><h3>진행 상태</h3><p>기획서 v0.63 · 2026-09-29 기준. 단계별 상태는 위 <a href="#roadmap">개발 로드맵</a>에 있다.</p></div>
+</div>
+</div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <p><strong>CraftDefenseDungeon</strong>(작업용 이름) — 기획서 v0.63 · 2026-09-29 기준.</p>
+    <p>이 저장소는 소개 페이지와 기획·설계 문서만 공개합니다. 게임 소스 코드와 구현 계획서는 비공개 저장소에서 관리합니다. 라이선스 미정.</p>
+  </div>
+</footer>
+</body>
+</html>

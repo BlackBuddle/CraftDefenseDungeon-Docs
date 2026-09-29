@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>CraftDefenseDungeon 게임 기획서 · CraftDefenseDungeon</title>
+<meta name="description" content="기획서 — CraftDefenseDungeon 게임 기획서">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="CraftDefenseDungeon 소개"><svg class="brand-mark" viewBox="0 0 24 26" width="22" height="24" aria-hidden="true"><path d="M12 1.5 22.5 7.5v11L12 24.5 1.5 18.5v-11z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 6.5 17 9.5v6l-5 3-5-3v-6z" fill="currentColor" opacity=".85"/></svg><span>CraftDefenseDungeon</span></a>
+    <nav class="site-nav" aria-label="사이트"><a href="index.html">소개</a><a href="game-plan.html" aria-current="page">기획서</a><a href="index.html#docs">문서 목록</a><a href="index.html#roadmap">로드맵</a></nav>
+  </div>
+</header>
+<div class="wrap doc-layout">
+<aside class="doc-aside"><details class="toc" open><summary>목차</summary><nav aria-label="목차"><ol><li><a href="#0-한눈에-보기">0. 한눈에 보기</a></li><li><a href="#1-게임-개요">1. 게임 개요</a><ol><li><a href="#11-한-줄-요약">1.1 한 줄 요약</a></li><li><a href="#12-장르-키워드">1.2 장르 키워드</a></li><li><a href="#13-종족-원안">1.3 종족 [원안]</a></li><li><a href="#14-핵심-게임-루프">1.4 핵심 게임 루프</a></li><li><a href="#15-적과의-조우-방식-원안">1.5 적과의 조우 방식 [원안]</a></li><li><a href="#16-유닛-운영-일반-유닛과-영웅-유닛-확정">1.6 유닛 운영: 일반 유닛과 영웅 유닛 [확정]</a></li><li><a href="#17-한-판의-구조-키우기--로그라이트-확정--2026-09-25-추가">1.7 한 판의 구조: 키우기 + 로그라이트 [확정 — 2026-09-25 추가]</a></li><li><a href="#18-압박-구조-버티기만으로는-살아남을-수-없다-확정--2026-09-25-추가">1.8 압박 구조: 버티기만으로는 살아남을 수 없다 [확정 — 2026-09-25 추가]</a></li><li><a href="#181-장기-목표-기록-경쟁-확정--2026-09-25-추가">1.8.1 장기 목표: 기록 경쟁 [확정 — 2026-09-25 추가]</a></li><li><a href="#19-영구-성장-확정--2026-09-25-추가">1.9 영구 성장 [확정 — 2026-09-25 추가]</a></li><li><a href="#110-자동화와-플레이어의-역할-확정--2026-09-25-추가">1.10 자동화와 플레이어의 역할 [확정 — 2026-09-25 추가]</a></li></ol></li><li><a href="#2-결정-기록-확정">2. 결정 기록 [확정]</a></li><li><a href="#3-가정과-열린-질문-확인-필요">3. 가정과 열린 질문 (확인 필요)</a><ol><li><a href="#31-claude의-가정">3.1 Claude의 가정</a></li><li><a href="#32-열린-질문">3.2 열린 질문</a></li></ol></li><li><a href="#4-개발-단계-하위-프로젝트">4. 개발 단계 (하위 프로젝트)</a><ol><li><a href="#41-설계-원칙-가정--확인-필요">4.1 설계 원칙 [가정 — 확인 필요]</a></li><li><a href="#42-p2-지하-굴착확장-완료--설계서-승인">4.2 P2 지하 굴착·확장 [완료 — 설계서 승인]</a></li><li><a href="#43-p3-자원도구-제작-경제-완료--설계서-승인">4.3 P3 자원·도구 제작 경제 [완료 — 설계서 승인]</a></li><li><a href="#44-p4-유닛-생산병참-완료--설계서-승인">4.4 P4 유닛 생산·병참 [완료 — 설계서 승인]</a></li><li><a href="#45-p5-조우침공-완료--설계서-승인">4.5 P5 조우·침공 [완료 — 설계서 승인]</a></li><li><a href="#46-p8-성장메타-진행-완료--설계서-승인">4.6 P8 성장·메타 진행 [완료 — 설계서 승인]</a></li><li><a href="#47-p6-종족지역-확장-프레임워크--관리자-도구-완료--설계서-승인">4.7 P6 종족·지역 확장 프레임워크 + 관리자 도구 [완료 — 설계서 승인]</a></li><li><a href="#48-p7-세계관서사-완료--설계서-승인">4.8 P7 세계관·서사 [완료 — 설계서 승인]</a></li><li><a href="#49-p1-기술-스택프로젝트-준비-설계-중--2026-09-28-시작">4.9 P1 기술 스택·프로젝트 준비 [설계 중 — 2026-09-28 시작]</a></li></ol></li><li><a href="#5-개발-준비물-체크리스트">5. 개발 준비물 체크리스트</a></li><li><a href="#6-변경-이력">6. 변경 이력</a></li></ol></nav></details></aside>
+<main id="main" class="doc-main">
+<nav class="crumbs" aria-label="현재 위치"><a href="index.html">소개</a><span aria-hidden="true">/</span><a href="index.html#docs">기획서</a><span aria-hidden="true">/</span><span aria-current="page">CraftDefenseDungeon 게임 기획서</span></nav>
+<p class="doc-src">원본 <code>docs/game-plan.md</code> · 1062줄</p>
+<article class="md">
+<h1 id="craftdefensedungeon-게임-기획서">CraftDefenseDungeon 게임 기획서</h1>
+<blockquote>
+<p>살아있는 문서입니다. 결정이 날 때마다 이 파일을 고치고 커밋하며, 수정 이력은 진행 대시보드(<code>D:\ClaudeDashBoard\CraftDefenseDungeon</code>)의 &quot;지난 단계 기록&quot;에서 볼 수 있습니다.</p>
+<p>표기: <strong>[확정]</strong> 합의된 내용 · <strong>[원안]</strong> 사용자가 제시한 내용(세부 설계 전) · <strong>[가정]</strong> Claude가 채운 추측(확인 필요) · <strong>[미정]</strong> 아직 논의 전</p>
+</blockquote>
+<ul>
+<li><p>버전: v0.63</p></li>
+<li><p>최종 수정: 2026-09-29</p></li>
+</ul>
+<hr>
+<h2 id="0-한눈에-보기">0. 한눈에 보기</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">단계</th><th scope="col">내용</th><th scope="col">상태</th></tr></thead>
+<tbody>
+<tr><td>P0</td><td>비전·핵심 루프 정리</td><td><strong>완료</strong> — D1~D40, 2026-09-25 사용자 승인</td></tr>
+<tr><td>P1</td><td>기술 스택·프로젝트 준비</td><td><strong>완료</strong> — D122~D124·D129, <a href="specs/2026-09-28-p1-p9-setup-liveops-design.html">설계서</a> 승인. 도구는 &lt;개발 폴더&gt;에 설치됨</td></tr>
+<tr><td>P2</td><td>지하 굴착·확장 시스템</td><td><strong>완료</strong> — D41~D52, <a href="specs/2026-09-25-p2-digging-design.html">설계서</a> 승인</td></tr>
+<tr><td>P3</td><td>자원·도구 제작 경제</td><td><strong>완료</strong> — D53~D64, <a href="specs/2026-09-25-p3-economy-design.html">설계서</a> 승인</td></tr>
+<tr><td>P4</td><td>유닛 생산·병참</td><td><strong>완료</strong> — D65~D78, <a href="specs/2026-09-25-p4-units-design.html">설계서</a> 승인</td></tr>
+<tr><td>P5</td><td>조우·침공 시스템 (포탈·적 종족 기지)</td><td><strong>완료</strong> — D79~D99, <a href="specs/2026-09-25-p5-encounters-design.html">설계서</a> 승인</td></tr>
+<tr><td>P5b</td><td>적 기지와 전선 (한 판 페이싱 재설계)</td><td><strong>구현 완료(병합 대기)</strong> — D138~D146, <a href="specs/2026-09-29-p5b-enemy-bases-design.html">설계서</a></td></tr>
+<tr><td>P5c</td><td>이동·충돌 모델 개편 (연속 좌표·히트박스·건물 장애물)</td><td><strong>설계 승인</strong> — D147~D150, <a href="specs/2026-09-29-p5c-movement-collision-design.html">설계서</a></td></tr>
+<tr><td>P5d</td><td>전투력 환산 엔진 (스탯 재산정·밸런스 패치 체계)</td><td><strong>설계 대기</strong> — D151 [원안], P5c 다음</td></tr>
+<tr><td>P6</td><td>종족·지역 확장 프레임워크 + 관리자 도구</td><td><strong>완료</strong> — D104~D106·D112~D116, <a href="specs/2026-09-26-p6-extension-design.html">설계서</a> 승인</td></tr>
+<tr><td>P7</td><td>세계관·서사</td><td><strong>완료</strong> — D117~D121, <a href="specs/2026-09-28-p7-lore-design.html">설계서</a> 승인</td></tr>
+<tr><td>P8</td><td>성장·메타 진행 (레벨·영구 강화·유물·장교)</td><td><strong>완료</strong> — D100~D111, <a href="specs/2026-09-26-p8-progression-design.html">설계서</a> 승인</td></tr>
+<tr><td>P9</td><td>운영 서버 (관리자 통제·진행 확인)</td><td><strong>완료</strong> — D125~D129, <a href="specs/2026-09-28-p1-p9-setup-liveops-design.html">설계서</a> 승인</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="1-게임-개요">1. 게임 개요</h2>
+<h3 id="11-한-줄-요약">1.1 한 줄 요약</h3>
+<p>우주 스페이스 오페라 세계에서 인류 제국이 파견한 <strong>장교</strong>가 어느 행성의 <strong>지하를 파 넓히며 종족을 재건</strong>하고, 굴착 중 끝없이 나타나는 <strong>다른 종족들과 싸우는</strong> 쿼터뷰 굴착·건설·디펜스 게임. 본부가 무너져 작전이 실패하면 제국은 <strong>새 능력을 가진 다음 장교</strong>를 보내고, 플레이어는 영구 이점을 쌓아 더 멀리 나아간다. (키우기 + 로그라이트)</p>
+<p><strong>디자인 기둥</strong> — 기능을 넣을지 말지 헷갈리면 이 세 가지에 비춰 판단한다.</p>
+<ol>
+<li><p><strong>정해두고 지켜보는 자동화</strong> — 플레이어는 생산 속도·병종·건물 우선순위 같은 <strong>방침을 정하고</strong>, 기지는 알아서 돌아간다. 돌아가는 모습 자체가 <strong>보는 맛</strong>이다. (D20)</p></li>
+<li><p><strong>굴착이 곧 위험 선택</strong> — 어디를 얼마나 멀리 팔지가 난이도를 정한다. (D4·D15)</p></li>
+<li><p><strong>무너져도 남는 성장</strong> — 본부가 무너져도 번 만큼은 남고, 다음 장교는 더 강하게 시작한다. (D11·D18)</p></li>
+</ol>
+<h3 id="12-장르-키워드">1.2 장르 키워드</h3>
+<ul>
+<li><p>[원안] 지하 기지 건설, 블록 굴착, 자동 제작, 디펜스</p></li>
+<li><p>[확정] <strong>쿼터뷰</strong> 시점, 평면으로 사방 확장 (D9)</p></li>
+<li><p>[확정] <strong>키우기 + 로그라이트</strong>: 죽으면 처음부터, 영구 이점은 유지 (D11)</p></li>
+<li><p>[확정] 실시간 진행(턴제 아님)</p></li>
+<li><p>[확정] 싱글 플레이를 먼저 만들고, 나중에 멀티플레이로 확장한다</p></li>
+<li><p>[확정] 일반 유닛은 방침에 따라 자동, <strong>영웅 유닛</strong>(장교 + 동료)은 자동 전투 기본 + 선택적 직접 조작 (1.6 참고)</p></li>
+<li><p>[확정] <strong>PC(Steam) 먼저</strong> 출시. Unity라 나중에 모바일 이식 여지는 남김 (D36)</p></li>
+<li><p>[확정] 아트는 <strong>로우폴리 3D + 쿼터뷰 카메라</strong> (D40). [가정] 어두운 지하에 네온 불빛(컨베이어 점등, 장비 발광)으로 워해머식 그림다크 분위기</p></li>
+<li><p>[확정] 장기 목표는 <strong>기록 경쟁</strong> — 판 자체의 끝이나 스토리 엔딩 없이 최고 기록에 도전한다 (D39)</p></li>
+<li><p>[가정] 참고할 만한 게임</p>
+<ul>
+<li><p><strong>Dungeon Keeper</strong> — 일꾼에게 굴착 지정, 쿼터뷰 지하 던전, 침입자 방어 (가장 가까운 구조)</p></li>
+<li><p><strong>Rogue Legacy</strong> — 죽으면 새 후계자가 다른 특성을 갖고 이어받는 구조 (장교 교대 설정과 거의 같음)</p></li>
+<li><p><strong>방치형 키우기 게임들</strong> — 적이 계속 생겨나고 쓰러지는 순환, 환생(프레스티지) 영구 보너스</p></li>
+<li><p><strong>Mindustry</strong> — 자원 → 자동 제작 → 방어로 이어지는 자동화 루프</p></li>
+<li><p><strong>RimWorld</strong> — 명령 지정형 유닛 운영</p></li>
+</ul></li>
+</ul>
+<h3 id="13-종족-원안">1.3 종족 [원안]</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">종족</th><th scope="col">컨셉</th><th scope="col">이념</th><th scope="col">출시</th></tr></thead>
+<tbody>
+<tr><td><strong>인류 제국</strong></td><td>워해머 40K 오마주. AI를 통한 기계공학의 정점</td><td>자원만 있으면 한 사람이 종족 전체를 다시 재건할 수 있다 → 장교 한 명을 파견하는 설정의 근거</td><td><strong>1차 (플레이어블)</strong></td></tr>
+<tr><td><strong>오라클</strong></td><td>비물리적 개념 종족 — 기쁨·증오·환희·빛·물·질량 같은 &quot;개념 그 자체&quot;</td><td>[미정]</td><td>업데이트</td></tr>
+<tr><td><strong>시온</strong></td><td>성경 묘사 그대로의(인간형이 아닌) 천사 형상</td><td>자기 종족 외 모두를 저급 종족으로 보는 선민의식, 그러나 &quot;고등 종족의 의무&quot;로 우주 경찰을 지향</td><td>업데이트</td></tr>
+<tr><td><strong>퓨라</strong></td><td>하이퍼마인드형 생명체</td><td>바이러스로 모든 개체를 같은 개체로 만들어 순수하게 &quot;하나&quot;가 되려 함</td><td>업데이트</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>[확정] 1차 버전에서 퓨라·시온은 적 종족으로, <strong>오라클은 종족이 아니라 맵 전체의 레드존 현상</strong>으로 등장한다(D5·D93). 오라클을 나중에 플레이어블로 만들면 <strong>관전자 시점 플레이</strong>가 된다(D106). 종족별 경제·기믹은 4.7에 미리 설정해 두었다(D104).</p></li>
+</ul>
+<h3 id="14-핵심-게임-루프">1.4 핵심 게임 루프</h3>
+<p>두 개의 고리가 맞물린다. 안쪽은 <strong>한 판</strong>, 바깥쪽은 <strong>판과 판 사이</strong>다.</p>
+<pre class="code"><code> [한 판 — 장교 한 명의 작전]  (맵은 매 판 처음부터)
+ ┌─▶ ① 굴착 방침(또는 직접 지정)에 따라 유닛이 블록을 캐며 지하 공간 확장 (D24)
+ │   ② 블록에는 등급이 있고, 특정 도구로만 캘 수 있음 (= 확장 단계 구분)
+ │   ③ 도구 재료는 광산(자원 매장지) 형태로 지하에 배치됨
+ │   ④ 조합 건물이 자동으로 도구를 조합
+ │   ⑤ 조합 건물을 병참 건물에 연결하면, 도구 생산 속도에 맞춰 유닛이 자동 생산됨 (D20)
+ │   ⑥ 굴착 중 포탈이 열리거나 적 종족 기지와 조우 → 교전 → 경험치·보상
+ │   ⑦ 레벨이 오르면 지역 안의 굴착 가능 영역이 넓어지고,
+ │      탐사 업그레이드로 옆 지역에 진출 (D31·D33)
+ └── 더 좋은 도구·더 넓은 영역 → 더 강한 적과 조우
+            │
+            ▼ 본부 파괴 → 판 종료 (스스로 끝내는 귀환 없음)
+ [판과 판 사이 — 메타 진행]
+     영구 이점 사용 (판 도중 계속 적립된 재화 · 유물 · 해금)
+     → 제국이 새 능력을 가진 다음 장교를 파견 (D12)
+     → 처음부터 다시, 하지만 더 강하게</code></pre>
+<h3 id="15-적과의-조우-방식-원안">1.5 적과의 조우 방식 [원안]</h3>
+<ul>
+<li><p>적은 &quot;밖에서 정기적으로 쳐들어오는 웨이브&quot;가 아니라 <strong>굴착이 조우를 여는 구조</strong>다.</p>
+<ul>
+<li><p><strong>포탈</strong>: 파다 보면 포탈이 나오고, 그곳에서 적이 나온다.</p></li>
+<li><p><strong>적 종족 기지</strong>: 이미 발전한 적 종족의 영역과 맞닿게 된다.</p></li>
+</ul></li>
+<li><p>즉 <strong>어디를, 얼마나 멀리 팔지가 곧 난이도 선택</strong>이 된다.</p></li>
+<li><p>[확정] 키우기 게임처럼 적 종족은 <strong>계속 생겨나고 물리쳐지는 순환</strong>을 이룬다. (세부 규칙은 P5에서 설계)</p></li>
+</ul>
+<h3 id="16-유닛-운영-일반-유닛과-영웅-유닛-확정">1.6 유닛 운영: 일반 유닛과 영웅 유닛 [확정]</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">구분</th><th scope="col">조작 방식</th><th scope="col">특징</th></tr></thead>
+<tbody>
+<tr><td><strong>일반 유닛</strong></td><td><strong>방침</strong>에 따라 알아서 굴착·건설·방어. 원하면 구역을 직접 지정해 덮어쓸 수 있음 (D24)</td><td>병참 건물에서 도구를 소비해 생산 (P4)</td></tr>
+<tr><td><strong>영웅 유닛</strong></td><td>기본은 <strong>자동 전투</strong>, 원할 때 <strong>개별로 직접</strong> 이동·명령 (D24)</td><td>스토리상 중요한 유닛. 유닛마다 고유 <strong>특수능력</strong> 보유</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>평소에는 기지가 알아서 돌아가는 것을 지켜보고, 중요한 교전에서만 영웅을 직접 조종하는 흐름이 된다.</p></li>
+<li><p><strong>영웅 구성</strong> (D37):</p>
+<ul>
+<li><p>제국이 파견하는 <strong>장교가 대표 영웅</strong>이다.</p></li>
+<li><p>여기에 <strong>영구 동료 영웅</strong>이 더해진다. 한 번 해금한 동료는 판을 시작할 때 몇 명을 골라 데려간다. [가정: 데려가는 인원 제한]</p></li>
+<li><p>동료가 판을 넘어 성장하는지, 판 도중에 쓰러지면 어떻게 되는지는 P4·P8에서 정한다.</p></li>
+</ul></li>
+</ul>
+<h3 id="17-한-판의-구조-키우기--로그라이트-확정--2026-09-25-추가">1.7 한 판의 구조: 키우기 + 로그라이트 [확정 — 2026-09-25 추가]</h3>
+<ul>
+<li><p><strong>한 판 = 장교 한 명의 작전.</strong> 제국이 장교를 행성에 파견하며 시작한다.</p></li>
+<li><p><strong>한 판은 평균 2시간 이상</strong>이고, 여러 번에 나눠 플레이한다. (D16)</p></li>
+<li><p><strong>중단 저장만 허용</strong>한다. 끌 때 자동 저장되고 다시 켜면 이어서 하지만, 불러오면 그 저장은 사라져 되돌릴 수 없다. (D17)</p>
+<ul>
+<li><p>⚠️ 긴 판 + 귀환 없음(D14) + 맵 초기화 = 본부가 무너질 때 <strong>잃는 것이 크다.</strong> 그래서 판 도중 영구 재화 적립(D18), 배치 기억·자동 건설(D25), 복수전으로 자원 회수(D27)로 좌절감을 줄인다.</p></li>
+</ul></li>
+<li><p><strong>맵은 행성 범위 안에서 유한</strong>하고, <strong>지역</strong>과 <strong>굴착 가능 영역</strong> 두 층으로 나뉜다. (D10·D31)</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">층</th><th scope="col">무엇인가</th><th scope="col">어떻게 넓어지나</th></tr></thead>
+<tbody>
+<tr><td><strong>지역</strong></td><td>행성 안의 특정 구역(예: 광맥 지대, 용암 지대). 개발자가 <strong>콘텐츠 업데이트로 추가</strong>한다</td><td>판 도중 <strong>탐사 업그레이드</strong>로 옆 지역에 진출한다 (D33)</td></tr>
+<tr><td><strong>굴착 가능 영역</strong></td><td>한 지역 안에서 실제로 팔 수 있는 범위</td><td><strong>판 안 레벨</strong>이 오를수록 지역 안에서 넓어진다 [가정: D10 그대로]</td></tr>
+</tbody></table></div></li>
+<li><p><strong>지역 진출 규칙</strong> (D33):</p>
+<ul>
+<li><p>판 도중 옆 지역으로 넓혀 나갈 수 있다.</p></li>
+<li><p>진출할 수 있는 <strong>지역 수는 탐사 업그레이드 단계로 제한</strong>된다.</p></li>
+<li><p>플레이어가 <strong>고른 지역에만</strong> 들어갈 수 있다. 어느 방향으로 넓힐지가 전략이 된다.</p></li>
+<li><p>[가정] 탐사 업그레이드는 판 안 업그레이드(매 판 초기화)이고, 영구 강화(D19)로 시작 단계를 높일 수 있다.</p></li>
+<li><p>최적화: 행성 전체가 아니라 <strong>진출한 지역만</strong> 불러오고, 멀리 떨어진 지역은 덜 자주 갱신한다(4.1).</p></li>
+</ul></li>
+<li><p><strong>지역마다 다른 것</strong> (D34): <strong>암반·자원 구성</strong>, <strong>등장 적 종족</strong>, <strong>환경 위험</strong>(용암·독가스·붕괴·저중력 등), <strong>고유 유물·보상</strong>. 그래서 어느 지역으로 진출할지 고르는 일이 &quot;어떤 자원·적·위험·보상을 택할지&quot; 고르는 일이 된다.</p></li>
+<li><p><strong>지역 관리자 도구</strong> (D35): 개발자가 지역을 <strong>차츰 늘릴 수 있는 관리자 기능</strong>이 필요하다. 지역을 만들고, 구성(암반·자원·적·위험·유물)을 편집하고, 게임에 켜고 끌 수 있어야 한다. (P6)</p></li>
+<li><p><strong>판 안 레벨</strong>의 경험치는 <strong>적 처치, 굴착·영역 확장, 생산·건물 가동, 포탈 파괴·원수 격파</strong>에서 모두 얻는다. 지켜보는 동안에도(생산) 조금씩 오르고, 큰 목표를 이루면 크게 오른다. (D30)</p></li>
+<li><p><strong>본부가 파괴되면 판이 끝나고</strong>, 처음부터 다시 시작하며 <strong>맵도 초기화</strong>된다. (D13)</p></li>
+<li><p><strong>장교는 쓰러져도 판이 끝나지 않는다.</strong> 일정 시간 뒤 본부에서 복귀하므로 장교를 과감하게 쓸 수 있다. (D13)</p></li>
+<li><p><strong>스스로 판을 끝내는 귀환(환생)은 없다.</strong> 판은 본부가 무너져야만 끝난다. (D14)</p>
+<ul>
+<li><p>그래서 <strong>버티기만 해도 결국 본부가 무너지도록</strong> 적의 압박이 시간에 따라 커진다. (1.8)</p></li>
+</ul></li>
+<li><p>대신 <strong>영구 이점</strong>을 얻어 다음 판이 더 수월해진다. (1.9)</p></li>
+<li><p><strong>설정</strong>: 인류 제국은 작전(본부)이 무너질 때마다 <strong>새로운 능력이 추가된 장교</strong>를 보낸다. 판마다 장교가 바뀌는 것이 이야기 안에서 자연스럽게 설명된다. (D12)</p></li>
+</ul>
+<h3 id="18-압박-구조-버티기만으로는-살아남을-수-없다-확정--2026-09-25-추가">1.8 압박 구조: 버티기만으로는 살아남을 수 없다 [확정 — 2026-09-25 추가]</h3>
+<p>귀환이 없으므로(D14) 아래 네 장치가 <strong>함께</strong> 판을 끝으로 몰아간다. (D15)</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">장치</th><th scope="col">내용</th><th scope="col">막는 플레이 습관 [가정 — 역할 분담 제안]</th></tr></thead>
+<tbody>
+<tr><td><strong>적 기지 성장</strong></td><td>적 종족 기지는 발견 전부터 스스로 굴착·확장하며 강해지고, 결국 플레이어 쪽으로 파고든다</td><td>적을 모른 척하기 → <strong>주된 위협</strong>. 방향이 있는 공간적 압박</td></tr>
+<tr><td><strong>포탈 강화</strong></td><td>열린 포탈은 닫거나 파괴하기 전까지 점점 더 강한 적을 더 자주 보낸다</td><td>열어둔 위협 방치하기 → <strong>국지적 압박</strong>. 포탈 닫기가 목표가 됨</td></tr>
+<tr><td><strong>행성 위협도</strong></td><td>판 전체에 시간과 함께 오르는 위협 수치. 일정 수치를 넘으면 파지 않은 곳에서도 새 포탈이 열린다</td><td>굴착을 멈추고 버티기 → <strong>전역 시계</strong>. 판이 반드시 끝나게 하는 최후의 안전장치이자, 평균 판 길이를 조절하는 손잡이</td></tr>
+<tr><td><strong>자원 고갈</strong></td><td>광산은 캐면 줄어들어, 새 자원을 얻으려면 더 멀리(더 위험한 곳으로) 파야 한다. <strong>D132 이후</strong>: 굴착병이 부순 광맥만 사라지고 채굴기 광맥은 마르지 않는다 — 대신 높은 등급은 먼 곳에만 있어 밀어내기가 유지된다</td><td>확장하지 않기 → <strong>부드러운 밀어내기</strong>. 버티기를 손해로 만듦</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>[가정] 적 기지도 플레이어와 <strong>같은 굴착 규칙</strong>을 쓴다. 그러면 나중에 다른 종족을 플레이어블로 만들 때(D2)와 멀티 대전(D8)에 그대로 재사용할 수 있다.</p></li>
+</ul>
+<h3 id="181-장기-목표-기록-경쟁-확정--2026-09-25-추가">1.8.1 장기 목표: 기록 경쟁 [확정 — 2026-09-25 추가]</h3>
+<ul>
+<li><p>판은 끝없이 이어지고(D11), 스토리 엔딩이나 &quot;작전 성공&quot; 같은 승리 조건은 없다. 플레이어는 <strong>최고 기록</strong>에 도전한다. (D39)</p></li>
+<li><p>[가정] 기록 항목: 진출한 지역 수, 판 안 최고 레벨, 생존 시간, 격파한 원수·포탈 수, 누적 송금액</p></li>
+<li><p>[가정] Steam 리더보드로 다른 플레이어와 기록을 비교한다. 나중의 멀티(D8)로 가는 첫걸음이 된다.</p></li>
+<li><p>세계관(P7)은 목표가 아니라 <strong>분위기와 동기</strong>를 주는 역할이다. 장교·동료 영웅의 대사, 원수 진영과의 악연(D29) 같은 형태로 전달한다.</p></li>
+</ul>
+<h3 id="19-영구-성장-확정--2026-09-25-추가">1.9 영구 성장 [확정 — 2026-09-25 추가]</h3>
+<ul>
+<li><p><strong>판 도중 계속 적립</strong>: 적 처치·영역 확장·레벨업·포탈 파괴 때마다 영구 재화가 바로 쌓인다. 본부가 무너져도 번 만큼은 남는다. (D18)</p></li>
+<li><p><strong>넘친 자원의 송금</strong>: 본부 창고 한도를 넘친 판 안 자원도 자동으로 제국에 송금되어 영구 재화가 된다. 영구 재화의 두 번째 원천이다. (D62)</p></li>
+<li><p><strong>제국 송금 저축과 세금</strong> (D21):</p>
+<ul>
+<li><p>판 도중 번 재화는 <strong>인류 제국에 보내 저축</strong>하고, 다음 판에서 <strong>제국으로부터 돌려받는다</strong>는 개념이다.</p></li>
+<li><p>다만 전부 쌓이지는 않는다. 제국이 <strong>제국 공적 등급(영구 레벨)에 따라 세금</strong>을 뗀다.</p></li>
+<li><p>레벨이 낮을수록 세금이 무겁고, 오를수록 줄어들다가, 일정 레벨을 넘으면 <strong>세금 대신 제국이 웃돈을 얹어준다</strong>(보낸 것보다 더 받음).</p></li>
+<li><p><strong>송금은 번 즉시 자동</strong>으로 이뤄지고, 그 순간의 세율이 적용된다. 번 재화를 잃는 일은 없다(D18 유지). (D22)</p></li>
+<li><p><strong>세율 기준은 판이 바뀌어도 이어지는 영구 레벨</strong>이다. 설정상 제국은 매번 새 장교를 보내지만(D12), 앞선 작전의 공적을 반영해 <strong>다음 장교가 원활하게 작전하도록 세율을 조정</strong>해준다. (D23)</p>
+<ul>
+<li><p>영구 레벨은 장교 종류와 상관없이 <strong>제국 전체에 하나</strong>로 쌓인다. 새로 해금한 장교도 바로 그 세율 혜택을 받는다. (D32)</p></li>
+<li><p>[가정] 판 안 레벨(맵 확장, D30)과 헷갈리지 않도록 영구 레벨은 <strong>&quot;제국 공적 등급&quot;</strong>처럼 다른 이름으로 부른다.</p></li>
+<li><p>⚠️ 밸런스 주의: 영구 레벨이 오를수록 웃돈이 커지고, 웃돈으로 다시 강해지는 <strong>눈덩이 효과</strong>가 생긴다. 키우기 게임에서는 이 가속감이 재미의 일부지만, 웃돈 상한은 정해둬야 한다.</p></li>
+</ul></li>
+<li><p>효과: 작전을 거듭할수록 영구 성장이 가속되어, <strong>다음 판을 시작할 동기</strong>가 생긴다. 워해머 40K식 제국 관료주의와도 잘 어울린다.</p></li>
+</ul>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">제국 공적 등급 [가정 — 예시 수치]</th><th scope="col">1</th><th scope="col">5</th><th scope="col">10</th><th scope="col">15</th><th scope="col">20</th><th scope="col">25+</th></tr></thead>
+<tbody>
+<tr><td>제국 세율</td><td>50%</td><td>35%</td><td>20%</td><td>0%</td><td>−15% (웃돈)</td><td>−30% (웃돈)</td></tr>
+<tr><td>100을 보내면 받는 양</td><td>50</td><td>65</td><td>80</td><td>100</td><td>115</td><td>130</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>영구 레벨을 무엇으로 올리는지는 P8에서 정한다.</p></li>
+</ul></li>
+<li><p><strong>다섯 종류를 쓴다</strong> (D19·D37):</p></li>
+</ul>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">종류</th><th scope="col">내용</th></tr></thead>
+<tbody>
+<tr><td><strong>능력치 강화 트리</strong></td><td>영구 재화로 본부 체력, 굴착 속도, 유닛 능력치 등을 영구히 올린다</td></tr>
+<tr><td><strong>유물 수집</strong></td><td>판 도중 발굴하는 특수 효과 아이템. 한 번 얻으면 영구 수집되고, 판을 시작할 때 몇 개를 골라 가져간다 [가정: 개수 제한]</td></tr>
+<tr><td><strong>새 장교 해금</strong></td><td>새 특수능력을 가진 장교가 해금되고, 판을 시작할 때 누구를 보낼지 고른다 (D12)</td></tr>
+<tr><td><strong>동료 영웅 해금</strong></td><td>해금한 동료 영웅을 판을 시작할 때 골라 데려간다 (D37)</td></tr>
+<tr><td><strong>시작 조건 개선</strong></td><td>시작 자원, 처음부터 있는 건물, 처음 열린 영역이 늘어난다. 긴 판(D16)의 초반 반복을 줄인다</td></tr>
+</tbody></table></div>
+<h3 id="110-자동화와-플레이어의-역할-확정--2026-09-25-추가">1.10 자동화와 플레이어의 역할 [확정 — 2026-09-25 추가]</h3>
+<p>키우기 게임이므로 <strong>가능한 많은 로직을 자동화</strong>하고, 플레이어는 방침을 정한 뒤 <strong>돌아가는 모습을 지켜보는</strong> 것이 기본이다. (D20)</p>
+<ul>
+<li><p><strong>생산 연결</strong>: 조합 건물(도구 생산)을 병참 건물에 연결하면, 도구가 만들어지는 속도에 맞춰 유닛이 <strong>자동으로 계속 생산</strong>된다.</p></li>
+<li><p><strong>플레이어가 정하는 것</strong> (예시):</p>
+<ul>
+<li><p>유닛 <strong>생산 속도</strong></p></li>
+<li><p>생산할 <strong>병종</strong>(비율·조합)</p></li>
+<li><p>건물 <strong>우선순위</strong>(자원이 부족할 때 어느 건물부터 돌릴지)</p></li>
+<li><p><strong>굴착 방침</strong>(자원 우선 / 확장 우선 / 안전 우선 등) — 원하면 구역을 직접 지정해 덮어쓴다 (D24)</p></li>
+<li><p>장교의 <strong>자동 전투</strong> 켜기·끄기 (D24)</p></li>
+</ul></li>
+<li><p><strong>플레이어가 직접 하는 것</strong>: <strong>건물 배치</strong>. 기지를 &quot;내가 설계했다&quot;는 맛을 남긴다. (D24)</p></li>
+</ul>
+<h4 id="자리를-비울-때-안전한-생산만-오프라인-보상-d38">자리를 비울 때: 안전한 생산만 오프라인 보상 (D38)</h4>
+<ul>
+<li><p>게임이 꺼져 있는 동안 판은 멈춘다(중단 저장, D17).</p></li>
+<li><p>다시 켜면 꺼져 있던 동안의 <strong>자원 생산량 일부를 보상</strong>으로 받는다.</p></li>
+<li><p><strong>적의 공격과 행성 위협도 상승은 계산하지 않는다.</strong> 돌아와 보니 본부가 무너져 있는 억울함은 없다.</p></li>
+<li><p>[가정] &quot;끄고 쉬는 것이 가장 안전한 파밍&quot;이 되지 않도록 <strong>상한</strong>을 둔다(예: 최대 8시간, 생산량의 50%).</p></li>
+</ul>
+<h4 id="작전-계승-건물-배치-기억과-프리셋-d25">작전 계승: 건물 배치 기억과 프리셋 (D25)</h4>
+<ul>
+<li><p>플레이어가 배치한 건물과 <strong>설치 벽</strong>(D47)을 <strong>기억</strong>해 두었다가, <strong>다음 판에도 자원이 모이면 같은 자리에 자동으로 짓는다.</strong></p></li>
+<li><p>배치를 <strong>프리셋</strong>으로 저장해 두고 골라 쓸 수 있다.</p></li>
+<li><p><strong>설정</strong>: 인류 제국에는 <strong>전임 장교의 작전을 그대로 이어받아 진행하고, 전임자가 쓰러진 지점부터 새로운 작전을 시도하는 문화</strong>가 있다. 긴 판(D16)의 초반 반복을 줄이면서, 판마다 &quot;지난번에 무너진 지점&quot;이 새 도전의 출발점이 된다.</p></li>
+<li><p>배치는 <strong>본부 기준 상대 위치</strong>로 재현한다. 지형은 매 판 새로 만들어지므로(D28), 그 자리가 암반으로 막혀 있으면 건너뛴다.</p></li>
+</ul>
+<h4 id="복수전-전임자의-흔적-d27">복수전: 전임자의 흔적 (D27)</h4>
+<ul>
+<li><p><strong>전임자가 쓰러진 지점</strong>이 다음 판에도 <strong>본부 기준 같은 상대 위치</strong>에 나타난다.</p></li>
+<li><p>그곳에는 <strong>전임 본부를 파괴한 종족의 진영</strong>이 함께 등장한다.</p></li>
+<li><p>그 진영을 파괴하면 <strong>전임자가 모았던 자원의 일부를 되찾는다.</strong> [가정] 여기서 자원은 영구 재화(이미 자동 송금됨, D22)가 아니라 <strong>판 안의 자원</strong>(광물·도구 등)이며, 새 판의 초반을 빠르게 해준다.</p></li>
+<li><p><strong>원수는 성장한다</strong> (D29): 같은 원수 진영이 또다시 본부를 무너뜨리면 <strong>더 강해져서</strong> 나오고, <strong>되찾을 수 있는 자원도 누적</strong>된다. 오래 못 이긴 원수를 마침내 쓰러뜨리면 그만큼 보상이 크다. (Shadow of Mordor의 네메시스 시스템과 비슷)</p></li>
+<li><p>효과: 매 판 <strong>첫 번째 뚜렷한 목표</strong>(&quot;전임자의 원수를 갚는다&quot;)가 생기고, 판과 판이 이야기로 이어진다. 작전 계승 문화(D25)와도 맞물린다.</p></li>
+</ul>
+<h4 id="연결의-모습-컨베이어-벨트와-점등-d26">연결의 모습: 컨베이어 벨트와 점등 (D26)</h4>
+<ul>
+<li><p><strong>규칙</strong>: 건물끼리 선으로 연결하면 <strong>생산 속도대로 전달</strong>된다. 매 프레임 물건을 옮기는 것이 아니라 속도로 계산하므로 가볍다. 거리가 멀면 전달이 느려져 배치에 의미가 생긴다. [가정: 거리 규칙]</p></li>
+<li><p><strong>화면</strong>:</p>
+<ul>
+<li><p>연결선은 <strong>컨베이어 벨트</strong>처럼 보인다.</p></li>
+<li><p>자원이 이동할 때 <strong>로딩 바처럼 경로가 차례로 점등</strong>된다.</p></li>
+<li><p>선이 <strong>겹치는 곳은 입체적으로</strong>(고가 다리처럼 위아래로) 보여 어떤 선이 어디로 가는지 알아볼 수 있다.</p></li>
+</ul></li>
+</ul>
+<hr>
+<h2 id="2-결정-기록-확정">2. 결정 기록 [확정]</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">#</th><th scope="col">날짜</th><th scope="col">결정</th><th scope="col">이유</th></tr></thead>
+<tbody>
+<tr><td>D1</td><td>2026-09-24</td><td>엔진은 <strong>Unity</strong></td><td>사용자 선택</td></tr>
+<tr><td>D2</td><td>2026-09-24</td><td>1차 출시는 <strong>인류 제국만</strong> 플레이어블, 나머지 종족은 업데이트로 추가</td><td>원안. 그래서 처음부터 종족을 데이터로 갈아끼울 수 있는 구조가 필요</td></tr>
+<tr><td>D3</td><td>2026-09-24</td><td>기획을 하위 시스템(P0~P8)으로 나눠 하나씩 설계</td><td>한 번에 전부 설계하면 결정이 얽혀 검토가 어려움</td></tr>
+<tr><td>D4</td><td>2026-09-24</td><td>적과의 조우는 <strong>굴착 중 포탈 발견 / 발전한 적 종족 기지와 접촉</strong>으로 일어난다</td><td>사용자 추가 원안</td></tr>
+<tr><td>D5</td><td>2026-09-24</td><td>1차 버전에서 오라클·시온·퓨라는 <strong>적(AI 전용)</strong>으로만 등장</td><td>가정 A1 확정</td></tr>
+<tr><td>D6</td><td>2026-09-24</td><td><strong>실시간</strong> 진행</td><td>가정 A3 확정</td></tr>
+<tr><td>D7</td><td>2026-09-24</td><td>일반 유닛은 <strong>지정형</strong> 운영, <strong>영웅 유닛</strong>은 개별 조작 + 고유 특수능력 (→ D24에서 방침 자동·자동 전투 기본으로 조정)</td><td>가정 A4 확정 + 영웅 유닛 추가</td></tr>
+<tr><td>D8</td><td>2026-09-24</td><td><strong>싱글 플레이 먼저</strong>, 이후 <strong>멀티플레이로 확장</strong></td><td>가정 A2 수정. 멀티를 염두에 둔 구조가 처음부터 필요(4.1)</td></tr>
+<tr><td>D9</td><td>2026-09-25</td><td>시점은 <strong>쿼터뷰 평면 확장</strong> (던전 키퍼식)</td><td>영웅 직접 조작(D7)과 멀티(D8)에 RTS형 시점이 유리. 최적화는 시점보다 맵·유닛 상한이 좌우(4.1)</td></tr>
+<tr><td>D10</td><td>2026-09-25</td><td>맵은 <strong>행성 범위 안에서 유한</strong>, 레벨업·맵 업데이트로 <strong>단계적으로 확장</strong> (→ D31·D33에서 지역·굴착 가능 영역 두 층으로 구체화)</td><td>무한 맵의 최적화·밸런스 부담을 피하면서 성장하는 느낌을 줌</td></tr>
+<tr><td>D11</td><td>2026-09-25</td><td>게임 구조는 <strong>키우기 + 로그라이트</strong> — 적은 계속 생겨나고 물리쳐지며, 죽으면 맵까지 처음부터 재시작하지만 영구 이점(능력치·유물)을 얻는다</td><td>사용자 원안</td></tr>
+<tr><td>D12</td><td>2026-09-25</td><td>판이 바뀔 때마다 인류 제국이 <strong>새 능력을 가진 장교</strong>를 파견한다는 설정</td><td>로그라이트 재시작을 세계관 안에서 설명. 인류 제국 설정(&quot;한 사람이 종족을 재건&quot;)과도 맞음</td></tr>
+<tr><td>D13</td><td>2026-09-25</td><td>판 종료 조건은 <strong>본부 파괴</strong>. 장교는 쓰러지면 일정 시간 뒤 본부에서 복귀</td><td>디펜스 중심. 장교를 아끼지 않고 과감하게 쓸 수 있음</td></tr>
+<tr><td>D14</td><td>2026-09-25</td><td>스스로 판을 끝내는 <strong>귀환(환생) 기능은 없음</strong></td><td>로그라이트다운 긴장감 유지. 대신 버티기만으로는 살아남을 수 없도록 적 압박이 커져야 함(D15)</td></tr>
+<tr><td>D15</td><td>2026-09-25</td><td>압박 상승 장치 네 가지를 모두 쓴다: <strong>적 기지 성장, 포탈 강화, 행성 위협도, 자원 고갈</strong></td><td>D14 때문에 필요. 서로 다른 플레이 습관을 막도록 역할을 나눔(1.8)</td></tr>
+<tr><td>D16</td><td>2026-09-25</td><td>한 판은 <strong>평균 2시간 이상</strong>, 여러 번에 나눠 플레이</td><td>기지를 크게 키우는 재미를 살림. 판을 잃을 때의 좌절감은 D18·D25·D27로 완화</td></tr>
+<tr><td>D17</td><td>2026-09-25</td><td>판 도중에는 <strong>중단 저장만</strong> 허용 (불러오면 저장 삭제)</td><td>긴 판(D16)을 나눠 하게 하면서도 되돌리기를 막아 로그라이트 구조(D11) 유지</td></tr>
+<tr><td>D18</td><td>2026-09-25</td><td>영구 이점은 <strong>판 도중 계속 적립</strong></td><td>본부가 무너져도 번 만큼은 남아 긴 판(D16)의 좌절감을 줄임</td></tr>
+<tr><td>D19</td><td>2026-09-25</td><td>영구 이점 종류: <strong>능력치 강화 트리, 유물 수집, 새 장교 해금, 시작 조건 개선</strong> 모두</td><td>사용자 선택(1.9)</td></tr>
+<tr><td>D20</td><td>2026-09-25</td><td><strong>정해두고 지켜보는 자동화</strong>가 디자인 기둥. 조합 건물 ↔ 병참 건물을 연결하면 도구 생산 속도에 맞춰 유닛 자동 생산, 플레이어는 생산 속도·병종·건물 우선순위를 정함</td><td>사용자 원안. 키우기 게임의 보는 맛</td></tr>
+<tr><td>D21</td><td>2026-09-25</td><td>영구 재화는 <strong>제국 송금 저축</strong> — 장교 레벨이 낮으면 세금을 떼고, 오를수록 세금이 줄다가 높은 레벨에서는 웃돈을 받음</td><td>사용자 원안. 판을 오래 버틸 동기 + 세계관 연출</td></tr>
+<tr><td>D22</td><td>2026-09-25</td><td>송금은 <strong>번 즉시 자동</strong>, 그 순간의 세율 적용</td><td>단순하고 잃는 것이 없음(D18 유지)</td></tr>
+<tr><td>D23</td><td>2026-09-25</td><td>세율 기준은 <strong>판을 넘어 쌓이는 영구 레벨</strong>. 제국이 다음 장교의 원활한 작전을 위해 세율을 조정해준다는 설정</td><td>사용자 선택. D12(매번 새 장교)와의 충돌을 설정으로 해소</td></tr>
+<tr><td>D24</td><td>2026-09-25</td><td>플레이어 역할: 굴착은 <strong>방침에 따라 자동</strong>(직접 지정으로 덮어쓰기 가능), 장교는 <strong>자동 전투 기본 + 직접 조작 선택</strong>, <strong>건물 배치는 직접</strong></td><td>자동화 기둥(D20). D7의 &quot;영웅 개별 조작&quot;을 &quot;선택적 직접 조작&quot;으로 조정</td></tr>
+<tr><td>D25</td><td>2026-09-25</td><td>건물 배치를 <strong>기억해 다음 판에 자원이 모이면 자동 건설</strong>, <strong>배치 프리셋</strong> 지원. 설정: 전임 장교의 작전을 잇고 전임자가 쓰러진 지점부터 새 작전을 시도하는 제국 문화</td><td>사용자 원안. 긴 판의 초반 반복을 줄이고 판 사이를 이야기로 연결</td></tr>
+<tr><td>D26</td><td>2026-09-25</td><td>건물 연결은 <strong>속도 기반 논리 연결</strong>, 화면에는 <strong>컨베이어 벨트 모양 + 로딩 바식 경로 점등 + 겹치는 선은 입체 표현</strong></td><td>계산은 가볍게, 보는 맛은 크게(D20)</td></tr>
+<tr><td>D27</td><td>2026-09-25</td><td><strong>복수전</strong>: 전임자가 쓰러진 지점이 본부 기준 같은 상대 위치에 나오고, 전임 본부를 파괴한 종족 진영이 함께 등장. 그 진영을 파괴하면 전임자가 모았던 자원 일부를 되찾음</td><td>사용자 원안. 매 판의 첫 목표 + 판 사이의 이야기 연결</td></tr>
+<tr><td>D28</td><td>2026-09-25</td><td>복수전·배치 기억을 뺀 <strong>나머지 지형(암반·광산·포탈)은 매 판 새로 생성</strong></td><td>긴 판(D16)을 여러 번 해도 반복감이 적음</td></tr>
+<tr><td>D29</td><td>2026-09-25</td><td>같은 원수가 연속으로 이기면 <strong>원수가 성장하고 되찾을 자원도 누적</strong></td><td>네메시스식 긴장감과 큰 보상</td></tr>
+<tr><td>D30</td><td>2026-09-25</td><td>판 안 레벨 경험치는 <strong>적 처치, 굴착·영역 확장, 생산·건물 가동, 포탈 파괴·원수 격파</strong> 모두에서 얻음</td><td>지켜보는 동안에도 성장(D20) + 큰 목표엔 큰 보상</td></tr>
+<tr><td>D31</td><td>2026-09-25</td><td>맵은 <strong>지역 &gt; 굴착 가능 영역</strong> 두 층. 굴착 가능 영역은 지역 안에서 넓어지고, 새 지역은 <strong>탐사 업그레이드</strong>로 가며, 지역은 <strong>개발자가 콘텐츠 업데이트로 추가</strong></td><td>사용자 원안. 판 안 성장과 콘텐츠 확장을 분리</td></tr>
+<tr><td>D32</td><td>2026-09-25</td><td>세율을 정하는 영구 레벨은 <strong>제국 전체에 하나</strong></td><td>D23 설정과 가장 자연스럽고 단순. 새 장교도 바로 혜택</td></tr>
+<tr><td>D33</td><td>2026-09-25</td><td>판 도중 <strong>옆 지역으로 진출</strong>. 진출 가능한 지역 수는 <strong>탐사 업그레이드로 제한</strong>, <strong>고른 지역에만</strong> 진입</td><td>한 판의 스케일을 키우면서도 맵 크기를 통제</td></tr>
+<tr><td>D34</td><td>2026-09-25</td><td>지역마다 <strong>암반·자원, 등장 적 종족, 환경 위험, 고유 유물·보상</strong>이 모두 다름</td><td>지역 선택이 곧 전략 선택</td></tr>
+<tr><td>D35</td><td>2026-09-25</td><td>개발자가 지역을 차츰 늘릴 수 있는 <strong>지역 관리자 도구</strong> 필요</td><td>지역을 콘텐츠 업데이트로 계속 추가하기 위함(D31)</td></tr>
+<tr><td>D36</td><td>2026-09-25</td><td><strong>PC(Steam) 먼저</strong> 출시</td><td>세밀한 배치·방침 설정과 긴 판에 마우스·큰 화면이 유리. 가정 A5 확정</td></tr>
+<tr><td>D37</td><td>2026-09-25</td><td>영웅은 <strong>장교(대표) + 영구 동료 영웅</strong>. 동료는 해금 후 판 시작 시 골라 데려감</td><td>가정 A6 확정 + 영구 성장 요소 추가(D19)</td></tr>
+<tr><td>D38</td><td>2026-09-25</td><td>방치 요소는 <strong>안전한 생산만 오프라인 보상</strong>. 적 공격·위협도는 계산하지 않음</td><td>키우기의 방치 보상은 살리고, 로그라이트(본부 파괴)와의 충돌은 피함</td></tr>
+<tr><td>D39</td><td>2026-09-25</td><td>장기 목표는 <strong>기록 경쟁</strong>. 스토리 엔딩·판 안 승리 조건 없음</td><td>사용자 선택. 순수 키우기 방식</td></tr>
+<tr><td>D40</td><td>2026-09-25</td><td>아트는 <strong>로우폴리 3D + 쿼터뷰 카메라</strong></td><td>블록 파괴·점등·입체 교차(D26) 표현이 쉽고, 임시 에셋 구하기 쉬움</td></tr>
+<tr><td>D41</td><td>2026-09-25</td><td>도구 등급이 모자랄 때: <strong>한 단계 위 블록은 아주 느리게</strong>, 두 단계 위부터 불가</td><td>막힘을 줄이면서 등급 구분 유지. 단단한 암반이 &quot;시간을 버는 벽&quot;이 됨</td></tr>
+<tr><td>D42</td><td>2026-09-25</td><td>굴착 능력은 <strong>유닛이 만들어질 때 쓴 도구 등급</strong></td><td>원안의 도구 → 유닛 흐름 그대로. 제작·생산·굴착이 한 사슬</td></tr>
+<tr><td>D43</td><td>2026-09-25</td><td>시야는 <strong>스캐너로 부분 공개</strong>: 암반 등급·큰 광맥은 보이고, 포탈·적 기지·유물은 근접 또는 스캐너 업그레이드로</td><td>계획은 세우되 위험은 모르게 — 디자인 기둥 2</td></tr>
+<tr><td>D44</td><td>2026-09-25</td><td><strong>굴착병과 전투병 분리</strong>: 드릴 계열 도구 → 굴착병, 무기 계열 도구 → 전투병</td><td>병종 비율 방침이 &quot;파는 힘 vs 지키는 힘&quot; 배분이 됨. Q5 일부 결정</td></tr>
+<tr><td>D45</td><td>2026-09-25</td><td>굴착 방침: <strong>자원 우선, 특정 자원 우선(여러 개 체크), 확장 우선, 안전 우선, 목표 지점 뚫기</strong></td><td>자동화 기둥(D20)의 첫 손잡이</td></tr>
+<tr><td>D46</td><td>2026-09-25</td><td>건물은 <strong>파낸 공간에만</strong>, 남긴 암반은 <strong>방어벽</strong></td><td>파고 남기는 선택이 기지 설계가 됨. 적도 같은 굴착 규칙이 필요해짐</td></tr>
+<tr><td>D47</td><td>2026-09-25</td><td><strong>벽 설치</strong> 가능. 건물과 똑같이 배치 기억·자동 설치·프리셋 등록</td><td>사용자 원안. 남기는 방어에 세우는 방어를 더함</td></tr>
+<tr><td>D48</td><td>2026-09-25</td><td>굴착 방침은 <strong>우선순위 목록</strong>으로 섞음</td><td>굴착병의 행동이 읽혀야 지켜보는 맛이 삶</td></tr>
+<tr><td>D49</td><td>2026-09-25</td><td>지역은 <strong>격자형</strong>(시작 지역 중심 8방향), 멀수록 어려움</td><td>이어진 지하와 자연스럽고 &quot;멀수록 위험&quot;을 공간으로 표현</td></tr>
+<tr><td>D50</td><td>2026-09-25</td><td>굴착 가능 영역은 <strong>본부 중심 동심원</strong>으로 레벨마다 확장</td><td>단순·예측 가능. 방향 선택은 지역 진출이 담당</td></tr>
+<tr><td>D51</td><td>2026-09-25</td><td>본부가 없는 지역은 진출할 때 세우는 <strong>전진 기지</strong>가 굴착 가능 영역의 중심</td><td>전진 기지 위치가 전략이 되고, 적의 표적이 됨</td></tr>
+<tr><td>D52</td><td>2026-09-25</td><td>P2 설계 제안 승인: <strong>블록 종류</strong>(일반 암반 1~6등급·광맥·특수·환경·경계·설치 벽), <strong>시드 기반 지형 생성 순서</strong>, <strong>기본 수치</strong>(지역 128×128, 반경 12+4/레벨, 격자 7×7, 최대 진출 8)</td><td>수치는 회색 박스에서 조정. 세부는 P2 설계서</td></tr>
+<tr><td>D53</td><td>2026-09-25</td><td>채굴은 <strong>굴착병(블록을 캐면 즉시) + 채굴기(광맥을 천천히 먹어 들어가며 자동)</strong> 둘 다. 같은 광맥을 줄임</td><td>빠른 수동 수입과 지켜보는 자동 생산이 공존. 고갈이 한 규칙으로 설명됨</td></tr>
+<tr><td>D54</td><td>2026-09-25</td><td><strong>본부 = 전역 창고</strong>(건설 비용), 조합·병참 건물은 <strong>연결선으로 재료를 직접</strong> 받음</td><td>건설은 편하게, 생산 사슬은 눈에 보이게(Mindustry식)</td></tr>
+<tr><td>D55</td><td>2026-09-25</td><td>캔 일반 암반은 <strong>석재</strong>. 암반 등급 = 석재 등급 = 설치 벽 등급</td><td>굴착 자체가 생산. P2의 &quot;설치 벽 등급&quot; 가정 확정</td></tr>
+<tr><td>D56</td><td>2026-09-25</td><td>광맥 자원은 <strong>금속·결정 두 계열 × 6등급</strong>(+ 석재, 지역 희귀 자원). 금속은 드릴·건물, 결정은 무기</td><td>병종 비율·굴착 방침·지역 선택이 하나로 이어짐</td></tr>
+<tr><td>D57</td><td>2026-09-25</td><td>레시피: <strong>N등급 도구 = N등급 재료 + 한 등급 아래 재료 + (4등급부터) 지역 희귀 자원</strong></td><td>초반 광산을 끝까지 지킬 이유 + 지역 진출이 성장의 길</td></tr>
+<tr><td>D58</td><td>2026-09-25</td><td>가공은 <strong>등급이 오를수록 단계 추가</strong>: 1~2 직접, 3~4 제련소, 5~6 제련소 + 정제소</td><td>초반은 단순, 후반은 긴 사슬 — 게임이 스스로 튜토리얼</td></tr>
+<tr><td>D59</td><td>2026-09-25</td><td>조합 건물은 <strong>병종 방침에 따라 자동</strong>, 건물별 <strong>레시피 고정</strong> 가능 (→ D68에서 &quot;비율&quot; 대신 &quot;목표 대비 부족분&quot;으로 동작)</td><td>기본은 자동, 원하면 직접(D20·D24와 같은 원칙)</td></tr>
+<tr><td>D60</td><td>2026-09-25</td><td>건물 우선순위는 <strong>1~5단계</strong>. 모자라면 높은 단계부터, 같은 단계는 나눔</td><td>숫자 하나로 한눈에 읽힘</td></tr>
+<tr><td>D61</td><td>2026-09-25</td><td><strong>전력 사슬 없음</strong></td><td>지금 사슬로 충분(YAGNI). 필요하면 콘텐츠 업데이트로</td></tr>
+<tr><td>D62</td><td>2026-09-25</td><td><strong>창고 한도 + 넘치면 자동 제국 송금</strong>(세금 적용) → 영구 재화의 두 번째 원천</td><td>후반 자원에도 쓸모가 생기는 경제의 배수구</td></tr>
+<tr><td>D63</td><td>2026-09-25</td><td>연결선은 <strong>자동 연결 + 직접 수정</strong>, 연결도 배치 기억·프리셋에 포함</td><td>자동화 기둥(D20). 기본은 자동, 원하면 직접</td></tr>
+<tr><td>D64</td><td>2026-09-25</td><td>P3 설계 제안 승인: <strong>경제 건물 목록</strong>, <strong>채굴기 등급 = 금속 등급</strong>(D41 규칙), <strong>연결선은 파낸 칸을 따라·초당 5단위·칸당 0.1초</strong>, <strong>기본 수치</strong>, <strong>오프라인은 채굴·가공·조합만 계산</strong></td><td>수치는 회색 박스에서 조정. 세부는 P3 설계서</td></tr>
+<tr><td>D65</td><td>2026-09-25</td><td>병종: <strong>굴착병 + 전투병 3종(돌격·소총·중화기) + 전차·비행선·전함</strong></td><td>사용자 원안. 적 종족별 상성(P5)과 대형 유닛의 성장 목표</td></tr>
+<tr><td>D66</td><td>2026-09-25</td><td><strong>장교 병과</strong>: 병과에 따라 유닛이 특성을 받고, 병과 색·병과 마크(보병 어깨, 차량 옆면)로 외형이 바뀜</td><td>사용자 원안. 장교 선택 = 이번 판 군대의 성격과 모습</td></tr>
+<tr><td>D67</td><td>2026-09-25</td><td>건물·벽은 <strong>건설 드론</strong>이 자동으로 지음</td><td>굴착병은 굴착에 집중, 길찾기 부담 없음, 지어지는 연출</td></tr>
+<tr><td>D68</td><td>2026-09-25</td><td>병력은 <strong>병종별 목표 수 유지</strong>. 조합 건물도 목표 대비 부족분 순으로 도구 제작</td><td>결과만 정하면 과정은 자동 — 자동화 기둥(D20)</td></tr>
+<tr><td>D69</td><td>2026-09-25</td><td><strong>유닛 상한은 병참 건물 수에 비례</strong>(병참 건물 하나당 N명), 성능을 위한 절대 최대치 있음</td><td>사용자 결정(판 안 레벨 → 보급 막사 → 병참 건물 수로 두 번 수정). 생산 능력과 상한이 함께 늘고, 막사 같은 건물이 따로 필요 없음</td></tr>
+<tr><td>D70</td><td>2026-09-25</td><td>대형 유닛은 <strong>모두 지하에서 직접 운용</strong>: 전차 2×2, 비행선 3×3(환경 위험 위 통과), 전함 4×4(암반을 뚫으며 전진). 크기만큼 넓은 길 필요</td><td>넓게 파기가 전략이 되고 좁은 통로가 수비가 됨</td></tr>
+<tr><td>D71</td><td>2026-09-25</td><td>병과 <strong>10개</strong>: 보병·기갑·항공·함대·공병 + <strong>군종·화생방·의무·통신·정보</strong></td><td>사용자 원안. 병과가 병종뿐 아니라 적 종족 상성·환경·자동화 효율까지 다룸</td></tr>
+<tr><td>D72</td><td>2026-09-25</td><td>전투 방침 네 가지(<strong>본부·건물 방어, 굴착병 호위, 포탈·적 기지 공격, 목표 지점 공격</strong>)를 <strong>우선순위 목록</strong>으로</td><td>굴착 방침(D48)과 같은 방식이라 배우기 쉬움</td></tr>
+<tr><td>D73</td><td>2026-09-25</td><td>더 높은 등급 도구가 생기면 <strong>자동 재무장</strong></td><td>군대 전체가 점점 강해지는 모습을 지켜봄. P2의 재무장 가정 확정</td></tr>
+<tr><td>D74</td><td>2026-09-25</td><td>동료 영웅도 <strong>병과</strong>가 있고 효과는 장교보다 작게 — 주 병과 + 부 병과 조합</td><td>판마다 다른 조합(로그라이트 빌드), 부 병과는 양념이라 밸런스 안전</td></tr>
+<tr><td>D75</td><td>2026-09-25</td><td>동료는 판 시작 시 <strong>2명</strong>, 영구 강화로 <strong>최대 4명</strong></td><td>조합이 점점 풍부해지는 성장감</td></tr>
+<tr><td>D76</td><td>2026-09-25</td><td>동료도 쓰러지면 <strong>장교처럼 본부에서 복귀</strong></td><td>지켜보는 게임이라 과감하게 쓰도록</td></tr>
+<tr><td>D77</td><td>2026-09-25</td><td>영웅 성장은 <strong>판 안 레벨(판마다 초기화) + 영구 해금</strong></td><td>매 판 새로 키우는 로그라이트다움</td></tr>
+<tr><td>D78</td><td>2026-09-25</td><td>P4 설계 제안 승인: <strong>조선소</strong>(비행선·전함), <strong>도구 → 유닛 레시피와 상한 칸</strong>, 건물당 10칸·최대 200칸, <strong>1등급 능력치</strong>(등급당 +25%), 영웅 복귀 30초·병과 +20%/+8%, 재무장 5초, <strong>일반 유닛 개별 성장·유지비 없음</strong></td><td>수치는 회색 박스와 P5에서 조정. 세부는 P4 설계서</td></tr>
+<tr><td>D79</td><td>2026-09-25</td><td>적 기지는 <strong>규칙은 같게(굴착·유닛), 경제는 가짜(시간·위협도로 지급)</strong> (→ D91·D92에서 종족별 경제 기믹으로 구체화)</td><td>적 행동이 읽히고 벽 방어가 통함. 적 AI 제작 부담을 줄임</td></tr>
+<tr><td>D80</td><td>2026-09-25</td><td>상성은 <strong>피해·방어 유형표</strong></td><td>사용자 선택. 병종 구성에 깊이</td></tr>
+<tr><td>D81</td><td>2026-09-25</td><td>포탈은 <strong>체력을 가진 구조물</strong>, 부수면 닫히고 보상. 강해질수록 체력 증가</td><td>전투 방침(D72)과 바로 맞물림</td></tr>
+<tr><td>D82</td><td>2026-09-25</td><td>전진 기지가 무너지면 <strong>영역·건물 유지, 창고 입구·드론만 정지, 재건 시 복구</strong></td><td>좌절이 적고 이해하기 쉬움. P2 열린 점 확정</td></tr>
+<tr><td>D83</td><td>2026-09-25</td><td>피해·방어 유형표: <strong>피해 4유형(근접·관통·폭발·에너지) × 방어 5유형(생체·중장갑·방어막·비물질·구조물)</strong>, 강한 상대 1.5배·약한 상대 0.6~0.7배, 군종 축복</td><td>피해 유형마다 강한 상대가 하나씩 — 병종 구성이 상대에 따라 달라짐</td></tr>
+<tr><td>D84</td><td>2026-09-25</td><td><strong>퓨라</strong> = 감염으로 늘어나는 떼. 소형·거대·버프 감염체 등</td><td>사용자 원안 반영. &quot;모든 개체를 하나로&quot; 설정과 맞음</td></tr>
+<tr><td>D85</td><td>2026-09-25</td><td><strong>시온</strong> = 정예 편대(중장갑 + 방어막) + 심판(가장 강한 유닛·영웅 우선)</td><td>&quot;고등 종족의 우주 경찰&quot; 설정과 맞음</td></tr>
+<tr><td>D86</td><td>2026-09-25</td><td><strong>오라클</strong> = 벽을 스며 통과 + 개념 오염·개념 간섭(생산 방해). 개념에 4원소·독·죽음·생명·속도 추가 (→ D93에서 맵 전체 레드존 현상으로 전환)</td><td>사용자 원안. 벽에 기대지 않는 방어를 요구하는 의도된 예외</td></tr>
+<tr><td>D87</td><td>2026-09-25</td><td><strong>퓨라 감염</strong>: 감염체는 생산 기지에서 생산(→ D91로 대체), 감염 공격으로 죽인 우리 유닛을 <strong>스펙 50%로 되살려</strong> 씀(차량 포함). 감염 유닛은 퓨라 색 오라 + 머리 위 &quot;감염&quot; 표시. <strong>비행 감염체·군단급 감염체</strong> 추가</td><td>사용자 원안. 싸울수록 적이 늘고 우리 생산을 압박</td></tr>
+<tr><td>D88</td><td>2026-09-25</td><td><strong>시온 강림</strong>: 시온 유닛이 일정량 이상 죽으면 제물로 <strong>영웅 강림</strong></td><td>사용자 원안. 몰아붙일수록 강한 적을 부르는 긴장</td></tr>
+<tr><td>D89</td><td>2026-09-25</td><td><strong>각 종족에 영웅 유닛</strong></td><td>사용자 원안. 세부는 제안 단계</td></tr>
+<tr><td>D90</td><td>2026-09-25</td><td><strong>시온 본부가 파괴되면 악마 4종 중 하나 소환</strong>, 제한 시간 안에 처치 못 하면 <strong>시온 본부 복구</strong></td><td>사용자 원안. 시온 기지를 끝내려면 두 번 이겨야 하는 마무리 전투</td></tr>
+<tr><td>D91</td><td>2026-09-25</td><td><strong>퓨라 = 감염 영역</strong>: 생산 시설 없이 영역 크기에 따라 영역 안 무작위 위치에 위에서 스폰, 자원이 영역에 들어오면 영역 확대, 일정 수 모이면 상위 감염체로 성장, 하이퍼마인드 설정이 상위 감염체 비율을 정함</td><td>사용자 원안. D87의 &quot;생산 기지&quot; 대체</td></tr>
+<tr><td>D92</td><td>2026-09-25</td><td><strong>시온 = 제단·제사장·신성영역</strong>: 본진 → 최초 신성영역 → 제사장 소환 → 제사장 주위 신성영역, 광물에 제단을 세워 제물로 자동 채굴, 바친 자원으로 신성영역에 유닛 소환</td><td>사용자 원안. 시온만의 경제 루프</td></tr>
+<tr><td>D93</td><td>2026-09-25</td><td><strong>오라클 = 맵 전체의 레드존 현상</strong>: 갑자기 발생, 맵 전체 유닛 사망에 따라 빈도·강도·범위 증가</td><td>사용자 원안. D86의 오라클 유닛·벽 통과를 대체, 개념은 레드존 효과로</td></tr>
+<tr><td>D94</td><td>2026-09-25</td><td>퓨라 세부 승인: 영역은 파낸 칸 위로 퍼짐(암반은 굴착체가 팜), 천장에서 고치로 스폰, 광맥을 먹음, <strong>감염 핵</strong>(부수면 영역 소멸), <strong>5단계 합체</strong></td><td>벽 방어 유지 + 영역을 없앨 방법</td></tr>
+<tr><td>D95</td><td>2026-09-25</td><td>시온 세부 승인: 제사장 = 일꾼 겸 소환사, 신성영역 안 방어막 재생, 제사장·제단이 약점. <strong>제사장 호위·비행·원거리 유닛 추가</strong></td><td>사용자 추가 요청 반영</td></tr>
+<tr><td>D96</td><td>2026-09-25</td><td>레드존 세부 승인: 5초 경고·20초 지속, <strong>모든 편에 적용</strong>, 개념별 효과, 누적 사망 구간별 강화, 최근 사망이 많은 곳에 잘 생김</td><td>전장 자체를 흔드는 중립 위협</td></tr>
+<tr><td>D97</td><td>2026-09-25</td><td>적 영웅: 퓨라 <strong>동화</strong>(원형체·산란 여왕·포식 군주, 감염 핵에서 부활), 시온 <strong>강림</strong>(오파님·세라핌·케루빔), 오라클 <strong>화신</strong>(처치하면 레드존 강도 한 단계↓)</td><td>종족마다 적을 부르는 방식이 다름</td></tr>
+<tr><td>D98</td><td>2026-09-25</td><td>봉인된 악마 세부: 시온은 악마를 가둔 <strong>간수</strong>, 본진 파괴 시 <strong>레비아탄·베엘제붑·맘몬·아스모데우스</strong> 중 하나, <strong>3분</strong> 안에 처치 못 하면 본진 <strong>체력 50%로 복구</strong></td><td>사용자 승인. 설정과 기믹이 맞물림</td></tr>
+<tr><td>D99</td><td>2026-09-25</td><td>P5 규칙: 피해 = 공격 × 유형 배율 × (1 + 병과), 적 기지 레벨·예산 대신 <strong>종족 기믹</strong>이 성장, 위협도 분당 0.8(줄지 않음), 포탈이 <strong>새 영역</strong>(감염 핵·신성영역)을 만듦, 원수 진영 규칙, 처치 보상</td><td>세부는 P5 설계서</td></tr>
+<tr><td>D100</td><td>2026-09-25</td><td>영구 재화는 <strong>용도별 여러 개</strong> — 강화(공적금)·영입(영입 인장)·유물(유물 조각) [가정: 이름·구분]</td><td>사용자 선택. 쓰임마다 목표가 따로 생김</td></tr>
+<tr><td>D101</td><td>2026-09-25</td><td>제국 공적 등급은 <strong>누적 송금액</strong>으로 오름, 웃돈 상한 있음</td><td>송금·세금(D21)과 직결되는 가속</td></tr>
+<tr><td>D102</td><td>2026-09-25</td><td>강화 트리는 <strong>분야별 5개</strong>: 본부·굴착·생산·군사·작전</td><td>원하는 방향으로 특화</td></tr>
+<tr><td>D103</td><td>2026-09-25</td><td>장교·동료는 <strong>공적 조건 달성 → 영입 인장으로 영입</strong></td><td>중간 목표와 재화의 쓰임이 모두 생김</td></tr>
+<tr><td>D104</td><td>2026-09-25</td><td><strong>종족별 경제·기믹 대응표</strong>를 미리 설정: 인류 제국의 시스템을 칸으로 삼아 퓨라·시온·오라클이 각 칸을 무엇으로 채우는지 정함(4.7)</td><td>사용자 요청. D2의 종족 추가를 &quot;표 한 줄 채우기&quot;로 만듦</td></tr>
+<tr><td>D105</td><td>2026-09-25</td><td>시온 <strong>제사장은 유닛</strong>: 신성영역에서 소환된 뒤 목적지까지 이동해 자리를 잡아야 제단·신성영역이 생김. 이동 중엔 약함</td><td>사용자 수정. 적 시온(P5)에도 적용</td></tr>
+<tr><td>D106</td><td>2026-09-25</td><td><strong>오라클 플레이어블 = 관전자 시점</strong>: 자동 전장에서 유닛을 죽일수록 강해지고, 모든 유닛이 죽거나 자원이 바닥날 때까지 누구도 이기지 못하게 하는 것이 목표</td><td>사용자 원안. 레드존 설계가 그대로 플레이어의 힘이 됨</td></tr>
+<tr><td>D107</td><td>2026-09-26</td><td>유물: <strong>발굴 즉시 사용 + 영구 수집</strong>, 시작 때 3개(최대 6개) 선택, 중복은 유물 조각 → 1~3성 강화</td><td>굴착에 즉각적인 보상 + 판 사이 성장</td></tr>
+<tr><td>D108</td><td>2026-09-26</td><td>프리셋 = <strong>작전 계획서</strong>: 배치(건물·벽·연결선) + 방침(굴착·목표 수·전투·우선순위) 한 묶음, 직전 판 자동 저장 + 저장 칸 5개</td><td>자동화(D20)와 작전 계승(D25)을 한 기능으로</td></tr>
+<tr><td>D109</td><td>2026-09-26</td><td>기록: <strong>항목별 개인 최고 + Steam 리더보드</strong></td><td>기록 경쟁(D39) 구체화</td></tr>
+<tr><td>D110</td><td>2026-09-26</td><td>판 안 레벨 <strong>상한 없음</strong>, 필요 경험치 가파름, 굴착 반경이 지역 크기에 닿은 뒤로는 작은 능력치 보너스</td><td>키우기다운 끝없는 성장, 최고 레벨이 기록</td></tr>
+<tr><td>D111</td><td>2026-09-26</td><td>P8 제안 승인 — 재화 획득량, <strong>세율 표</strong>(누적 송금 → 등급, 웃돈 상한 −30%), <strong>강화 트리 항목</strong>(5단계·비용 2배), <strong>영입 조건과 비용</strong>(장교 5·동료 3 인장), 작전 준비 화면, 레벨 곡선, 오프라인 8h·50%(최대 16h·75%), 판 / 영구 저장 구조</td><td>수치는 회색 박스에서 조정. 세부는 P8 설계서</td></tr>
+<tr><td>D112</td><td>2026-09-26</td><td>관리자 도구는 <strong>Unity 에디터 안의 도구</strong>(데이터 편집, 지형 미리보기, 시험 플레이)</td><td>가장 적게 만들어도 됨. 빌드에는 안 들어감</td></tr>
+<tr><td>D113</td><td>2026-09-26</td><td>배포: <strong>지역은 무료 업데이트, 종족은 유료 DLC</strong></td><td>게임 수명 + 개발비</td></tr>
+<tr><td>D114</td><td>2026-09-26</td><td>모드: <strong>1차엔 없음, 문은 열어 둠</strong></td><td>데이터 주도라 나중에 창작마당으로 이어질 수 있음</td></tr>
+<tr><td>D115</td><td>2026-09-26</td><td>오라클 플레이어블 패배: <strong>일정 시간 아무도 죽지 않으면 흩어짐</strong></td><td>죽음을 먹고 사는 설정. D106 열린 점 확정</td></tr>
+<tr><td>D116</td><td>2026-09-26</td><td>P6 제안 승인: 대응표의 칸 = <strong>종족 규칙 공통 틀</strong>(코드 규칙 + 데이터 값), 우리·적 유닛 <strong>같은 데이터 형식</strong>, 지역 데이터 항목, 에디터 창 기능(격자·미리보기·검사·시험 플레이), DLC 묶음(Addressables), <strong>ID 참조·버전 번호</strong>, 세이브 호환, 오라클 패배 3분</td><td>세부는 P6 설계서</td></tr>
+<tr><td>D117</td><td>2026-09-28</td><td>전제: <strong>제국의 정복 전쟁</strong> — 장교 한 명을 지하로 보내 스스로 불어나게 하는 것이 <strong>최소 자원·최대 효율</strong>의 정복 방식</td><td>사용자 원안. 장교 교대·세금 규칙을 설명함</td></tr>
+<tr><td>D118</td><td>2026-09-28</td><td>톤: <strong>진지한 그림다크</strong></td><td>사용자 선택</td></tr>
+<tr><td>D119</td><td>2026-09-28</td><td>이름: <strong>종족마다 다른 언어풍</strong>(인류 라틴어풍, 시온 히브리어·성경풍, 퓨라 생물학 용어, 오라클 한국어 개념어)</td><td>이름만 봐도 편이 보임</td></tr>
+<tr><td>D120</td><td>2026-09-28</td><td>이야기 전달: <strong>판 시작 브리핑 + 판 종료 보고서</strong>(대사·도감 없음)</td><td>사용자 선택. 만들 것이 적고 판의 시작과 끝에 집중</td></tr>
+<tr><td>D121</td><td>2026-09-28</td><td>P7 설계서 승인: 콘실리움·트리부툼·시길룸·렐리퀴아 파편·메리툼·카르케르, 병과 호칭과 색, 장교·동료 20명, 영입 조건 10개, 유닛·건물·시온·퓨라 이름, 지역 유형 7, 유물 10종, 브리핑·보고서 틀</td><td>세부는 P7 설계서</td></tr>
+<tr><td>D122</td><td>2026-09-28</td><td>코드 편집기: <strong>Visual Studio 2022 Community</strong></td><td>무료, 디버거 연결이 가장 간단</td></tr>
+<tr><td>D123</td><td>2026-09-28</td><td>렌더 파이프라인: <strong>URP</strong></td><td>로우폴리·Bloom에 충분, 가볍고 이식 쉬움</td></tr>
+<tr><td>D124</td><td>2026-09-28</td><td>P1 제안 승인: Unity 6 LTS, <code>Game/</code> 폴더, Simulation·View·Editor asmdef(Simulation은 UnityEngine 금지), 20틱 + 보간, URP·Input System·Test Framework, EditMode 테스트, Git LFS·Force Text</td><td>규칙·화면 분리를 컴파일러가 강제</td></tr>
+<tr><td>D125</td><td>2026-09-28</td><td><strong>운영 서버</strong> 도입: 관리자가 일부 내용을 서버로 통제, 플레이어 진행 확인, 서버 부담은 적게 → 새 단계 P9</td><td>사용자 요구. P6의 에디터 도구(제작)와 별개인 라이브 운영</td></tr>
+<tr><td>D126</td><td>2026-09-28</td><td>운영 서버는 <strong>Unity Gaming Services로 시작</strong>하고, MAU가 약 5만을 넘으면 <strong>Supabase + Cloudflare로 갈아탈 수 있게</strong> <code>IOnlineServices</code> 틀로 감쌈. 통신은 실행 시 1번(설정)·판 종료 시 1번(보고서·요약)뿐</td><td>예상 비용(2026-09-28 공식 요금): UGS는 약 5만 7천 MAU까지 $0, 이후 Analytics가 1명당 $0.0036 / Supabase Pro는 월 $25 고정에 가까움</td></tr>
+<tr><td>D127</td><td>2026-09-28</td><td>관리자 통제 항목: <strong>밸런스 수치, 지역 운영·기간 이벤트, 공지·최소 버전, 리더보드·플레이어 조치</strong> 모두</td><td>UGS Remote Config(+ 대시보드 조치)</td></tr>
+<tr><td>D128</td><td>2026-09-28</td><td>관리자가 확인하는 범위는 <strong>플레이어별 진행 요약만</strong>(판 보고서·전체 통계는 서버로 보내지 않음)</td><td>Analytics를 쓰지 않아 15만 MAU에서도 UGS 비용이 약 $1 — D126의 비용 걱정이 사라짐</td></tr>
+<tr><td>D129</td><td>2026-09-28</td><td>P1·P9 설계서 승인. 개발 도구는 <strong>D 드라이브</strong>(<code>&lt;개발 폴더&gt;</code>)에 설치: Unity 6000.3.25f1 LTS(IL2CPP), VS 2022, 다운로드·패키지 캐시도 D</td><td>사용자 요구: 개발은 D에서, C에는 설치하지 않음. 다음은 P2 회색 박스 구현 계획</td></tr>
+<tr><td>D130</td><td>2026-09-28</td><td>채굴기 반경 안의 광맥은 <strong>채굴기 몫</strong>: 굴착병 방침(안전 우선·확장·자원 탐색 등)은 건너뛰고, 직접 지정만 판다</td><td>P3 회색 박스 실행(E12)에서 굴착병이 채굴기 옆 광맥을 먼저 파 가 채굴기가 곧바로 멈춤</td></tr>
+<tr><td>D131</td><td>2026-09-28</td><td>채굴기는 맞닿은 칸만이 아니라 <strong>반경 3칸 안의 드러난 광맥</strong>(파낸 칸과 맞닿은 광맥)을 가까운 것부터 캔다</td><td>1칸짜리 채굴기가 블록 하나(10단위)를 20초 만에 비우고 멈춤 — 한 번 세운 채굴기가 오래 일하게</td></tr>
+<tr><td>D132</td><td>2026-09-28</td><td><strong>채굴기가 쓰는 광맥은 마르지 않는다</strong> — 채굴기가 부서질 때까지 계속 캔다. 광맥 블록 하나에 채굴기 하나. 굴착병이 광맥을 부수면 매장량 10을 한 번에 얻고 블록은 사라진다. D53의 &quot;같은 매장량을 줄임&quot;과 D15의 자원 고갈은 <strong>굴착병 쪽에만</strong> 남는다</td><td>채굴기 없이 굴착병이 4배 빠르게 같은 양을 캐서 채굴기를 지을 이유가 없었음(사용자 지적). 이제 채굴기는 20초가 지나면 굴착병 몫을 넘어서고 계속 앞선다 — 지켜야 할 시설이 됨. 밖으로 미는 힘은 등급(먼 곳이 고등급)과 행성 위협도가 맡는다</td></tr>
+<tr><td>D133</td><td>2026-09-28</td><td><strong>유닛끼리 부딪힌다</strong>: 한 칸에 한 유닛(대형 유닛은 발자국 전체). 모이는 곳에서는 유닛마다 빈 자리를 따로 잡아 둘레로 퍼져 서고, 길이 막히면 기다렸다가 돌아간다 — 좁은 통로는 병목이 된다. 공중(비행선)과 지상은 서로 막지 않고, 굴착병은 부딪힘에서 빠진다</td><td>P4 회색 박스 실행에서 소총병 6명과 전차가 한 칸에 겹쳐 병력 수가 안 읽힘(사용자 결정)</td></tr>
+<tr><td>D134</td><td>2026-09-28</td><td><strong>모든 유닛은 겹치지 않는다</strong>(D133을 넓힘): 굴착병도 부딪히고 팔 자리를 따로 잡는다. 걷는 중에도 다음 칸을 먼저 차지해 겹쳐 보이지 않는다. 겹침은 <strong>히트박스 기준</strong> — 공중 유닛은 모든 지상 유닛보다 높이(Z) 떠서 지상과는 겹치지 않고, 같은 높이의 공중 유닛끼리만 부딪힌다. 1칸 통로에서는 쉬는 유닛·마주 오는 유닛과 한 걸음 기다렸다 자리를 맞바꾸고, 큰 유닛은 쉬고 있는 1칸 유닛을 제 뒤로 옮기며 지나간다. 재무장하러 가다 10초 넘게 막히면 그 자리에서 바꿔 든다</td><td>사용자 요구: &quot;모든 유닛은 겹치지 않도록, 단 공중 유닛은 Z축 기준으로 다른 위치에 있다면 히트박스 기준으로&quot;. 최종 리뷰에서 찾은 1칸 통로 교착(재무장 건물이 영영 잠김)도 함께 해결</td></tr>
+<tr><td>D135</td><td>2026-09-28</td><td>생산 규칙 보강(P4 3.3): 생산 건물은 <strong>쓸 수 있는 도구만</strong>(종류·최소 등급) 받고 입력 칸은 <strong>도구 종류·등급마다</strong> 10개. 조합 수요는 <strong>유닛이 될 수 있는 도구만</strong> 공급으로 센다(완전한 세트·이어진 출력). 조합 건물은 자기 등급으로 만들 수 있는 병종의 수요에만 응하고, 레시피 고정 무기 조합도 수요가 없으면 쉰다. 가장 높은 등급의 추가 재료가 없으면 재료가 있는 낮은 등급으로 만든다</td><td>P4 최종 리뷰: 조선소가 못 쓰는 저등급 도구로 막혀 비행선·전함을 영영 못 만들고, 반쪽 세트·연결 안 된 출력을 공급으로 세어 부족분이 남아도 조합이 쉬는 영구 정지를 찾음</td></tr>
+<tr><td>D136</td><td>2026-09-28</td><td><strong>나를 친 적 유닛이 먼저</strong>: 공격 대상은 사거리 안에서 가장 가까운 적이지만, 최근(3초 [가정]) 나를 직접 친 적 유닛이 사거리 안에 보이면 그쪽으로 돌아선다 — 포탈·건물을 치던 중이어도. 지금 대상이 이미 나를 치는 유닛이면 그대로 둔다(번갈아 바꾸지 않게). 적도 같은 규칙(D79). 기본 전투 방침 순서(본부·건물 방어 → 목표 지점 공격 → 포탈 공격 → 굴착병 호위)는 그대로 확정</td><td>P5 회색 박스 실행: 포탈을 쏘던 소총병이 옆에서 자기를 때리는 감염체를 무시해 전멸하고 본부까지 무너짐(대상 고정). 사용자: &quot;나를 공격하는 적 유닛으로 하자&quot;</td></tr>
+<tr><td>D137</td><td>2026-09-29</td><td><strong>구조물보다 적 유닛</strong>: 포탈·건물을 치던 중에도 사거리 안에 적 유닛이 보이면 가장 가까운 그쪽으로 바꾼다(대상 찾기 틱마다 확인). 나를 친 적(D136)이 여전히 맨 앞, 유닛끼리는 잡은 대상을 유지, 적도 같은 규칙(D79). 함께 고친 것(P5 최종 리뷰): 포탈은 둘레 1칸[가정] 안에서만 적을 내보내고 꽉 차면 기다린다, 무너진 건물은 도구 수요·자동 연결에서 빠지고 잇던 연결선이 끊긴다, 닿지 못한 채 선 적은 다시 다가간다, 재무장하러 가는 유닛은 싸우면서도 걷는다</td><td>P5 최종 리뷰: 포탈을 쏘던 소총병이 옆에서 굴착병을 치는 감염체를 두고 봄(다시 돌린 판에서 굴착병 3 잃음). 사용자: &quot;사거리 안 적 유닛이면 먼저&quot;</td></tr>
+<tr><td>D138</td><td>2026-09-29</td><td><strong>교전은 끊기지 않는 전선</strong> — 적은 포탈 무리 대신 기지에서 RTS식으로 유닛을 생산한다(P5 3.3 포탈을 대체)</td><td>P5 회색 박스 실행 뒤 사용자: &quot;맵이 너무 작고 교전 시간이 너무 짧다 … 2시간 판이 10분도 안 된다&quot;. 사용자 선택: &quot;포탈형식보단 적도 RTS 방식의 유닛 생산&quot;</td></tr>
+<tr><td>D139</td><td>2026-09-29</td><td><strong>적 경제는 가짜</strong> — 캐지 않고 정해진 수입(생체질량)이 흐른다. 수입 = 4/초 × 1.6^(등급−1) × (1+위협도/100) × 난이도 [가정]. <strong>D99를 바꾼다</strong></td><td>사용자: &quot;적은 난이도 조절을 위해서 경제구조는 가짜로&quot;</td></tr>
+<tr><td>D140</td><td>2026-09-29</td><td><strong>적 기지는 처음부터 맵 곳곳에</strong> — 본부에서 고리 셋(24·38·52칸)에 1·2·3등급 기지 2개씩 [가정], 멀수록 강하다. 우리 유닛·굴착병이 가운데 16칸 안에 오거나 위협도가 등급 기준(4·20·45)에 닿으면 깨어난다</td><td>사용자 선택</td></tr>
+<tr><td>D141</td><td>2026-09-29</td><td><strong>처치하면 판 안 자원</strong> — 적 유닛은 값의 절반만큼 기지 등급 금속 원석, 구조물은 금속·결정 원석 [가정]. <strong>P5 설계서 3.7을 바꾼다</strong></td><td>사용자 선택: 싸울수록 강해지는 키우기 순환</td></tr>
+<tr><td>D142</td><td>2026-09-29</td><td><strong>맵은 적 기지를 부수면 넓어진다</strong> — 핵을 부수면 그 둘레 반경 16칸이 굴착 가능 영역에 더해진다 [가정]. 판 안 레벨로 반경을 넓히는 규칙(<strong>D50·D110</strong>)은 쓰지 않는다(레벨은 P8에서 능력치 보너스로 [가정])</td><td>사용자 선택</td></tr>
+<tr><td>D143</td><td>2026-09-29</td><td><strong>적도 굴을 판다</strong> — 굴착체(굴착 이동)가 우리 쪽으로 굴을 파고, 뚫린 굴이 누구나 걷는 길이 된다. 벽은 암반보다 2배 느리게 판다 [가정]. 적이 판 블록은 우리 수확이 아니다</td><td>사용자 선택: 가만히 있어도 압박이 온다(1.8)</td></tr>
+<tr><td>D144</td><td>2026-09-29</td><td><strong>기지 하나 교전 10~20분, 한 판 기지 5~6개</strong> — 균형 검사: 1등급 기지 vs 1등급 소총병 12명 → 핵이 10~20분에 무너진다</td><td>사용자 선택</td></tr>
+<tr><td>D145</td><td>2026-09-29</td><td><strong>적 기지 = 감염 핵(3×3) 1 + 번식 둥지(2×2) 2~3</strong>, 경제 코드와 분리된 적 전용 체계. 둥지를 부수면 생산이 줄고 핵을 부수면 점령</td><td>사용자 선택(접근 C)</td></tr>
+<tr><td>D146</td><td>2026-09-29</td><td><strong>적이 판 굴은 넓힐 수 있다</strong> — 적 굴착체가 판 칸과 그 둘레 1칸은 굴착 가능 영역 밖이어도 우리 굴착병이 판다(굴을 넓혀 유닛이 지나가게, D143 보완). 벽·건물은 굴착 영역 안의 보이는 빈 칸에만 놓는다(적 동굴·구조물 위·가려진 칸 금지)</td><td>사용자 요청(P5b 실행 관찰)</td></tr>
+<tr><td>D147</td><td>2026-09-29</td><td><strong>건물은 지상 유닛이 못 지나는 칸이다</strong> — 우리 건물·적 핵·둥지 모두, 비행선은 위를 지난다. 지금은 건물이 칸을 안 막아 유닛이 건물 위로 걷는다 → 이동 모델 개편(P5c)과 함께 구현</td><td>사용자 선택(P5b 실행 관찰)</td></tr>
+<tr><td>D148</td><td>2026-09-29</td><td><strong>이동은 칸이 아니라 연속 좌표·히트박스 기준</strong> — 칸은 블록(지형)과 길 찾기 지도를 위한 단위. 유닛은 히트박스를 줄여 서로 겹치지 않게 한다(D133·D134의 &quot;칸당 한 몸&quot;을 대체). 좁은 굴에서 유닛이 서로 막는 병목이 이유. 구체화는 P5c 설계서: 고정소수점(1칸=256), 원 히트박스, 칸 지도는 길 찾기 전용</td><td>사용자 선택(A안, P5b 실행 관찰)</td></tr>
+<tr><td>D149</td><td>2026-09-29</td><td><strong>히트박스는 원이고 지름은 실제 크기에 비례해 압축한다</strong> — 소총병·돌격병·굴착병 0.25칸, 중화기병 0.3, 전차 0.5, 비행선 0.75, 전함 0.9, 소형 감염체 0.2, 가시 감염체 0.3, 굴착체 0.4. 큰 유닛도 1칸 굴을 지나므로 <strong>D70</strong>(&quot;큰 유닛은 크기만큼 넓은 길&quot;)을 대체한다</td><td>사용자 선택</td></tr>
+<tr><td>D150</td><td>2026-09-29</td><td><strong>밀어내기 규칙</strong> — 쉬는 같은 편은 지나가는 동료에게 밀리고, 싸우는·재무장·굴착 중인 몸은 버티며, 적과는 안 밀고 닿으면 걸어온 쪽이 멈춘다. 겹침은 반지름의 20%까지 허용해 검사한다. 범위 공격 반경은 지름에 맞춰 줄이고(중화기 1·전차 0.5·비행선 1.5·전함 1), 근접은 몸이 닿는 거리</td><td>사용자 선택(&quot;비켜 준다&quot;)</td></tr>
+<tr><td>D151</td><td>2026-09-29</td><td><strong>(예고) 전투력 환산 엔진</strong> — 발사 간격은 병종마다 0.7~1.5초, 초당 화력은 생산 비용에 비례하고, 환산 엔진이 병종별 전투력·체력·1발 피해를 산정하며 밸런스 패치는 엔진 값(전투력 배수)을 올리고 내려서 한다. 보병은 전차·비행선보다 확연히 약하게, 퓨라 등 다른 종족도 같은 규칙. <strong>별도 설계서(P5d)</strong> — P5c는 스탯을 바꾸지 않는다 [원안]</td><td>사용자 요청(P5c 설계 중)</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="3-가정과-열린-질문-확인-필요">3. 가정과 열린 질문 (확인 필요)</h2>
+<h3 id="31-claude의-가정">3.1 Claude의 가정</h3>
+<ul>
+<li><p><del>A1~A4</del> → 2026-09-24 확인 완료, 결정 D5~D8로 옮김</p></li>
+<li><p><del>A5 PC 대상</del> → D36 PC(Steam) 먼저</p></li>
+<li><p><del>A6 장교 = 대표 영웅</del> → D37 장교 + 영구 동료 영웅</p></li>
+</ul>
+<h3 id="32-열린-질문">3.2 열린 질문</h3>
+<p>P0의 큰 질문은 모두 결정됐다. 남은 세부 질문은 담당 단계에서 다룬다.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">질문</th><th scope="col">담당 단계</th></tr></thead>
+<tbody>
+<tr><td>Q5 유닛 구성 (병종 세부) — 굴착병·전투병 분리는 D44로 결정</td><td>P4</td></tr>
+<tr><td><del>Q7 포탈·적 기지 배치 규칙</del> → P5 설계서 3.3에서 결정</td><td>P5</td></tr>
+<tr><td><del>오라클을 나중에 플레이어블로 만드는 방법</del> → D106 관전자 시점. 남은 것: 오라클의 패배 조건</td><td>P6·P7</td></tr>
+<tr><td>Q9 멀티플레이 형태 (협동 / 대전)</td><td>출시 후</td></tr>
+<tr><td>영구 레벨 올리는 방법, 동료 영웅 세부</td><td>P8</td></tr>
+</tbody></table></div>
+<details><summary>지난 질문 기록 (펼치기)</summary>
+<ul>
+<li><p><del>Q1 시점</del> → D9 쿼터뷰로 확정</p></li>
+<li><p><del>Q2 게임 목표</del> → D27 매 판 첫 목표는 복수전, D39 장기 목표는 기록 경쟁</p></li>
+<li><p><del>Q3 한 판의 구조</del> → D11 키우기 + 로그라이트로 확정</p></li>
+<li><p><del>Q4 맵 생성</del> → 핵심 요소는 본부 기준 상대 위치로 재현(D25·D27), 나머지 지형은 매 판 새로 생성(D28)</p></li>
+<li><p><strong>Q5 유닛 구성</strong> → P4로 이관: 일꾼과 전투 유닛을 나누는지, 도구에 따라 유닛 종류가 달라지는지</p></li>
+<li><p><del>Q6 아트 방향</del> → D40 로우폴리 3D + 쿼터뷰</p></li>
+<li><p><strong>Q7 포탈·적 기지 배치</strong> → P5로 이관: 고정 위치인지, 영역에 따라 확률적으로 나오는지, 조우 후 적이 먼저 공격해오는지</p></li>
+<li><p><del>Q8 영웅 유닛</del> → D37 장교 + 영구 동료 영웅. 세부(인원, 동료 성장, 쓰러질 때 처리)는 P4·P8에서</p></li>
+<li><p><strong>Q9 멀티플레이 형태</strong> → 출시 후: 협동(같은 행성을 함께 굴착) vs 대전(서로 다른 종족으로 경쟁)</p></li>
+<li><p><del>Q10 판 종료 조건</del> → D13 본부 파괴로 확정, D14 귀환 없음</p></li>
+<li><p><del>Q11 레벨 시스템</del> → D30 경험치 원천 네 가지, D31 지역·굴착 가능 영역 두 층</p></li>
+<li><p><del>Q12 영구 이점</del> → D18 판 도중 적립, D19 네 종류 모두</p></li>
+<li><p><del>Q13 방치 요소</del> → D38 안전한 생산만 오프라인 보상</p></li>
+<li><p><del>Q14 압박 상승 장치</del> → D15 네 가지 모두 사용</p></li>
+<li><p><del>Q15 한 판의 길이</del> → D16 2시간 이상, D17 중단 저장만</p></li>
+<li><p><del>Q16 건물 연결 방식</del> → D26 논리 연결 + 컨베이어 모양·점등 연출</p></li>
+<li><p><del>Q17 플레이어가 직접 하는 일의 범위</del> → D24 방침 자동 + 장교 자동 전투 + 건물 배치 직접, D25 배치 기억·프리셋</p></li>
+<li><p><del>Q18 송금과 세금 규칙</del> → D22 즉시 자동 송금, D23 영구 레벨 기준, D32 제국 전체에 하나. 남은 세부(영구 레벨 올리는 방법, 이름)는 P8에서</p></li>
+<li><p><del>Q19 지역 운영</del> → D33 판 도중 진출·탐사로 제한, D34 지역별 차이 네 가지, D35 관리자 도구</p></li>
+</ul>
+</details>
+<hr>
+<h2 id="4-개발-단계-하위-프로젝트">4. 개발 단계 (하위 프로젝트)</h2>
+<p>각 단계는 &quot;대화로 설계 → 설계서(<code>docs/superpowers/specs/</code>) → 구현 계획 → 구현&quot; 순서로 진행합니다.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">단계</th><th scope="col">다룰 내용</th><th scope="col">비고</th></tr></thead>
+<tbody>
+<tr><td>P0 비전·핵심 루프</td><td>한 줄 요약, 핵심 루프, 가정 확정</td><td>이 문서 1~3장</td></tr>
+<tr><td>P1 기술 스택·준비</td><td>Unity 버전, 렌더 파이프라인, 폴더 구조, Git 설정</td><td>쿼터뷰(D9) 확정됨</td></tr>
+<tr><td>P2 지하 굴착·확장</td><td>블록 등급, 굴착 방침·직접 지정, 유닛 이동·길찾기, 지역·굴착 가능 영역, 시드 기반 지형 생성</td><td>첫 프로토타입 대상. D24·D28·D31·D33·D34</td></tr>
+<tr><td>P3 자원·도구 제작 경제</td><td>광산 배치·고갈, 조합 건물의 자동 제작 규칙, 도구 티어, 컨베이어 연결</td><td>D15·D20·D26</td></tr>
+<tr><td>P4 유닛 생산·병참</td><td>병참 건물, 도구 소비 → 유닛 자동 생산, 병종 방침, 장교·동료 영웅</td><td>Q5, D20·D24·D37</td></tr>
+<tr><td>P5 조우·침공</td><td>포탈, 적 종족 기지, 침공 AI, 압박 네 장치, 복수전·원수 성장</td><td>Q7, D4·D15·D27·D29</td></tr>
+<tr><td>P6 종족·지역 확장 프레임워크 + 관리자 도구</td><td>종족·지역을 데이터로 정의해 업데이트로 추가, 개발자용 지역 관리자 도구</td><td>원칙은 P2부터 적용, D35</td></tr>
+<tr><td>P7 세계관·서사</td><td>종족 설정, 행성, 장교 교대 설정, 스토리 톤</td><td>다른 단계와 병행 가능</td></tr>
+<tr><td>P8 성장·메타 진행</td><td>판 안 레벨, 판 종료, 영구 강화, 유물, 장교·동료 해금, 제국 송금·공적 등급, 배치 기억·프리셋, 오프라인 보상, 기록</td><td>D11~D14·D18~D23·D25·D30·D32·D37~D39</td></tr>
+</tbody></table></div>
+<h3 id="41-설계-원칙-가정--확인-필요">4.1 설계 원칙 [가정 — 확인 필요]</h3>
+<ul>
+<li><p><strong>데이터 주도 설계</strong>: 블록·도구·건물·유닛·종족·유물·장교·<strong>지역</strong>을 코드가 아닌 데이터(Unity <code>ScriptableObject</code>)로 정의한다. 새 종족 추가(D2)와 새 지역 추가(D31)가 모두 &quot;새 데이터 묶음 추가&quot;가 되도록 한다.</p></li>
+<li><p><strong>회색 박스 우선</strong>: 아트 없이 네모 블록으로 핵심 루프(굴착 → 제작 → 생산 → 조우)가 재미있는지 먼저 확인한다.</p></li>
+<li><p><strong>멀티 대비 구조(D8)</strong>: 게임 규칙(시뮬레이션)과 화면 표시를 분리하고, 플레이어 입력은 &quot;명령&quot; 객체로 전달한다. 나중에 명령을 네트워크로 보내기만 하면 멀티로 확장할 수 있게 하기 위함이다. 싱글 게임에 멀티를 뒤늦게 붙이는 것은 가장 비싼 리팩터링 중 하나다.</p></li>
+<li><p><strong>판 데이터와 영구 데이터 분리(D11)</strong>: 맵·건물·유닛처럼 판이 끝나면 버리는 데이터와, 영구 강화·유물·해금처럼 계속 남는 데이터를 처음부터 따로 저장한다. 건물 배치 기록과 프리셋(D25)은 <strong>영구 데이터</strong> 쪽이다.</p></li>
+<li><p><strong>시드 기반 맵 생성(D28)</strong>: 맵은 숫자 하나(시드)로부터 항상 똑같이 만들어지게 한다. 같은 시드 = 같은 맵이므로, 멀티(D8)에서는 맵 전체 대신 시드만 보내면 되고, 버그가 난 판도 그대로 다시 만들어 볼 수 있다.</p></li>
+<li><p><strong>배치 기억 = 명령 기록(D25)</strong>: 멀티 대비로 모든 입력을 &quot;명령&quot;으로 전달하기로 했으므로(D8), 건물 배치 명령을 저장해 두었다가 다음 판에 다시 실행하면 자동 건설이 된다. 같은 구조가 두 가지 기능을 함께 해결한다.</p></li>
+<li><p><strong>최적화 원칙(D9·D10)</strong>: 비용은 맵 크기보다 <strong>매 프레임 계산하는 대상의 수</strong>에서 생긴다.</p>
+<ul>
+<li><p>아직 안 판 암반은 단순 배열 데이터로 두고, 화면은 <strong>청크</strong>(예: 32×32) 단위로 보이는 곳만 그린다.</p></li>
+<li><p>유닛 길찾기는 계층형(구역 → 세부)과 경로 캐싱을 쓰고, 한 프레임에 처리하는 길찾기 수를 제한한다.</p></li>
+<li><p>화면 밖 지역은 덜 자주 갱신하고, 제작 건물은 매 프레임이 아니라 생산 속도로 계산한다.</p></li>
+<li><p>기획에서 <strong>맵 최대 크기</strong>와 <strong>유닛 수 상한</strong>을 정해둔다.</p></li>
+</ul></li>
+</ul>
+<h3 id="42-p2-지하-굴착확장-완료--설계서-승인">4.2 P2 지하 굴착·확장 [완료 — 설계서 승인]</h3>
+<blockquote>
+<p>세부 설계는 <strong><a href="specs/2026-09-25-p2-digging-design.html">P2 설계서</a></strong>에 있다. 아래는 요약이다.</p>
+</blockquote>
+<ul>
+<li><p><strong>굴착 능력 = 유닛의 도구 등급</strong>(D42). 한 단계 위 블록은 아주 느리게, 두 단계 위부터 불가(D41).</p></li>
+<li><p><strong>시야</strong>: 암반 등급·큰 광맥은 보이고, 포탈·적 기지·유물은 근접이나 스캐너로(D43).</p></li>
+<li><p><strong>굴착병·전투병 분리</strong>(D44). 굴착 방침 다섯 가지를 <strong>우선순위 목록</strong>으로(D45·D48).</p></li>
+<li><p><strong>파낸 곳에만 건설</strong>, 남긴 암반과 <strong>설치 벽</strong>이 방어벽(D46·D47). 적도 같은 굴착 규칙.</p></li>
+<li><p><strong>지역은 격자형</strong>(D49), 굴착 가능 영역은 <strong>본부·전진 기지 중심 동심원</strong>(D50·D51).</p></li>
+<li><p>블록 종류·시드 기반 지형 생성 순서·기본 수치(D52).</p></li>
+</ul>
+<details><summary>설계 대화 중에 쓴 원래 메모 (펼치기)</summary>
+<h4 id="블록도구-등급과-굴착-능력-d41d42">블록·도구 등급과 굴착 능력 (D41·D42)</h4>
+<ul>
+<li><p><strong>굴착 능력은 유닛 안에 있다.</strong> 유닛은 병참 건물에서 만들어질 때 쓴 <strong>도구의 등급</strong>을 그대로 가진다. 2등급 드릴로 만든 굴착 유닛은 2등급 암반을 캔다. (D42)</p>
+<ul>
+<li><p>그래서 <strong>도구 제작(P3) → 유닛 생산(P4) → 굴착 범위(P2)</strong>가 하나의 사슬로 이어진다.</p></li>
+<li><p>[가정] 기존 유닛은 병참 건물에서 더 높은 등급 도구로 <strong>재무장</strong>할 수 있다.</p></li>
+</ul></li>
+<li><p><strong>등급 잠금은 &quot;한 단계 위까지는 느리게&quot;</strong> (D41):</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">블록 등급 − 유닛 등급</th><th scope="col">굴착</th></tr></thead>
+<tbody>
+<tr><td>0 이하 (같거나 낮음)</td><td>보통 속도</td></tr>
+<tr><td>+1 (한 단계 위)</td><td><strong>아주 느리게</strong> 가능 [가정: 보통의 20% 속도]</td></tr>
+<tr><td>+2 이상</td><td>불가</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>단단한 암반은 넘을 수 없는 벽이 아니라 <strong>시간을 버는 벽</strong>이 된다. 적도 같은 규칙으로 파고든다면, 본부를 한 등급 높은 암반으로 두르는 것이 방어 수단이 된다.</p></li>
+</ul></li>
+</ul>
+<h4 id="시야-스캐너로-부분-공개-d43">시야: 스캐너로 부분 공개 (D43)</h4>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">보이는 정도</th><th scope="col">대상</th></tr></thead>
+<tbody>
+<tr><td>처음부터 보임</td><td>암반 등급, 큰 광맥</td></tr>
+<tr><td>가까이 파고들거나 <strong>스캐너 업그레이드</strong>로 보임</td><td>포탈, 적 기지, 유물, 작은 광맥</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>계획은 세울 수 있지만 위험은 다 모르는 상태에서 파게 되어, 디자인 기둥 2번 &quot;굴착이 곧 위험 선택&quot;을 살린다.</p></li>
+<li><p>[가정] 스캐너 업그레이드는 판 안 업그레이드이고, 영구 강화(D19)로 시작 단계를 높일 수 있다.</p></li>
+</ul>
+<h4 id="굴착-유닛과-굴착-방침-d44d45">굴착 유닛과 굴착 방침 (D44·D45)</h4>
+<ul>
+<li><p><strong>굴착병과 전투병을 나눈다.</strong> 드릴 계열 도구는 <strong>굴착병</strong>, 무기 계열 도구는 <strong>전투병</strong>이 된다. 굴착병은 약하게만 싸운다. (D44)</p>
+<ul>
+<li><p>병종 비율 방침(D20)이 곧 <strong>&quot;파는 힘 vs 지키는 힘&quot;</strong>의 배분이 된다.</p></li>
+</ul></li>
+<li><p><strong>굴착 방침</strong> (D45):</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">방침</th><th scope="col">굴착병이 먼저 파는 곳</th></tr></thead>
+<tbody>
+<tr><td><strong>자원 우선</strong></td><td>보이는 광맥 쪽</td></tr>
+<tr><td><strong>특정 자원 우선</strong></td><td>플레이어가 <strong>체크한 자원들</strong>(여러 개 선택 가능)의 광맥 쪽</td></tr>
+<tr><td><strong>확장 우선</strong></td><td>굴착 가능 영역의 경계까지 넓게 — 건물 지을 공간 확보</td></tr>
+<tr><td><strong>안전 우선</strong></td><td>스캐너에 잡힌 위험(포탈·적 기지)을 피하고, 본부 주변 암반 벽을 남김</td></tr>
+<tr><td><strong>목표 지점 뚫기</strong></td><td>플레이어가 찍은 지점(원수 진영, 유물 등)까지 가장 빠른 길</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>방침은 <strong>우선순위 목록</strong>으로 섞는다. 여러 방침을 켜고 순서를 정하면, 굴착병은 위에서부터 할 일을 찾는다(예: 1순위 목표 지점 → 2순위 특정 자원 → 3순위 확장). &quot;왜 저기를 파는지&quot;가 바로 읽혀서 지켜보는 맛이 산다. (D48)</p></li>
+</ul></li>
+</ul>
+<h4 id="지역과-굴착-가능-영역의-모양-d49d50">지역과 굴착 가능 영역의 모양 (D49·D50)</h4>
+<ul>
+<li><p><strong>지역은 격자형</strong>으로 붙어 있다. 시작 지역을 가운데 두고 8방향으로 이어지며, <strong>시작 지역에서 멀수록 어렵다.</strong> 탐사 단계만큼, 맞닿은 지역 중에서 골라 진출한다(D33). (D49)</p></li>
+<li><p><strong>굴착 가능 영역은 본부 중심 동심원</strong>으로 넓어진다. 판 안 레벨이 오를 때마다 반경이 커진다. 방향을 고르는 일은 더 큰 단위인 지역 진출이 맡는다. (D50)</p></li>
+</ul>
+<h4 id="판-공간의-쓰임-d46">판 공간의 쓰임 (D46)</h4>
+<ul>
+<li><p>건물은 <strong>파낸 빈 공간에만</strong> 지을 수 있다.</p></li>
+<li><p><strong>남겨둔 암반은 적의 진로를 막는 벽</strong>이다. &quot;어디를 파고 어디를 남길지&quot;가 곧 기지 설계가 된다(던전 키퍼식).</p></li>
+<li><p>이 규칙이 성립하려면 <strong>적도 같은 굴착 규칙으로 벽을 파고 들어와야</strong> 한다. 그래서 1.8의 가정 &quot;적도 같은 굴착 규칙을 쓴다&quot;는 사실상 필수가 된다(세부는 P5). 한 등급 높은 암반 벽은 적을 오래 붙잡아 둔다(D41).</p></li>
+<li><p><strong>벽을 직접 설치할 수도 있다</strong> (D47):</p>
+<ul>
+<li><p>파낸 공간에 벽을 세워 통로를 막거나 좁힐 수 있다.</p></li>
+<li><p><strong>건물과 똑같이</strong> 배치를 기억해 다음 판에 자원이 모이면 <strong>자동 설치</strong>되고, <strong>프리셋</strong>에 함께 등록된다(D25).</p></li>
+<li><p>[가정] 설치 벽도 등급이 있고(재료 등급), 적은 암반과 같은 규칙(D41)으로 설치 벽을 파고든다.</p></li>
+</ul></li>
+</ul>
+</details>
+<h3 id="43-p3-자원도구-제작-경제-완료--설계서-승인">4.3 P3 자원·도구 제작 경제 [완료 — 설계서 승인]</h3>
+<blockquote>
+<p>세부 설계는 <strong><a href="specs/2026-09-25-p3-economy-design.html">P3 설계서</a></strong>에 있다. 아래는 요약이다.</p>
+</blockquote>
+<ul>
+<li><p>채굴은 <strong>굴착병(즉시) + 채굴기(자동)</strong>가 같은 광맥을 줄인다(D53). 캔 암반은 <strong>석재</strong>(D55).</p></li>
+<li><p><strong>본부 = 전역 창고</strong>, 생산 건물은 연결선으로 재료를 받는다(D54). 연결은 <strong>자동 + 직접 수정</strong>(D63).</p></li>
+<li><p>자원은 <strong>석재·금속·결정 × 6등급 + 지역 희귀 자원</strong>(D56).</p></li>
+<li><p><strong>N등급 도구 = N등급 + 한 등급 아래 (+ 4등급부터 희귀)</strong>(D57). 가공은 <strong>등급이 오를수록 늘어남</strong>(D58).</p></li>
+<li><p>조합 건물은 <strong>병종 방침 자동 + 레시피 고정</strong>(D59), <strong>우선순위 1~5</strong>(D60), <strong>전력 없음</strong>(D61).</p></li>
+<li><p>창고가 넘치면 <strong>자동 제국 송금</strong>(D62). 건물 목록·연결선 규칙·수치·오프라인 계산(D64).</p></li>
+</ul>
+<details><summary>설계 대화 중에 쓴 원래 메모 (펼치기)</summary>
+<p>이미 정해져 이 단계의 틀이 되는 결정:</p>
+<ul>
+<li><p>[원안] 도구를 만드는 자원은 <strong>광산 형태</strong>로 배치되고, <strong>조합 건물</strong>이 자동으로 도구를 조합하며, 도구는 <strong>병참 건물</strong>에서 유닛이 된다.</p></li>
+<li><p>광산은 캐면 <strong>고갈</strong>된다(D15). 광맥은 1~6등급이고, 블록이 사라질 때 &quot;블록 제거&quot; 이벤트로 자원이 생긴다(D52, P2 설계서 2.7).</p></li>
+<li><p><strong>정해두고 지켜보는 자동화</strong>: 조합 건물 ↔ 병참 건물을 연결하면 도구 생산 속도에 맞춰 유닛이 자동 생산되고, 플레이어는 생산 속도·병종·건물 우선순위를 정한다(D20).</p></li>
+<li><p>연결은 <strong>속도 기반 논리 연결</strong>, 화면에는 컨베이어 모양·경로 점등·입체 교차(D26).</p></li>
+<li><p>건물 배치는 직접(D24), 배치 기억·자동 건설·프리셋(D25·D47).</p></li>
+<li><p>굴착 능력 = 유닛의 도구 등급(D42), 드릴 계열 → 굴착병·무기 계열 → 전투병(D44).</p></li>
+<li><p>꺼진 동안은 안전한 생산만 보상(D38).</p></li>
+</ul>
+<p>이 단계에서 정할 것:</p>
+<ul>
+<li><p>광맥에서 자원을 얻는 방식(굴착병 / 채굴기)</p></li>
+<li><p>자원이 흐르는 길과 창고, 건설 비용을 어디서 내는지</p></li>
+<li><p>캔 일반 암반의 쓰임, 설치 벽의 재료</p></li>
+<li><p>자원 종류와 도구 레시피 구조</p></li>
+<li><p>조합 건물의 운영 방식, 건물 우선순위의 동작</p></li>
+<li><p>전력 같은 추가 자원 사슬이 필요한지</p></li>
+<li><p>남는 자원의 처리(제국 송금 등)</p></li>
+<li><p>기본 수치</p></li>
+</ul>
+<h4 id="채굴과-자원-흐름-d53d54d55">채굴과 자원 흐름 (D53·D54·D55)</h4>
+<ul>
+<li><p><strong>채굴은 두 가지</strong> (D53):</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">방법</th><th scope="col">방식</th><th scope="col">특징</th></tr></thead>
+<tbody>
+<tr><td><strong>굴착병</strong></td><td>광맥 블록을 캐면 그 블록의 자원을 한 번에 얻는다</td><td>빠르지만 굴착병의 시간을 쓴다</td></tr>
+<tr><td><strong>채굴기</strong></td><td>광맥 옆 파낸 칸에 세우면 광맥을 조금씩 먹어 들어가며 계속 얻는다. 다 먹은 칸은 빈 공간이 된다</td><td>느리지만 자동 — 지켜보는 생산</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>둘 다 <strong>같은 광맥 블록을 줄이므로</strong>, 고갈(D15)은 &quot;광맥 블록이 사라진다&quot;는 규칙 하나로 설명된다.</p></li>
+</ul></li>
+<li><p><strong>자원 흐름</strong> (D54):</p>
+<ul>
+<li><p><strong>본부 = 전역 창고.</strong> 연결선으로 본부에 들어간 자원은 어디서나 건물·벽 건설에 쓴다.</p></li>
+<li><p>조합·병참 건물은 <strong>연결선으로 재료를 직접</strong> 받는다. 건설은 편하게, 생산 사슬은 눈에 보이게. (Mindustry식)</p></li>
+<li><p>[가정] <strong>전진 기지(D51)도 전역 창고의 입구</strong>다. 다른 지역의 채굴기를 본부까지 길게 잇지 않아도 된다.</p></li>
+<li><p>[가정] 굴착병이 캔 자원·석재는 <strong>곧바로 전역 창고</strong>로 들어간다(화면에는 작은 수송 드론 연출). 유닛이 직접 나르면 길찾기 부담(4.1)이 커지기 때문이다.</p></li>
+<li><p>[가정] 어디에도 연결되지 않은 채굴기는 작은 내부 저장 칸이 차면 멈춘다.</p></li>
+</ul></li>
+<li><p><strong>캔 암반은 석재</strong> (D55): 일반 암반을 캐면 석재가 된다. <strong>암반 등급 = 석재 등급 = 설치 벽 등급.</strong> 굴착 자체가 생산이 되고, 단단한 곳을 팔수록 좋은 벽을 세울 수 있다. '확장 우선' 방침에도 보상이 생긴다.</p></li>
+</ul>
+<h4 id="자원-종류-d56">자원 종류 (D56)</h4>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">자원</th><th scope="col">등급</th><th scope="col">쓰임</th></tr></thead>
+<tbody>
+<tr><td><strong>석재</strong></td><td>1~6 (= 캔 암반 등급)</td><td>설치 벽, 건물 [가정]</td></tr>
+<tr><td><strong>금속</strong></td><td>1~6</td><td>드릴(→ 굴착병), 건물</td></tr>
+<tr><td><strong>결정</strong></td><td>1~6</td><td>무기(→ 전투병)</td></tr>
+<tr><td><strong>지역 희귀 자원</strong></td><td>지역마다 [가정: 1종]</td><td>4등급 이상 도구, 특수 건물·유물 강화 [가정]</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>지역마다 <strong>금속·결정 비율이 다르다</strong>(D34). 금속이 많은 지역은 &quot;파는 힘&quot;을, 결정이 많은 지역은 &quot;지키는 힘&quot;을 키워준다.</p></li>
+<li><p>그래서 <strong>병종 비율 방침(D20) → 어느 광맥이 더 필요한지 → '특정 자원 우선' 굴착 방침(D45) → 어느 지역으로 진출할지(D33)</strong>가 하나로 이어진다.</p></li>
+</ul>
+<h4 id="레시피와-가공-단계-d57d58">레시피와 가공 단계 (D57·D58)</h4>
+<ul>
+<li><p><strong>N등급 도구 = N등급 재료 + 한 등급 아래 재료 + (4등급부터) 지역 희귀 자원.</strong> (D57)</p>
+<ul>
+<li><p>[가정] 드릴은 금속, 무기는 결정을 쓴다. 1등급 도구는 1등급 재료만 쓴다.</p></li>
+<li><p>낮은 등급 광맥이 끝까지 필요해 <strong>초반 광산을 지킬 이유</strong>가 남고, 4등급부터는 <strong>다른 지역 진출이 성장의 길</strong>이 된다.</p></li>
+</ul></li>
+<li><p><strong>가공 단계는 등급이 오를수록 늘어난다.</strong> (D58)</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">도구 등급</th><th scope="col">생산 사슬</th></tr></thead>
+<tbody>
+<tr><td>1~2</td><td>채굴기 → 조합 건물 → 병참 건물</td></tr>
+<tr><td>3~4</td><td>채굴기 → <strong>제련소</strong> → 조합 건물 → 병참 건물</td></tr>
+<tr><td>5~6</td><td>채굴기 → 제련소 → <strong>정제소</strong> → 조합 건물 → 병참 건물</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>초반은 단순하고 후반에 사슬이 길어진다. 게임이 스스로 튜토리얼 역할을 하고, 긴 사슬은 컨베이어 점등(D26)의 보는 맛을 키운다.</p></li>
+</ul></li>
+</ul>
+<h4 id="조합-건물-운영-d59">조합 건물 운영 (D59)</h4>
+<ul>
+<li><p><strong>기본은 병종 방침 자동</strong>: 플레이어가 병종 비율(예: 굴착병 30% · 전투병 70%)을 정하면 조합 건물들이 만들 도구를 알아서 바꿔 맞춘다.</p></li>
+<li><p>원하는 건물은 <strong>레시피를 고정</strong>할 수 있다. 기본은 자동, 원하면 직접.</p></li>
+<li><p>[가정] 조합 건물은 연결선으로 재료가 들어오는 도구만 만들 수 있다. 결정이 들어오지 않는 조합 건물은 무기를 만들지 못한다.</p></li>
+</ul>
+<h4 id="생산을-돌리는-규칙-d60d63">생산을 돌리는 규칙 (D60~D63)</h4>
+<ul>
+<li><p><strong>건물 우선순위 1~5단계</strong> (D60): 재료가 모자라면 높은 단계 건물부터 받고, 같은 단계끼리는 나눠 받는다. 숫자 하나라 한눈에 읽힌다.</p></li>
+<li><p><strong>전력 사슬은 없다</strong> (D61): 채굴 → 가공 → 조합 → 병참 사슬만으로 충분하다. 필요하면 나중에 콘텐츠 업데이트로 더한다.</p></li>
+<li><p><strong>창고 한도 + 넘치면 자동 제국 송금</strong> (D62):</p>
+<ul>
+<li><p>본부 창고에는 자원 종류·등급마다 한도가 있다. [가정] 창고 확장 건물로 늘린다.</p></li>
+<li><p>한도를 넘친 자원은 <strong>자동으로 제국에 송금</strong>되어, 세금(D21·D22)을 떼고 <strong>영구 재화</strong>가 된다.</p></li>
+<li><p>판 후반에 쌓이는 자원에도 쓸모가 생기고, &quot;창고를 늘려 쓸 것인가, 넘치게 둬서 송금할 것인가&quot;가 선택이 된다. 경제의 <strong>배수구</strong>다.</p></li>
+</ul></li>
+<li><p><strong>연결선은 자동 연결 + 직접 수정</strong> (D63): 건물을 놓으면 가장 가까운 공급처·수요처와 자동으로 이어지고, 플레이어가 선을 바꿀 수 있다. <strong>연결도 배치 기억·프리셋(D25)에 포함</strong>된다.</p></li>
+</ul>
+</details>
+<h3 id="44-p4-유닛-생산병참-완료--설계서-승인">4.4 P4 유닛 생산·병참 [완료 — 설계서 승인]</h3>
+<blockquote>
+<p>세부 설계는 <strong><a href="specs/2026-09-25-p4-units-design.html">P4 설계서</a></strong>에 있다. 아래는 요약이다.</p>
+</blockquote>
+<ul>
+<li><p>병종: <strong>굴착병 + 돌격·소총·중화기병 + 전차·비행선·전함</strong>(D65). 대형 유닛은 지하에서 직접 운용하고 크기만큼 넓은 길이 필요(D70).</p></li>
+<li><p>생산: <strong>병참 건물</strong>(보병·굴착병·전차)과 <strong>조선소</strong>(비행선·전함), 도구 + 추가 재료(D78).</p></li>
+<li><p>운영: <strong>병종별 목표 수 유지</strong>(D68), 상한은 <strong>병참 건물 수에 비례</strong>(D69), <strong>자동 재무장</strong>(D73), 건물·벽은 <strong>건설 드론</strong>(D67).</p></li>
+<li><p>행동: 굴착병은 굴착 방침, 전투 유닛은 <strong>전투 방침 우선순위 목록</strong>(D72).</p></li>
+<li><p>영웅: 장교(주 병과 +20%) + 동료 2→4명(부 병과 +8%), 쓰러지면 복귀, 판 안 레벨 + 영구 해금(D74~D77).</p></li>
+<li><p><strong>병과 10개</strong>(D71)가 유닛의 특성과 <strong>색·병과 마크</strong>를 정함(D66).</p></li>
+</ul>
+<details><summary>설계 대화 중에 쓴 원래 메모 (펼치기)</summary>
+<p>이미 정해져 이 단계의 틀이 되는 결정:</p>
+<ul>
+<li><p>[원안] 도구로 <strong>병참 건물</strong>에서 유닛을 뽑는다.</p></li>
+<li><p>조합 ↔ 병참을 연결하면 <strong>도구 생산 속도에 맞춰 유닛이 자동 생산</strong>되고, 플레이어는 생산 속도·병종·우선순위를 정한다(D20).</p></li>
+<li><p>일반 유닛은 <strong>방침에 따라 자동</strong>, 영웅(장교 + 동료)은 <strong>자동 전투 기본 + 선택적 직접 조작</strong>, 영웅마다 고유 특수능력(D7·D24·D37).</p></li>
+<li><p>장교는 쓰러지면 일정 시간 뒤 본부에서 복귀(D13). 판마다 해금된 장교 중에서 고른다(D12·D19).</p></li>
+<li><p>굴착 능력 = 유닛의 도구 등급(D42). 굴착병(드릴)과 전투병(무기)을 나눈다(D44).</p></li>
+<li><p>굴착 방침은 우선순위 목록(D45·D48), 조합 건물은 병종 방침에 따라 자동(D59).</p></li>
+<li><p>유닛 수 상한을 정해 둔다(4.1 최적화 원칙).</p></li>
+<li><p>P2·P3에서 넘어온 것: 굴착병이 블록 하나를 파는 시간(5초 가정), 재무장(가정), 도구가 유닛이 되는 규칙, 목표 병력 수.</p></li>
+</ul>
+<p>이 단계에서 정할 것:</p>
+<ul>
+<li><p>병종 구성(Q5)</p></li>
+<li><p>건물은 누가 짓는지</p></li>
+<li><p>병력 수를 조절하는 방식과 유닛 상한</p></li>
+<li><p>전투병의 행동 방침</p></li>
+<li><p>재무장, 일반 유닛의 성장, 유지비</p></li>
+<li><p>영웅: 역할, 동료 인원, 쓰러질 때, 성장</p></li>
+<li><p>기본 수치</p></li>
+</ul>
+<h4 id="병종과-장교-병과-d65d66">병종과 장교 병과 (D65·D66)</h4>
+<ul>
+<li><p><strong>병종</strong> (D65):</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">병종</th><th scope="col">만드는 도구</th><th scope="col">역할</th></tr></thead>
+<tbody>
+<tr><td>굴착병</td><td>드릴</td><td>굴착, 약하게만 싸움(D44)</td></tr>
+<tr><td>돌격병</td><td>무기(근접)</td><td>근접 전투</td></tr>
+<tr><td>소총병</td><td>무기(원거리)</td><td>원거리 전투</td></tr>
+<tr><td>중화기병</td><td>무기(중화기)</td><td>범위 공격</td></tr>
+<tr><td><strong>전차</strong></td><td>[가정] 여러 도구 + 추가 재료</td><td>중장갑 전투 [가정]</td></tr>
+<tr><td><strong>비행선</strong></td><td>[가정] 여러 도구 + 추가 재료</td><td>공중 [가정]</td></tr>
+<tr><td><strong>전함</strong></td><td>[가정] 여러 도구 + 추가 재료</td><td>최상위 [가정]</td></tr>
+</tbody></table></div>
+<ul>
+<li><p><strong>대형 유닛은 모두 지하에서 직접 운용</strong>하고, 크기만큼 넓은 길이 필요하다 (D70):</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">유닛</th><th scope="col">크기</th><th scope="col">지나갈 수 있는 곳</th><th scope="col">역할</th></tr></thead>
+<tbody>
+<tr><td>보병·굴착병</td><td>1×1</td><td>1칸 통로</td><td>—</td></tr>
+<tr><td>전차</td><td>2×2</td><td>2칸 폭 이상</td><td>중장갑 지상 전투</td></tr>
+<tr><td>비행선</td><td>3×3</td><td>넓은 동굴. <strong>용암·독가스 같은 환경 위험 위</strong>를 지나감</td><td>공중 지원·범위 폭격</td></tr>
+<tr><td>전함</td><td>4×4</td><td><strong>스스로 암반을 뚫으며</strong> 전진</td><td>파는 힘 + 지키는 힘을 함께 가진 굴착 전함</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>넓게 파는 것이 전략이 되고, 좁은 통로는 적 대형 유닛을 막는 수비가 된다(적도 같은 규칙).</p></li>
+<li><p>대형 유닛을 만드는 건물·재료·등급은 제안 단계에서 정한다.</p></li>
+</ul></li>
+</ul></li>
+<li><p><strong>장교 병과</strong> (D66):</p>
+<ul>
+<li><p>장교마다 <strong>병과</strong>가 있고, 그 판의 유닛들은 병과에 따라 <strong>특성</strong>을 받는다.</p></li>
+<li><p><strong>외형도 바뀐다.</strong> 유닛이 <strong>병과 색</strong>으로 칠해지고, 보병은 <strong>어깨</strong>, 차량은 <strong>옆면</strong>에 <strong>병과 마크</strong>가 붙는다. (워해머 40K의 전단 색·견장 같은 느낌)</p></li>
+<li><p>장교를 고르는 일(D12·D19)이 곧 <strong>이번 판 군대의 성격과 모습</strong>을 고르는 일이 된다.</p></li>
+<li><p>[가정] 건물은 병과와 상관없이 제국 공통 색을 쓴다.</p></li>
+<li><p><strong>병과는 10개</strong> (D71). 장교 = 병과 하나 + 고유 특수능력(D12).</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">병과</th><th scope="col">강화하는 것 [가정]</th><th scope="col">잘 맞는 상황</th></tr></thead>
+<tbody>
+<tr><td>보병</td><td>돌격·소총·중화기병</td><td>범용</td></tr>
+<tr><td>기갑</td><td>전차</td><td>넓은 통로의 정면 교전</td></tr>
+<tr><td>항공</td><td>비행선</td><td>용암·독가스 지역</td></tr>
+<tr><td>함대</td><td>전함</td><td>후반, 단단한 암반 돌파</td></tr>
+<tr><td>공병</td><td>굴착병·굴착 속도·건설 드론·벽</td><td>확장과 방어 설계</td></tr>
+<tr><td>군종</td><td>사기·정신 저항</td><td><strong>오라클</strong>(개념 공격) 상대</td></tr>
+<tr><td>화생방</td><td>감염·독가스·오염 저항</td><td><strong>퓨라</strong>(바이러스) 상대, 독가스 지역</td></tr>
+<tr><td>의무</td><td>유닛 치료, 전사 감소</td><td>장기전, 소모 줄이기</td></tr>
+<tr><td>통신</td><td>드론·연결선 속도, 영웅 능력 대기시간</td><td>자동화 효율</td></tr>
+<tr><td>정보</td><td>스캐너 범위·시야(D43), 포탈·적 기지 조기 발견</td><td>굴착 위험 관리</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>군종·화생방의 효과는 P5에서 오라클·퓨라의 공격 방식이 정해지면 확정한다.</p></li>
+</ul></li>
+</ul></li>
+</ul>
+<h4 id="건설과-병력-운영-d67d68d69">건설과 병력 운영 (D67·D68·D69)</h4>
+<ul>
+<li><p><strong>건설 드론</strong> (D67): 자원이 모이면 본부에서 건설 드론이 날아가 시간을 들여 건물·벽을 짓는다. 굴착병은 굴착에 집중하고, 유닛 길찾기 부담도 늘지 않는다. [가정] 수리도 드론이 하고, 전진 기지에서도 드론이 나온다.</p></li>
+<li><p><strong>병종별 목표 수 유지</strong> (D68): &quot;굴착병 20 · 소총병 30 …&quot;처럼 목표를 정하면 모자랄 때만 생산하고, 채우면 멈추고, 전사하면 자동으로 보충한다. 조합 건물(D59)도 <strong>목표 대비 부족분이 큰 병종의 도구</strong>부터 만든다.</p></li>
+<li><p><strong>전투 방침</strong> (D72): 굴착처럼 <strong>우선순위 목록</strong>으로 섞는다(D48). 방침은 <strong>본부·건물 방어, 굴착병 호위, 포탈·적 기지 공격, 목표 지점 공격</strong> 네 가지. [가정] 병종마다 방침 목록을 따로 정할 수 있다(기본은 공통).</p></li>
+<li><p><strong>자동 재무장</strong> (D73): 더 높은 등급 도구가 생기면 낮은 등급 유닛부터 병참 건물로 돌아와 자동으로 재무장한다. 목표 수를 지키면서 군대 전체가 점점 강해지는 모습을 지켜볼 수 있다.</p></li>
+<li><p><strong>동료 영웅</strong> (D74~D77):</p>
+<ul>
+<li><p>동료도 <strong>병과</strong>가 있고, 그 효과를 <strong>장교보다 작게</strong> 더한다. 장교 병과(주) + 동료 병과(부)의 조합이 판의 성격이 된다. 예) 기갑 장교 + 의무 동료 = 치료받으며 버티는 전차 부대. (D74)</p>
+<ul>
+<li><p>[가정] 유닛의 색과 마크는 장교 병과만 따른다.</p></li>
+</ul></li>
+<li><p>판을 시작할 때 <strong>2명</strong>을 데려가고, 영구 강화로 <strong>최대 4명</strong>까지 늘린다. (D75)</p></li>
+<li><p>쓰러지면 <strong>장교처럼 일정 시간 뒤 본부에서 복귀</strong>한다. 영웅을 잃는 좌절 없이 과감하게 쓴다. (D76)</p></li>
+<li><p>영웅(장교·동료)은 <strong>판 안에서 레벨이 올라</strong> 능력이 강해지고(판마다 초기화), 영구로는 <strong>새 장교·동료·능력이 해금</strong>된다(D19). (D77)</p></li>
+</ul></li>
+<li><p><strong>유닛 상한은 병참 건물 수에 비례</strong> (D69): 병참 건물 하나당 N명씩 상한이 늘어난다. 생산 능력과 상한이 함께 커지고, 막사 같은 건물이 따로 필요 없다. 성능을 위한 <strong>절대 최대치</strong>를 둔다. [가정] 영구 강화로 병참 건물 하나당 인원을 늘릴 수 있다.</p></li>
+</ul>
+</details>
+<h3 id="45-p5-조우침공-완료--설계서-승인">4.5 P5 조우·침공 [완료 — 설계서 승인]</h3>
+<blockquote>
+<p>세부 설계는 <strong><a href="specs/2026-09-25-p5-encounters-design.html">P5 설계서</a></strong>에 있다. 아래는 요약이다.<br>
+<strong>P5b(D138~D145)에서 바뀜</strong>: 포탈 무리·위협도 임계 포탈 → 맵 곳곳의 적 기지(가짜 경제로 RTS식 생산, 적 굴착), 처치 보상에 판 안 자원, 맵은 적 기지를 부수면 넓어진다 — <a href="specs/2026-09-29-p5b-enemy-bases-design.html">P5b 설계서</a>.</p>
+</blockquote>
+<ul>
+<li><p>전투: <strong>피해 = 공격 × 유형 배율 × (1 + 병과)</strong>, 피해 4유형 × 방어 5유형 표(D83).</p></li>
+<li><p><strong>퓨라 — 감염 영역</strong>: 영역 크기로 천장에서 스폰, 광맥을 먹어 영역 확대, <strong>5단계 합체</strong>(하이퍼마인드 비율), 죽인 유닛을 <strong>50% 스펙으로 감염</strong>, 영웅은 <strong>동화</strong>로 깨어남(D87·D91·D94·D97).</p></li>
+<li><p><strong>시온 — 제단·제사장·신성영역</strong>: 제단으로 제물 채굴, 신성영역에 소환, 호위·비행·원거리 포함 9종, 영웅은 <strong>강림</strong>, 본진을 부수면 <strong>봉인된 악마</strong>(3분)(D88·D90·D92·D95·D97·D98).</p></li>
+<li><p><strong>오라클 — 맵 전체 레드존</strong>: 모든 편에 적용, 개념 13가지, 누적 사망으로 강화, 최고 구간에 <strong>화신</strong>(처치하면 한 단계↓)(D93·D96·D97).</p></li>
+<li><p>공통: 적도 같은 굴착·유닛 규칙(D79), 위협도 분당 0.8, 포탈이 새 영역을 만듦, 원수 진영·전진 기지·처치 보상 규칙(D81·D82·D99).</p></li>
+</ul>
+<details><summary>설계 대화 중에 쓴 원래 메모 (펼치기)</summary>
+<p>이미 정해져 이 단계의 틀이 되는 결정:</p>
+<ul>
+<li><p>[원안] 굴착하다 보면 <strong>포탈</strong>이 나오거나 <strong>이미 발전한 적 종족</strong>과 조우한다(D4). 1차 버전의 오라클·시온·퓨라는 적(AI)으로만 등장한다(D5).</p></li>
+<li><p>적은 계속 생겨나고 물리쳐지는 순환이다(D11). 본부가 파괴되면 판이 끝난다(D13).</p></li>
+<li><p>압박 네 장치: <strong>적 기지 성장, 포탈 강화, 행성 위협도, 자원 고갈</strong>(D15).</p></li>
+<li><p>남긴 암반과 설치 벽이 방어벽이고, <strong>적도 같은 굴착 규칙</strong>으로 파고든다(D41·D46·D47). 대형 유닛은 넓은 길이 필요하다(D70).</p></li>
+<li><p><strong>복수전</strong>: 전임 본부를 파괴한 종족 진영이 전임자 지점에 나오고, 이길수록 성장한다(D27·D29).</p></li>
+<li><p>지역마다 등장 종족이 다르다(D34). 포탈·적 기지는 근접이나 스캐너로 발견한다(D43).</p></li>
+<li><p>전투 방침 네 가지(D72). 병과 중 군종(정신)·화생방(감염)은 오라클·퓨라의 상대다(D71).</p></li>
+<li><p>앞 단계에서 넘어온 것: 전투 계산식, 적 병종과 대형 유닛, 군종·화생방 효과, 포탈 배치(Q7), 적의 굴착 AI, 전진 기지가 무너질 때, 적이 연결선을 끊는지.</p></li>
+</ul>
+<p>이 단계에서 정할 것:</p>
+<ul>
+<li><p>적 기지를 얼마나 실제로 시뮬레이션할지</p></li>
+<li><p>상성 체계와 전투 계산식</p></li>
+<li><p>포탈이 놓이고, 열리고, 닫히는 규칙</p></li>
+<li><p>전진 기지가 무너질 때</p></li>
+<li><p>세 종족의 전투 정체성(싸우는 방식, 파고드는 방식, 특수 위협, 약점)</p></li>
+<li><p>행성 위협도 곡선, 원수 진영의 세기, 적 처치 보상</p></li>
+<li><p>기본 수치</p></li>
+</ul>
+<h4 id="적-기지-상성-포탈-전진-기지-d79d82">적 기지, 상성, 포탈, 전진 기지 (D79~D82)</h4>
+<ul>
+<li><p><strong>적 기지는 &quot;규칙은 같게, 경제는 가짜&quot;</strong> (D79): 적도 같은 굴착·유닛 규칙을 쓴다. 적 굴착 유닛이 실제로 파고들고, 전투 유닛이 실제로 싸운다. 자원은 시뮬레이션하지 않고 <strong>시간·행성 위협도에 따라 지급</strong>한다. 적의 행동이 플레이어와 같은 규칙이라 읽히고, 벽 방어(D46)도 그대로 통한다. 나중에 플레이어블 종족(D2)으로 옮길 때 유닛·굴착 쪽은 그대로 쓴다.</p></li>
+<li><p><strong>상성은 피해·방어 유형표</strong> (D80): 공격마다 피해 유형이, 유닛·구조물마다 방어 유형이 있고, 표의 배율로 피해가 정해진다. 표는 종족 정체성과 함께 제안 단계에서 정한다.</p></li>
+<li><p><strong>포탈은 파괴해서 닫는다</strong> (D81): 포탈은 체력을 가진 구조물이다. 부수면 닫히고 보상(경험치 D30, 영구 재화 D18)을 준다. 포탈이 강해질수록(D15) 체력도 오른다. 전투 방침 &quot;포탈·적 기지 공격&quot;(D72)과 바로 맞물린다.</p></li>
+<li><p><strong>전진 기지가 무너지면</strong> (D82): 그 지역의 굴착 가능 영역과 건물은 <strong>그대로 남고</strong>, 창고 입구·건설 드론 기능만 멈춘다. 다시 지으면 복구된다. P2의 열린 점 확정.</p></li>
+</ul>
+<h4 id="피해방어-유형표-d83">피해·방어 유형표 (D83)</h4>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">피해 유형</th><th scope="col">우리 편</th></tr></thead>
+<tbody>
+<tr><td>근접</td><td>돌격병, 굴착병</td></tr>
+<tr><td>관통</td><td>소총병, 전차 주포</td></tr>
+<tr><td>폭발</td><td>중화기병, 비행선 폭격</td></tr>
+<tr><td>에너지</td><td>전함 주포, 군종 병과의 <strong>축복</strong>(공격의 30%를 에너지로 [가정]), 일부 영웅 능력</td></tr>
+</tbody></table></div>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">방어 유형</th><th scope="col">누가</th></tr></thead>
+<tbody>
+<tr><td>생체</td><td>보병·굴착병·영웅, 퓨라 대부분</td></tr>
+<tr><td>중장갑</td><td>전차·비행선·전함, 시온 전사</td></tr>
+<tr><td>방어막</td><td>시온 정예</td></tr>
+<tr><td>비물질</td><td>오라클</td></tr>
+<tr><td>구조물</td><td>건물, 포탈, 적 기지 핵심</td></tr>
+</tbody></table></div>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">피해 → 방어</th><th scope="col">생체</th><th scope="col">중장갑</th><th scope="col">방어막</th><th scope="col">비물질</th><th scope="col">구조물</th></tr></thead>
+<tbody>
+<tr><td>근접</td><td>1.0</td><td>0.7</td><td><strong>1.5</strong></td><td>0.6</td><td>0.7</td></tr>
+<tr><td>관통</td><td>1.0</td><td><strong>1.5</strong></td><td>0.7</td><td>0.6</td><td>1.0</td></tr>
+<tr><td>폭발</td><td><strong>1.5</strong></td><td>0.7</td><td>1.0</td><td>0.6</td><td><strong>1.5</strong></td></tr>
+<tr><td>에너지</td><td>0.7</td><td>1.0</td><td>0.7</td><td><strong>1.5</strong></td><td>1.0</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>피해 유형마다 강한 상대가 하나씩 있다. 벽은 부수는 게 아니라 <strong>파는</strong> 대상이라(D46) 이 표를 쓰지 않는다.</p></li>
+</ul>
+<h4 id="세-종족의-전투-정체성-d84d85d86">세 종족의 전투 정체성 (D84·D85·D86)</h4>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col"></th><th scope="col"><strong>퓨라</strong> (D84)</th><th scope="col"><strong>시온</strong> (D85)</th><th scope="col"><strong>오라클</strong> (D86)</th></tr></thead>
+<tbody>
+<tr><td>싸우는 방식</td><td>약하지만 아주 많은 <strong>떼</strong></td><td>수는 적지만 강한 <strong>정예 편대</strong></td><td>소수, <strong>개념의 형상</strong></td></tr>
+<tr><td>방어 유형</td><td>생체 → 폭발에 약함</td><td>중장갑 + 정예는 방어막 → 관통과 근접을 섞어야 함</td><td>비물질 → 물리 0.6배, 에너지 1.5배</td></tr>
+<tr><td>파고드는 방식</td><td>여러 방향에서 동시에</td><td>높은 등급 굴착으로 정면 돌파, 본부로 곧장</td><td><strong>벽을 스며 통과</strong>(암반을 파지 않고 느리게)</td></tr>
+<tr><td>특수 위협</td><td><strong>감염</strong>: 감염 공격으로 죽인 우리 유닛을 <strong>스펙 50%로 되살려</strong> 씀(D87)</td><td><strong>심판</strong>: 가장 강한 유닛·영웅을 먼저 노림 + <strong>강림</strong>: 일정량 죽으면 제물로 영웅 소환(D88)</td><td><strong>개념 오염</strong>(우리 유닛에 정신 효과) + <strong>개념 간섭</strong>(우리 생산 방해)</td></tr>
+<tr><td>유닛</td><td>생산 기지에서 생산: <strong>소형 감염체</strong>(떼), <strong>거대 감염체</strong>, <strong>버프 감염체</strong>, <strong>비행 감염체</strong>, <strong>군단급 감염체</strong>(전함급), 떼를 토해내는 거대 숙주 등</td><td>정예 편대, 방어막을 두른 심판자 등 [가정]</td><td>개념: 기쁨·증오·환희·빛·질량 + <strong>4원소(불·물·흙·바람)·독·죽음·생명·속도</strong></td></tr>
+<tr><td>대응 병과</td><td>화생방·의무</td><td>보병·기갑·의무</td><td>군종·함대</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>세 종족이 각자 다른 시스템을 시험한다: 퓨라는 <strong>벽 두께와 범위 공격</strong>, 시온은 <strong>통로 설계와 병종 조합</strong>, 오라클은 <strong>벽에 기대지 않는 방어(군종·에너지)와 생산망 보호</strong>.</p></li>
+<li><p>오라클의 벽 통과와 개념 간섭은 &quot;적도 같은 규칙&quot;(D79)의 <strong>의도된 예외</strong>다. 적 중 오라클만 연결선·건물을 방해한다(P3의 가정 수정).</p></li>
+<li><p>종족별 유닛 목록과 개념마다의 효과는 제안 단계에서 정한다.</p></li>
+</ul>
+<h4 id="퓨라-감염-시온-강림-적-영웅-d87d88d89">퓨라 감염, 시온 강림, 적 영웅 (D87·D88·D89)</h4>
+<ul>
+<li><p><strong>퓨라 감염</strong> (D87):</p>
+<ul>
+<li><p>감염체는 퓨라의 <strong>생산 기지에서 생산</strong>된다(가짜 경제, D79).</p></li>
+<li><p>퓨라의 <strong>감염 공격으로 죽은 우리 유닛은 감염되어 되살아나</strong> 퓨라 편에서 싸운다. 스펙(체력·공격)은 <strong>50%</strong>로 떨어진다. 전차·전함 같은 차량도 감염된다.</p></li>
+<li><p>감염된 유닛은 주위에 <strong>퓨라 색 오라</strong>가 보이고, 머리 위에 <strong>&quot;감염&quot;</strong> 표시가 뜬다.</p></li>
+<li><p>[가정] 영웅은 쓰러지면 본부로 복귀하므로(D76) 감염되지 않는다. 감염된 유닛이 다시 죽으면 사라진다. 화생방 병과가 감염될 확률을 낮춘다.</p></li>
+<li><p>우리 유닛이 줄면 목표 수(D68)에 맞춰 다시 생산되므로, 퓨라는 <strong>싸울수록 우리 생산을 압박</strong>한다.</p></li>
+<li><p><strong>비행 감염체</strong>(환경 위험 위를 나는 감염체)와 <strong>군단급 감염체</strong>(인류 전함과 비슷한 거대 감염체)를 더한다.</p></li>
+</ul></li>
+<li><p><strong>시온 강림</strong> (D88): 시온 유닛이 <strong>일정량 이상 죽으면</strong>, 그 죽음을 <strong>제물</strong>로 삼아 <strong>영웅 유닛이 강림</strong>한다. 시온을 몰아붙일수록 더 강한 적을 부르는 긴장이 생긴다.</p></li>
+<li><p><strong>시온 본부가 파괴되면 악마 소환</strong> (D90): 시온 본부(적 기지 핵심)를 부수면 <strong>강력한 악마 4종 중 하나</strong>가 소환된다. <strong>제한 시간 안에 처치하지 못하면 시온 본부가 복구</strong>된다. 시온 기지를 끝내려면 두 번 이겨야 한다.</p></li>
+<li><p><strong>각 종족에 영웅 유닛</strong>을 둔다 (D89). 구체적인 영웅과 등장 방식은 제안 단계에서 정한다.</p></li>
+</ul>
+<h4 id="종족별-운영-방식-d91d92d93">종족별 운영 방식 (D91·D92·D93)</h4>
+<p>D79의 &quot;가짜 경제&quot;를 <strong>종족마다 다른 경제 기믹</strong>으로 구체화한다. 굴착·유닛은 여전히 같은 규칙을 쓴다.</p>
+<ul>
+<li><p><strong>퓨라 — 감염 영역</strong> (D91):</p>
+<ul>
+<li><p>병력 <strong>생산 시설을 따로 짓지 않는다.</strong> 퓨라가 차지한 <strong>감염 영역의 크기</strong>에 따라, 영역 안 <strong>무작위 위치에 위에서 스폰</strong>된다.</p></li>
+<li><p><strong>광물·자원이 영역 범위에 들어오면 영역이 더 크게 지정</strong>된다. 퓨라와 광맥을 두고 경쟁하게 된다.</p></li>
+<li><p>유닛이 <strong>일정 수 이상 모이면 상위 감염체로 성장</strong>한다.</p></li>
+<li><p><strong>하이퍼마인드 설정</strong>이 상위 감염체들의 <strong>비율</strong>을 정한다.</p></li>
+<li><p>D87의 &quot;생산 기지에서 생산&quot;은 이 규칙으로 바뀐다.</p></li>
+</ul></li>
+<li><p><strong>시온 — 제단·제사장·신성영역</strong> (D92):</p>
+<ul>
+<li><p><strong>본진</strong>을 세우면 주위에 <strong>최초 신성영역</strong>이 생긴다.</p></li>
+<li><p>신성영역 안에 <strong>제사장</strong>을 소환한다. 제사장은 제단을 짓고, 제사장 주위에도 <strong>신성영역</strong>이 생긴다.</p></li>
+<li><p>광물을 찾으면 그 자리에 <strong>제단</strong>을 세우고 <strong>제물을 바쳐</strong>, 자원이 <strong>자동으로 캐진다</strong>.</p></li>
+<li><p><strong>제단에 바쳐진 자원을 소모해 신성영역 안에 유닛을 소환</strong>한다.</p></li>
+</ul></li>
+<li><p><strong>오라클 — 맵 전체의 레드존 현상</strong> (D93):</p>
+<ul>
+<li><p>오라클은 기지와 병력을 가진 종족이 아니라, 배틀그라운드의 <strong>레드존처럼 갑자기 발생하는 현상</strong>이다.</p></li>
+<li><p><strong>맵 전체의 유닛 사망</strong>에 따라 발생 <strong>빈도·강도·범위가 강해진다.</strong></p></li>
+<li><p>D86의 개념(4원소·독·죽음·생명·속도 등)과 개념 간섭은 레드존의 효과로 옮긴다. 세부는 제안 단계에서 정한다.</p></li>
+<li><p>⚠️ 위 정체성 표의 오라클 칸 중 &quot;싸우는 방식·파고드는 방식·유닛&quot;은 이 레드존 규칙으로 대체된다.</p></li>
+</ul></li>
+</ul>
+</details>
+<h3 id="46-p8-성장메타-진행-완료--설계서-승인">4.6 P8 성장·메타 진행 [완료 — 설계서 승인]</h3>
+<blockquote>
+<p>세부 설계는 <strong><a href="specs/2026-09-26-p8-progression-design.html">P8 설계서</a></strong>에 있다. 아래는 요약이다.</p>
+</blockquote>
+<ul>
+<li><p>판 안 레벨은 <strong>상한 없음</strong>(100 × 1.15^(L−1)), 굴착 반경·영웅 레벨이 따름(D110).</p></li>
+<li><p>영구 재화 3종: <strong>공적금</strong>(강화, 세금 적용)·<strong>영입 인장</strong>(장교·동료)·<strong>유물 조각</strong>(유물 강화)(D100).</p></li>
+<li><p>공적 등급은 <strong>누적 송금액</strong>으로, 세율 50% → 웃돈 −30% 상한(D101).</p></li>
+<li><p><strong>강화 트리 5분야</strong>(본부·굴착·생산·군사·작전), <strong>공적 조건 → 인장 영입</strong>, 유물은 <strong>발굴 즉시 사용 + 3~6칸 + 1~3성</strong>(D102·D103·D107).</p></li>
+<li><p><strong>작전 계획서</strong>(배치 + 방침, 자동 1 + 저장 5), 작전 준비 화면, 항목별 기록 + Steam 리더보드, 판 / 영구 저장 구조(D108·D109·D111).</p></li>
+</ul>
+<details><summary>설계 대화 중에 쓴 원래 메모 (펼치기)</summary>
+<p>이미 정해져 이 단계의 틀이 되는 결정:</p>
+<ul>
+<li><p>키우기 + 로그라이트: 본부가 파괴되면 판이 끝나고 영구 이점은 남는다. 귀환은 없다(D11·D13·D14). 판은 2시간 이상, 중단 저장만(D16·D17).</p></li>
+<li><p>영구 재화는 판 도중 적립(D18)되고 창고 넘침도 송금된다(D62). 즉시 자동 송금과 세금, 세율은 제국 전체에 하나인 <strong>제국 공적 등급</strong>이 정한다(D21~D23·D32).</p></li>
+<li><p>영구 이점 다섯 종류: <strong>강화 트리, 유물 수집, 장교 해금, 동료 해금(2→4명), 시작 조건 개선</strong>(D19·D37·D75).</p></li>
+<li><p>배치 기억·프리셋: 건물·벽·연결선(D25·D47·D63).</p></li>
+<li><p>판 안 레벨: 경험치 네 원천(D30). 굴착 가능 영역 반경과 영웅 레벨이 이 레벨을 따른다(D50·D77).</p></li>
+<li><p>오프라인 보상(D38), 기록 경쟁(D39), 처치 보상 크기(D99).</p></li>
+<li><p>앞 단계에서 넘어온 것: 공적 등급을 올리는 방법과 이름, 강화 항목(스캐너·탐사 시작 단계, 병참 건물당 칸, 동료 자리), 해금 비용, 유물을 가져가는 개수, 방침·목표 수를 프리셋에 넣는지, 오프라인 상한, 기록 항목.</p></li>
+</ul>
+<p>이 단계에서 정할 것:</p>
+<ul>
+<li><p>영구 재화의 종류, 공적 등급을 올리는 방법</p></li>
+<li><p>강화 트리의 구조와 항목</p></li>
+<li><p>장교·동료·유물의 해금 방식</p></li>
+<li><p>판 시작 준비(장교·동료·유물·프리셋 선택)</p></li>
+<li><p>판 안 레벨 곡선, 세율 표, 오프라인 상한, 기록 항목</p></li>
+<li><p>저장 구조(판 데이터 / 영구 데이터)</p></li>
+</ul>
+<h4 id="영구-재화-공적-등급-강화-트리-해금-d100d103">영구 재화, 공적 등급, 강화 트리, 해금 (D100~D103)</h4>
+<ul>
+<li><p><strong>영구 재화는 용도별로 여러 개</strong> (D100). 쓰임 세 가지에 맞춰 나눈다 [가정 — 이름·수치는 제안 단계]:</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">재화</th><th scope="col">쓰임</th><th scope="col">얻는 곳</th><th scope="col">세금(D21)</th></tr></thead>
+<tbody>
+<tr><td><strong>공적금</strong> (제국 송금 재화)</td><td>강화 트리</td><td>판 도중 적립(D18), 창고 넘침(D62)</td><td>적용</td></tr>
+<tr><td><strong>영입 인장</strong></td><td>장교·동료 영입</td><td>원수 격파, 봉인된 악마·화신·적 영웅 처치 같은 큰 공적</td><td>없음</td></tr>
+<tr><td><strong>유물 조각</strong></td><td>유물 강화, 유물 칸</td><td>같은 유물을 또 발굴할 때, 감염 핵·제단 파괴</td><td>없음</td></tr>
+</tbody></table></div></li>
+<li><p><strong>제국 공적 등급은 누적 송금액으로 오른다</strong> (D101). 지금까지 보낸 공적금 총량이 쌓일수록 세금이 줄고 웃돈이 붙는다. 눈덩이가 너무 커지지 않도록 웃돈 상한을 둔다.</p></li>
+<li><p><strong>강화 트리는 분야별 5개</strong> (D102): 본부(체력·창고)·굴착(속도·스캐너·탐사)·생산(채굴·조합)·군사(병참 칸·능력치)·작전(시작 자원·동료 자리·유물 칸). 원하는 방향으로 특화한다.</p></li>
+<li><p><strong>장교·동료는 공적 조건 → 재화로 영입</strong> (D103): 특정 공적(예: 퓨라 원수 격파, 레드존 5구간 생존)을 이루면 목록에 올라오고, 영입 인장으로 영입한다. 기록 경쟁(D39) 말고도 <strong>중간 목표</strong>가 생긴다.</p></li>
+</ul>
+<h4 id="유물-프리셋-기록-레벨-상한-d107d110">유물, 프리셋, 기록, 레벨 상한 (D107~D110)</h4>
+<ul>
+<li><p><strong>유물</strong> (D107): 판 도중 발굴하면 <strong>그 판에 바로 효과</strong>가 있고 영구 수집된다. 다음 판부터는 시작할 때 <strong>3개</strong>(강화 트리로 최대 6개)를 골라 가져간다. 같은 유물을 또 얻으면 <strong>유물 조각</strong>이 되고, 조각으로 유물을 <strong>1~3성</strong>까지 강화한다.</p></li>
+<li><p><strong>프리셋 = 작전 계획서</strong> (D108): 건물·벽·연결선 <strong>배치</strong>에 굴착 방침·목표 수·전투 방침·우선순위 같은 <strong>방침</strong>까지 한 묶음. 판을 시작할 때 골라 한 번에 적용한다. 직전 판은 자동 저장되고, 직접 저장 칸은 5개다.</p></li>
+<li><p><strong>기록</strong> (D109): 진출 지역 수·최고 판 안 레벨·생존 시간·격파한 원수·누적 송금액 등 <strong>항목마다</strong> 개인 최고 기록과 <strong>Steam 리더보드</strong>.</p></li>
+<li><p><strong>판 안 레벨은 상한 없음</strong> (D110): 오를수록 필요 경험치가 가파르다. 굴착 반경은 지역 크기에서 멈추고, 그 뒤로는 작은 능력치 보너스가 붙는다. &quot;최고 레벨&quot;이 기록 항목이 된다.</p></li>
+</ul>
+</details>
+<h3 id="47-p6-종족지역-확장-프레임워크--관리자-도구-완료--설계서-승인">4.7 P6 종족·지역 확장 프레임워크 + 관리자 도구 [완료 — 설계서 승인]</h3>
+<blockquote>
+<p>세부 설계는 <strong><a href="specs/2026-09-26-p6-extension-design.html">P6 설계서</a></strong>에 있다. 요약: 아래 대응표의 칸이 <strong>종족 규칙의 공통 틀</strong>(코드 규칙 + 데이터 값), 우리·적 유닛은 <strong>같은 데이터 형식</strong>, 지역 데이터 10항목, <strong>에디터 관리자 창</strong>(격자 지도·지형 미리보기·검사·시험 플레이), <strong>지역 무료·종족 DLC</strong>(Addressables), 모드 대비(ID 참조·버전 번호), 세이브 호환(ID 저장, 버전 불일치 시 정산 후 종료), 오라클 3분 무사망 시 패배(D112~D116).</p>
+</blockquote>
+<p>이미 정해진 것: 모든 콘텐츠는 데이터(<code>ScriptableObject</code>)로 정의한다(4.1), 1차 출시는 인류 제국만 플레이어블이고 나머지는 업데이트로(D2), 지역은 개발자가 콘텐츠 업데이트로 추가하며 이를 위한 <strong>지역 관리자 도구</strong>가 필요하다(D31·D35), 종족별 경제·기믹은 아래 대응표로 미리 설정했다(D104~D106).</p>
+<p>이 단계에서 정할 것: 관리자 도구의 형태, 새 콘텐츠를 배포하는 방식, 모드 지원, 오라클 플레이어블의 패배 조건, 종족·지역 데이터의 틀.</p>
+<h4 id="관리자-도구-배포-모드-오라클-패배-d112d115">관리자 도구, 배포, 모드, 오라클 패배 (D112~D115)</h4>
+<ul>
+<li><p><strong>관리자 도구 = Unity 에디터 안의 도구</strong> (D112): 에디터에 전용 창을 띄워 지역·종족·유닛 데이터를 편집하고, 시드를 바꿔 지형을 미리 보고, 바로 시험 플레이한다. 게임 빌드에는 들어가지 않는다.</p></li>
+<li><p><strong>배포: 지역은 무료 업데이트, 종족은 유료 DLC</strong> (D113). 게임을 오래 살리면서 개발비를 벌 수 있다.</p></li>
+<li><p><strong>모드는 1차엔 없음, 문은 열어 둠</strong> (D114): 콘텐츠가 데이터 파일이라 나중에 Steam 창작마당으로 이어질 수 있게만 둔다.</p></li>
+<li><p><strong>오라클 플레이어블의 패배 = 전장이 조용해지면 흩어짐</strong> (D115): 일정 시간 아무도 죽지 않으면 개념이 흩어진다. 죽음을 먹고 사는 설정과 맞고, 오라클이 계속 싸움을 부추겨야 한다. D106의 열린 점 확정.</p></li>
+</ul>
+<h4 id="사전-설정--종족별-경제기믹-d104d106">사전 설정 — 종족별 경제·기믹 (D104~D106)</h4>
+<p>나중에 다른 종족을 플레이어블로 추가할 때(D2) 그대로 옮겨 쓰도록, <strong>인류 제국의 시스템을 칸으로 삼아</strong> 종족마다 채워 둔다. (D104)</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">칸</th><th scope="col">인류 제국</th><th scope="col">퓨라</th><th scope="col">시온</th><th scope="col">오라클 (플레이어블)</th></tr></thead>
+<tbody>
+<tr><td>자원</td><td>굴착병·채굴기 → 본부 창고</td><td>감염 영역이 광맥을 먹음</td><td>제사장이 광맥에 제단 → 제물 채굴</td><td>전장의 <strong>사망</strong>에서 개념 에너지</td></tr>
+<tr><td>확장</td><td>굴착 + 굴착 가능 영역</td><td>감염 영역이 퍼짐</td><td>본진·제사장 주위 신성영역</td><td>없음 — 전장 전체를 내려다봄</td></tr>
+<tr><td>유닛</td><td>도구 → 병참 → 목표 수</td><td>영역 크기로 스폰 + 합체</td><td>바친 자원으로 신성영역에 소환. <strong>제사장은 소환된 뒤 목적지까지 이동</strong>해야 함(D105)</td><td>거의 없음 — 레드존·화신을 일으킴</td></tr>
+<tr><td>특수 기믹</td><td>병과 색·마크, 재무장</td><td>감염(50% 부활)</td><td>심판, 봉인된 악마</td><td>레드존, 개념 13가지</td></tr>
+<tr><td>영웅</td><td>장교 + 동료</td><td>동화 → 원형체 등</td><td>강림 → 오파님 등</td><td>수렴 → 화신</td></tr>
+<tr><td>판 종료</td><td>본부 파괴</td><td>주 감염 핵 파괴</td><td>본진 파괴 — 풀린 악마를 3분 안에 다시 가두지 못하면 끝</td><td><strong>승리</strong>: 모든 유닛이 죽거나 자원이 바닥남(D106)</td></tr>
+<tr><td>판 사이 이야기 (D12)</td><td>제국이 새 장교 파견</td><td>하이퍼마인드가 새 포자를 떨어뜨림</td><td>새 제사장단이 강림</td><td>흩어진 개념이 다시 응결</td></tr>
+<tr><td>영구 재화 흐름 (D21)</td><td>제국 송금·세금</td><td>동화한 종의 유전자 저장</td><td>제물 일부를 천상에 봉헌</td><td>개념의 공명 축적</td></tr>
+<tr><td>작전 계승 (D25)</td><td>배치 기억·프리셋</td><td>영역 배치·합체 비율 기억</td><td>제단·신성영역 배치 기억</td><td>자주 쓴 개념이 강해짐</td></tr>
+</tbody></table></div>
+<ul>
+<li><p><strong>시온 제사장의 이동 절차</strong> (D105): 제사장은 유닛이다. 기존 신성영역에서 <strong>소환(생산)된 뒤</strong>, 쇄석 천사가 판 길을 따라 <strong>목적지(광맥)까지 걸어가</strong> 자리를 잡아야 제단과 새 신성영역이 생긴다. 이동 중에는 신성영역 밖이라 약하다. 적 시온(P5)에도 똑같이 적용한다.</p></li>
+<li><p><strong>오라클 플레이어블 = 관전자 시점 플레이</strong> (D106):</p>
+<ul>
+<li><p>전장은 자동으로 돌아가고(다른 종족들이 AI로 싸움), 오라클 플레이어는 <strong>내려다보며</strong> 레드존·화신을 일으킨다.</p></li>
+<li><p><strong>유닛을 많이 죽일수록 강해진다</strong>(1차 버전의 레드존 강화 규칙이 그대로 플레이어의 힘이 됨).</p></li>
+<li><p>목표는 <strong>모든 유닛을 죽이거나 자원이 모두 없어질 때까지 누구도 승리하지 못하게 하는 것</strong>.</p></li>
+<li><p>[열린 점] 오라클의 패배 조건(예: 한 세력이 행성을 장악, 제한 시간)은 P6·P7에서 정한다.</p></li>
+</ul></li>
+<li><p>세부 수치와 연출은 실제로 그 종족을 추가할 때 P6·P7에서 다듬는다.</p></li>
+</ul>
+<h3 id="48-p7-세계관서사-완료--설계서-승인">4.8 P7 세계관·서사 [완료 — 설계서 승인]</h3>
+<blockquote>
+<p>이름 목록과 브리핑·보고서 예시는 <strong><a href="specs/2026-09-28-p7-lore-design.html">P7 설계서</a></strong>에 있다. 요약: 제국 행정 지성 <strong>콘실리움</strong>, 재화 <strong>트리부툼·시길룸·렐리퀴아 파편</strong>, 행성 <strong>카르케르</strong>, 병과 호칭·색 10종, 장교·동료 20명, 영입 조건 10개, 유닛·건물·적 이름, 지역 유형 7, 유물 10종(D121).</p>
+</blockquote>
+<p>이미 정해진 것: 종족 설정(1.3), 장교 교대와 작전 계승 문화(D12·D25), 제국 송금·세금(D21), 기록 경쟁이라 스토리 엔딩이 없고 세계관은 분위기와 동기를 맡음(D39), 시온은 악마를 가둔 간수(D98), 오라클은 레드존 현상(D93), 적 영웅(오파님·세라핌·케루빔 등)과 악마 이름(D97·D98).</p>
+<p>이 단계에서 정할 것: 세계관의 전제(왜 지하에서 재건하는가), 톤, 이름 짓는 방식, 이야기를 전하는 방법, 이름 목록(재화·병과·장교·동료·유물·건물·지역·적 유닛), 영입 조건 목록.</p>
+<h4 id="전제-톤-이름-이야기-전달-d117d120">전제, 톤, 이름, 이야기 전달 (D117~D120)</h4>
+<ul>
+<li><p><strong>전제</strong> (D117): 이것은 <strong>인류 제국의 정복 전쟁</strong>이다. 제국은 한 행성에 대군을 보내는 대신, <strong>장교 한 명</strong>을 지하로 내려보내 스스로 불어나게 한다. &quot;한 사람이 종족을 재건할 수 있는 기술&quot;(1.3)이 곧 <strong>최소 자원으로 최대 효율을 내는 정복 수단</strong>이다. 장교가 쓰러지면 다음 장교를 보내고, 불어난 식민지의 산출은 공납(세금)으로 거둔다.</p></li>
+<li><p><strong>톤</strong> (D118): <strong>진지한 그림다크.</strong> 유머 없이 비정하고 냉혹하다. 제국은 장교를 소모품으로 셈한다.</p></li>
+<li><p><strong>이름</strong> (D119): <strong>종족마다 다른 언어풍.</strong> 인류 제국은 라틴어풍, 시온은 히브리어·성경풍, 퓨라는 생물학·바이러스 용어, 오라클은 한국어 개념어. 이름만 봐도 어느 편인지 보인다.</p></li>
+<li><p><strong>이야기 전달</strong> (D120): <strong>판 시작 브리핑</strong>과 <strong>판 종료 보고서</strong> 두 곳. 대사·도감은 두지 않는다.</p></li>
+</ul>
+<h3 id="49-p1-기술-스택프로젝트-준비-설계-중--2026-09-28-시작">4.9 P1 기술 스택·프로젝트 준비 [설계 중 — 2026-09-28 시작]</h3>
+<p>설계에서 나온 기술 요구: Unity(D1), PC·Steam(D36), 로우폴리 3D + 쿼터뷰(D40), 화면과 분리된 시뮬레이션·명령 객체·시드 난수(4.1), 청크 렌더링(P2), 팀 색 마스크(P4), 네온 발광(D40), Addressables(P6), Steam 리더보드·클라우드(P8), 데이터는 <code>ScriptableObject</code>(4.1).</p>
+<p>이 단계에서 정할 것: 코드 편집기, 렌더 파이프라인, Unity 버전, 폴더와 코드 나눔, Git 설정, 테스트 방식, 시뮬레이션 틱.</p>
+<ul>
+<li><p><strong>코드 편집기는 Visual Studio 2022 Community</strong> (D122): 무료, Unity 설치 때 함께 깔리고 디버거 연결이 가장 간단하다.</p></li>
+<li><p><strong>렌더 파이프라인은 URP</strong> (D123): 로우폴리 3D와 네온 발광(Bloom)에 충분하고 가볍다. 나중에 모바일 이식도 쉽다.</p></li>
+<li><p><strong>나머지 준비 사항 확정</strong> (D124): 최신 Unity 6 LTS, Unity 프로젝트는 <code>Game/</code> 폴더, 코드는 Simulation(순수 C#, UnityEngine 참조 금지)·View·Editor 세 덩어리를 asmdef로 나눔, 초당 20틱 + 화면 보간, 처음 패키지는 URP·Input System·Test Framework(Addressables·Steamworks는 나중), EditMode 테스트, Git LFS·Force Text, 설치 순서는 Unity Hub → Unity 6 LTS(+ VS 2022, Windows Build Support) → Git LFS → URP 3D 템플릿.</p></li>
+<li><p><strong>운영 서버 요구</strong> (D125): 일부 내용은 <strong>관리자가 서버로 통제</strong>하고, 플레이어의 진행을 <strong>관리자가 확인</strong>할 수 있어야 하며, <strong>서버 부담은 적어야</strong> 한다. 새 단계 <strong>P9 운영 서버</strong>에서 설계한다.</p></li>
+<li><p><strong>P9 결정</strong> (D126~D128): <strong>Unity Gaming Services</strong>로 시작(커지면 Supabase로 갈아탈 수 있게 <code>IOnlineServices</code>로 감쌈), 통제는 밸런스·지역·이벤트·공지·최소 버전·리더보드·플레이어 조치, 확인은 <strong>플레이어별 진행 요약만</strong>. 서버와는 실행 시 1번, 판 종료 시 1번만 통신한다.</p></li>
+<li><p>세부는 <strong><a href="specs/2026-09-28-p1-p9-setup-liveops-design.html">P1·P9 설계서</a></strong>.</p></li>
+</ul>
+<hr>
+<h2 id="5-개발-준비물-체크리스트">5. 개발 준비물 체크리스트</h2>
+<ul>
+<li class="task"><p><input type="checkbox" disabled checked aria-label="끝남"> Git 저장소 만들기 (2026-09-24)</p></li>
+<li class="task"><p><input type="checkbox" disabled checked aria-label="끝남"> 기획서·진행 대시보드 만들기 (2026-09-24)</p></li>
+<li class="task"><p><input type="checkbox" disabled aria-label="할 일"> Unity Hub 설치 → Unity 6 LTS 계열 최신 버전 설치</p></li>
+<li class="task"><p><input type="checkbox" disabled aria-label="할 일"> 코드 편집기: Visual Studio 2022 Community(무료) 또는 JetBrains Rider + Unity 연동</p></li>
+<li class="task"><p><input type="checkbox" disabled aria-label="할 일"> Unity 프로젝트 생성 후 Unity용 <code>.gitignore</code>, 대용량 에셋용 Git LFS 설정</p></li>
+<li class="task"><p><input type="checkbox" disabled aria-label="할 일"> Unity 기초 개념 익히기: GameObject·Component, <code>MonoBehaviour</code> 생명주기(<code>Awake</code>/<code>Start</code>/<code>Update</code>), Prefab, <code>ScriptableObject</code>, Tilemap/Grid</p></li>
+<li class="task"><p><input type="checkbox" disabled aria-label="할 일"> 로우폴리 3D(D40) 임시 에셋 정하기 (Unity 에셋스토어의 무료 로우폴리 팩 등)</p></li>
+</ul>
+<hr>
+<h2 id="6-변경-이력">6. 변경 이력</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">버전</th><th scope="col">날짜</th><th scope="col">내용</th></tr></thead>
+<tbody>
+<tr><td>v0.1</td><td>2026-09-24</td><td>원안 정리, Unity 확정(D1~D3), 굴착 중 포탈·적 종족 조우 추가(D4), 개발 단계 P0~P7 제안</td></tr>
+<tr><td>v0.2</td><td>2026-09-24</td><td>가정 A1·A3·A4 확정, A2를 &quot;싱글 먼저 → 멀티 확장&quot;으로 수정(D5~D8), 영웅 유닛 추가(1.6), 질문 Q8·Q9 추가</td></tr>
+<tr><td>v0.3</td><td>2026-09-25</td><td>쿼터뷰 확정(D9), 단계적으로 넓어지는 유한 맵(D10), 키우기 + 로그라이트 구조(D11), 장교 교대 설정(D12), 한 판 구조(1.7)·핵심 루프 두 고리로 재정리, 최적화 원칙 추가, 개발 단계 P8 추가, 질문 Q10~Q13 추가</td></tr>
+<tr><td>v0.4</td><td>2026-09-25</td><td>판 종료 = 본부 파괴, 장교는 본부에서 복귀(D13), 귀환 기능 없음(D14), 압박 상승 장치 질문 Q14 추가</td></tr>
+<tr><td>v0.5</td><td>2026-09-25</td><td>압박 상승 장치 네 가지 확정(D15)과 역할 분담 제안(1.8), 한 판 길이 질문 Q15 추가</td></tr>
+<tr><td>v0.6</td><td>2026-09-25</td><td>한 판 2시간 이상(D16), 중단 저장만 허용(D17), 긴 판의 좌절감 위험 기록, Q12를 &quot;언제 확정되는가&quot;까지 넓힘</td></tr>
+<tr><td>v0.7</td><td>2026-09-25</td><td>영구 이점 판 도중 적립(D18)·네 종류(D19, 1.9), 자동화 디자인 기둥과 생산 연결(D20, 1.10), 디자인 기둥 세 가지 추가(1.1), 제국 송금 저축과 레벨별 세금(D21), 질문 Q16~Q18 추가</td></tr>
+<tr><td>v0.8</td><td>2026-09-25</td><td>송금은 번 즉시 자동(D22), 세율은 판을 넘어 쌓이는 영구 레벨 기준 + 제국의 세율 조정 설정(D23), 눈덩이 효과 밸런스 주의 추가</td></tr>
+<tr><td>v0.9</td><td>2026-09-25</td><td>플레이어 역할 확정(D24), 건물 배치 기억·자동 건설·프리셋과 작전 계승 문화(D25), 컨베이어·점등·입체 연결 표현(D26), Q4에 배치 기억과의 연관 표시, 배치 기억 = 명령 기록 원칙 추가</td></tr>
+<tr><td>v0.10</td><td>2026-09-25</td><td>복수전(D27): 전임자 지점·원수 진영의 상대 위치 재현과 자원 회수, 배치 기억도 본부 기준 상대 위치로, Q4를 &quot;나머지 지형&quot; 문제로 좁힘</td></tr>
+<tr><td>v0.11</td><td>2026-09-25</td><td>나머지 지형은 매 판 새로 생성(D28), 원수 성장·자원 누적(D29), 시드 기반 맵 생성 원칙 추가</td></tr>
+<tr><td>v0.12</td><td>2026-09-25</td><td>판 안 레벨 경험치 원천(D30), 지역·굴착 가능 영역 두 층 구조(D31), 영구 레벨은 제국 전체에 하나(D32), 데이터 주도 설계에 지역 추가, 질문 Q19 추가</td></tr>
+<tr><td>v0.13</td><td>2026-09-25</td><td>판 도중 지역 진출·탐사 제한·선택 진입(D33), 지역별 차이 네 가지(D34), 지역 관리자 도구(D35), P6을 &quot;종족·지역 확장 프레임워크 + 관리자 도구&quot;로 확대</td></tr>
+<tr><td>v0.14</td><td>2026-09-25</td><td>PC(Steam) 먼저(D36), 장교 + 영구 동료 영웅과 영구 이점 다섯 종류(D37), 안전한 생산만 오프라인 보상과 상한 가정(D38), 가정 A5·A6 정리</td></tr>
+<tr><td>v0.15</td><td>2026-09-25</td><td>장기 목표는 기록 경쟁(D39, 1.8.1), 로우폴리 3D + 쿼터뷰(D40), P0 큰 질문 마감 — 남은 세부 질문을 담당 단계로 이관, P0 사용자 검토 대기</td></tr>
+<tr><td>v0.16</td><td>2026-09-25</td><td>전체 자체 검토: 핵심 루프 그림을 D24·D31·D33에 맞춤, 세금 설명을 &quot;제국 공적 등급&quot;으로 통일, D7·D10에 이후 조정 표시, 낡은 질문 참조 정리, 개발 단계 표에 관련 결정 연결, 준비물 체크리스트 갱신</td></tr>
+<tr><td>v0.17</td><td>2026-09-25</td><td>P0 완료(사용자 승인), P2 지하 굴착·확장 설계 시작(4.2)</td></tr>
+<tr><td>v0.18</td><td>2026-09-25</td><td>P2: 한 단계 위까지 느린 굴착(D41), 굴착 능력은 유닛의 도구 등급(D42), 스캐너 부분 공개 시야(D43)</td></tr>
+<tr><td>v0.19</td><td>2026-09-25</td><td>P2: 굴착병·전투병 분리(D44), 굴착 방침 다섯 가지(D45), 판 곳에만 건설·남긴 암반은 방어벽(D46)</td></tr>
+<tr><td>v0.20</td><td>2026-09-25</td><td>P2: 벽 설치 — 건물과 같이 배치 기억·자동 설치·프리셋(D47)</td></tr>
+<tr><td>v0.21</td><td>2026-09-25</td><td>P2: 방침 우선순위 목록(D48), 격자형 지역(D49), 본부 중심 동심원 영역(D50)</td></tr>
+<tr><td>v0.22</td><td>2026-09-25</td><td>P2: 전진 기지 중심(D51), 블록 종류·지형 생성·수치 승인(D52), P2 설계서 작성 — 4.2는 요약과 링크로 정리</td></tr>
+<tr><td>v0.23</td><td>2026-09-25</td><td>P2 완료(설계서 승인), P3 자원·도구 제작 경제 설계 시작(4.3)</td></tr>
+<tr><td>v0.24</td><td>2026-09-25</td><td>P3: 굴착병 + 채굴기 채굴(D53), 본부 = 전역 창고 + 연결선(D54), 캔 암반은 석재(D55) — P2 설계서의 설치 벽 등급 가정도 확정으로 수정</td></tr>
+<tr><td>v0.25</td><td>2026-09-25</td><td>P3: 금속·결정 두 계열(D56), 레시피 구조(D57), 등급별 가공 단계(D58), 조합 건물 방침 자동 + 고정(D59)</td></tr>
+<tr><td>v0.26</td><td>2026-09-25</td><td>P3: 우선순위 1~5(D60), 전력 없음(D61), 창고 넘침 자동 송금(D62, 1.9에도 반영), 자동 연결 + 직접 수정(D63)</td></tr>
+<tr><td>v0.27</td><td>2026-09-25</td><td>P3: 건물·연결선·수치·오프라인 제안 승인(D64), P3 설계서 작성 — 4.3은 요약과 링크로 정리</td></tr>
+<tr><td>v0.28</td><td>2026-09-25</td><td>P3 완료(설계서 승인), P4 유닛 생산·병참 설계 시작(4.4)</td></tr>
+<tr><td>v0.29</td><td>2026-09-25</td><td>P4: 병종 구성과 전차·비행선·전함(D65), 장교 병과의 특성·색·마크(D66), 건설 드론(D67), 병종별 목표 수(D68), 병참 건물 수에 비례하는 유닛 상한(D69) — P3 설계서의 조합 방침을 목표 부족분 기준으로 수정</td></tr>
+<tr><td>v0.30</td><td>2026-09-25</td><td>P4: 대형 유닛 지하 운용과 크기(D70), 병과 10개(D71), 전투 방침 우선순위 목록(D72), 자동 재무장(D73)</td></tr>
+<tr><td>v0.31</td><td>2026-09-25</td><td>P4: 동료 병과(D74), 동료 인원 2→4(D75), 동료 복귀(D76), 영웅 성장(D77)</td></tr>
+<tr><td>v0.32</td><td>2026-09-25</td><td>P4: 생산 건물·레시피·능력치·수치 제안 승인(D78), P4 설계서 작성 — 4.4는 요약과 링크로 정리, P3 설계서에 P4 연결 표시</td></tr>
+<tr><td>v0.33</td><td>2026-09-25</td><td>P4 완료(설계서 승인), P5 조우·침공 설계 시작(4.5)</td></tr>
+<tr><td>v0.34</td><td>2026-09-25</td><td>P5: 적 기지 규칙 같게·경제 가짜(D79), 피해·방어 유형표(D80), 포탈 파괴(D81), 전진 기지 붕괴 처리(D82) — P2 설계서의 열린 점 확정</td></tr>
+<tr><td>v0.35</td><td>2026-09-25</td><td>P5: 유형표 확정(D83), 퓨라 감염 떼(D84), 시온 정예·심판(D85), 오라클 벽 통과·개념 간섭과 개념 추가(D86) — P3 설계서의 연결선 가정 수정</td></tr>
+<tr><td>v0.36</td><td>2026-09-25</td><td>P5: 퓨라 감염 규칙과 비행·군단급 감염체(D87), 시온 강림(D88), 종족별 영웅(D89), 시온 본부 파괴 시 악마 소환·복구(D90)</td></tr>
+<tr><td>v0.37</td><td>2026-09-25</td><td>P5: 퓨라 감염 영역(D91), 시온 제단·제사장·신성영역(D92), 오라클 맵 전체 레드존(D93) — D79·D86·D87에 대체 표시</td></tr>
+<tr><td>v0.38</td><td>2026-09-25</td><td>P5: 퓨라·시온·레드존 세부(D94~D96), 적 영웅(D97), 봉인된 악마(D98), 규칙(D99) 확정</td></tr>
+<tr><td>v0.39</td><td>2026-09-25</td><td>P5 설계서 작성 — 4.5는 요약과 링크로 정리, 1.3에 오라클이 현상임을 명시, Q7 해결, 오라클 플레이어블을 열린 점으로 추가, P4 설계서의 병과 효과를 P5와 연결</td></tr>
+<tr><td>v0.40</td><td>2026-09-25</td><td>P5 완료(설계서 승인), P8 성장·메타 진행 설계 시작(4.6)</td></tr>
+<tr><td>v0.41</td><td>2026-09-25</td><td>P8: 용도별 영구 재화(D100), 누적 송금액 공적 등급(D101), 분야별 강화 트리(D102), 공적 조건 영입(D103)</td></tr>
+<tr><td>v0.42</td><td>2026-09-25</td><td>4.7 종족별 경제·기믹 대응표 미리 설정(D104), 시온 제사장 이동 절차(D105, P5 설계서 반영), 오라클 플레이어블 = 관전자 시점(D106)</td></tr>
+<tr><td>v0.43</td><td>2026-09-26</td><td>P8: 유물 발굴 즉시 사용·영구 수집(D107), 작전 계획서 프리셋(D108), 항목별 기록·리더보드(D109), 판 안 레벨 상한 없음(D110)</td></tr>
+<tr><td>v0.44</td><td>2026-09-26</td><td>P8 제안 승인(D111), P8 설계서 작성 — 4.6은 요약과 링크로 정리</td></tr>
+<tr><td>v0.45</td><td>2026-09-26</td><td>P8 완료(설계서 승인), P6 확장 프레임워크·관리자 도구 설계 시작(4.7 확대)</td></tr>
+<tr><td>v0.46</td><td>2026-09-26</td><td>P6: 에디터 안 관리자 도구(D112), 지역 무료·종족 DLC(D113), 모드 문 열어 둠(D114), 오라클 패배 조건(D115)</td></tr>
+<tr><td>v0.47</td><td>2026-09-26</td><td>P6 제안 승인(D116), P6 설계서 작성 — 4.7에 요약과 링크</td></tr>
+<tr><td>v0.48</td><td>2026-09-28</td><td>P6 완료(설계서 승인), P7 세계관·서사 설계 시작(4.8)</td></tr>
+<tr><td>v0.49</td><td>2026-09-28</td><td>P7: 정복 전쟁 전제(D117), 진지한 그림다크(D118), 종족별 언어풍 이름(D119), 브리핑·보고서(D120)</td></tr>
+<tr><td>v0.50</td><td>2026-09-28</td><td>P7 설계서 승인(D121) — P7 완료. 남은 단계는 P1(Unity 준비)</td></tr>
+<tr><td>v0.51</td><td>2026-09-28</td><td>P1: VS 2022(D122), URP(D123), 나머지 준비 사항(D124). 운영 서버 요구(D125) → 새 단계 P9</td></tr>
+<tr><td>v0.52</td><td>2026-09-28</td><td>P9: UGS로 시작·Supabase 전환 가능(D126), 통제 항목(D127), 요약만 확인(D128). P1·P9 설계서 작성</td></tr>
+<tr><td>v0.53</td><td>2026-09-28</td><td>P1·P9 설계서 승인(D129) — 모든 설계 단계 완료. 개발 도구 D 드라이브 설치. 다음: P2 회색 박스 구현 계획</td></tr>
+<tr><td>v0.54</td><td>2026-09-28</td><td>P3 회색 박스 실행 결과로 채굴 규칙 수정: 채굴기 몫 광맥(D130), 채굴기 반경 3칸(D131)</td></tr>
+<tr><td>v0.55</td><td>2026-09-28</td><td>채굴기 광맥은 마르지 않음(D132) — 굴착병과 채굴기의 효율 차. 자원 고갈은 굴착병 쪽에만</td></tr>
+<tr><td>v0.56</td><td>2026-09-28</td><td>유닛끼리 부딪힘(D133) — 한 칸에 한 유닛, 좁은 통로는 병목</td></tr>
+<tr><td>v0.57</td><td>2026-09-28</td><td>모든 유닛은 겹치지 않음(D134) — 굴착병 포함, 히트박스 높이 기준, 1칸 통로 자리 맞바꾸기. 생산 규칙 보강(D135) — P4 최종 리뷰의 영구 정지 수정</td></tr>
+<tr><td>v0.58</td><td>2026-09-28</td><td>나를 친 적 유닛이 먼저(D136) — P5 회색 박스 실행에서 찾은 대상 고정 수정. 기본 전투 방침 순서 확정</td></tr>
+<tr><td>v0.59</td><td>2026-09-29</td><td>구조물보다 적 유닛(D137) — P5 최종 리뷰 반영: 포탈 둘레에서만 나오기, 잔해는 수요·연결에서 빼기, 적 다시 다가가기, 재무장 유닛은 싸우며 걷기</td></tr>
+<tr><td>v0.60</td><td>2026-09-29</td><td>P5b 적 기지와 전선 설계 승인(D138~D145) — 포탈 대신 적 기지의 RTS식 생산·가짜 경제, 처치 보상, 점령으로 맵 확장, 적 굴착, 교전 10~20분</td></tr>
+<tr><td>v0.61</td><td>2026-09-29</td><td>P5b 회색 박스 균형 조정 — 1등급 기지 vs 소총병 12명이 약 13분에 무너지게: 수입·생산 시간은 설계서 그대로, 핵 60000·둥지 20000(초안의 5배). 초안 수치로는 약 3분에 무너졌다 (B9 조정 표)</td></tr>
+<tr><td>v0.62</td><td>2026-09-29</td><td>P5b 실행 관찰 반영 — 적이 판 굴 넓히기·벽/건물 자리 제한(D146), 건물은 지상 유닛을 막는다(D147), 이동은 칸이 아닌 연속 좌표·히트박스 기준으로 바꾼다(D148 [원안], 새 단계 P5c에서 설계). 실제 판에서 유닛이 굴 입구에서 뭉쳐 기지가 20분 안에 안 무너진 것이 이유</td></tr>
+<tr><td>v0.63</td><td>2026-09-29</td><td>P5c 이동·충돌 모델 개편 설계 승인(D147~D150 확정) — 연속 좌표·원 히트박스(D149 지름표, D70 대체)·밀어내기 규칙(D150)·건물 장애물, 칸 지도는 길 찾기 전용. P5d 전투력 환산 엔진 예고(D151, 발사 간격 0.7~1.5초·초당 화력 ∝ 생산 비용)</td></tr>
+</tbody></table></div>
+</article>
+
+</main>
+</div>
+<footer class="site-footer">
+  <div class="wrap">
+    <p><strong>CraftDefenseDungeon</strong>(작업용 이름) — 기획서 v0.63 · 2026-09-29 기준.</p>
+    <p>이 저장소는 소개 페이지와 기획·설계 문서만 공개합니다. 게임 소스 코드와 구현 계획서는 비공개 저장소에서 관리합니다. 라이선스 미정.</p>
+  </div>
+</footer>
+</body>
+</html>

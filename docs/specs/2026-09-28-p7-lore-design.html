@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>P7 세계관·서사 설계서 · CraftDefenseDungeon</title>
+<meta name="description" content="설계서 — P7 세계관·서사 설계서">
+<link rel="stylesheet" href="../assets/site.css">
+<script src="../assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html" aria-label="CraftDefenseDungeon 소개"><svg class="brand-mark" viewBox="0 0 24 26" width="22" height="24" aria-hidden="true"><path d="M12 1.5 22.5 7.5v11L12 24.5 1.5 18.5v-11z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 6.5 17 9.5v6l-5 3-5-3v-6z" fill="currentColor" opacity=".85"/></svg><span>CraftDefenseDungeon</span></a>
+    <nav class="site-nav" aria-label="사이트"><a href="../index.html">소개</a><a href="../game-plan.html">기획서</a><a href="../index.html#docs">문서 목록</a><a href="../index.html#roadmap">로드맵</a></nav>
+  </div>
+</header>
+<div class="wrap doc-layout">
+<aside class="doc-aside"><details class="toc" open><summary>목차</summary><nav aria-label="목차"><ol><li><a href="#1-세계관">1. 세계관</a><ol><li><a href="#11-전제-d117">1.1 전제 (D117)</a></li><li><a href="#12-톤-d118">1.2 톤 (D118)</a></li><li><a href="#13-종족의-시선">1.3 종족의 시선</a></li></ol></li><li><a href="#2-이름-짓는-방식-d119">2. 이름 짓는 방식 (D119)</a></li><li><a href="#3-인류-제국의-이름-제안">3. 인류 제국의 이름 [제안]</a><ol><li><a href="#31-기관과-재화">3.1 기관과 재화</a></li><li><a href="#32-병과-호칭과-색">3.2 병과 호칭과 색</a></li><li><a href="#33-장교와-동료-병과마다-한-명씩">3.3 장교와 동료 (병과마다 한 명씩)</a></li><li><a href="#34-영입-조건-병과마다-장교동료-공통-d103">3.4 영입 조건 (병과마다, 장교·동료 공통) (D103)</a></li><li><a href="#35-유닛과-건물">3.5 유닛과 건물</a></li></ol></li><li><a href="#4-적의-이름-제안">4. 적의 이름 [제안]</a><ol><li><a href="#41-시온-히브리어성경풍">4.1 시온 (히브리어·성경풍)</a></li><li><a href="#42-퓨라-생물학바이러스-용어">4.2 퓨라 (생물학·바이러스 용어)</a></li><li><a href="#43-오라클-한국어-개념어">4.3 오라클 (한국어 개념어)</a></li></ol></li><li><a href="#5-지역-유형-제안">5. 지역 유형 [제안]</a></li><li><a href="#6-유물-제안--1차-10종">6. 유물 [제안 — 1차 10종]</a></li><li><a href="#7-이야기-전달-d120">7. 이야기 전달 (D120)</a><ol><li><a href="#71-판-시작-브리핑--콘실리움-작전-명령서">7.1 판 시작 브리핑 — 콘실리움 작전 명령서</a></li><li><a href="#72-판-종료-보고서--전사-보고와-공납-정산">7.2 판 종료 보고서 — 전사 보고와 공납 정산</a></li></ol></li><li><a href="#8-남은-가정과-열린-점">8. 남은 가정과 열린 점</a></li></ol></nav></details></aside>
+<main id="main" class="doc-main">
+<nav class="crumbs" aria-label="현재 위치"><a href="../index.html">소개</a><span aria-hidden="true">/</span><a href="../index.html#docs">설계서</a><span aria-hidden="true">/</span><span aria-current="page">P7 세계관·서사 설계서</span></nav>
+<p class="doc-src">원본 <code>docs/superpowers/specs/2026-09-28-p7-lore-design.md</code> · 238줄</p>
+<article class="md">
+<h1 id="p7-세계관서사-설계서">P7 세계관·서사 설계서</h1>
+<ul>
+<li><p>상태: <strong>승인</strong> (2026-09-28, D121)</p></li>
+<li><p>작성: 2026-09-28</p></li>
+<li><p>상위 문서: <a href="../game-plan.html">게임 기획서</a> — 결정 번호(D…)는 기획서 2장 &quot;결정 기록&quot;을 따른다.</p></li>
+<li><p>이 단계의 결정: D117~D120 (전제: 1.3 종족 설정, D12·D21·D25·D39·D93·D97·D98)</p></li>
+</ul>
+<hr>
+<h2 id="1-세계관">1. 세계관</h2>
+<h3 id="11-전제-d117">1.1 전제 (D117)</h3>
+<p>인류 제국은 정복 전쟁을 벌이고 있다. 제국은 행성마다 대군을 보내지 않는다. <strong>장교 한 명</strong>을 행성 지하로 내려보내고, 그 장교가 제국의 기술로 굴착하고, 제작하고, 병력을 찍어 내 <strong>스스로 불어나게</strong> 한다. 한 사람이 종족을 재건할 수 있는 기술은 제국에게 <strong>가장 값싼 정복 수단</strong>이다.</p>
+<ul>
+<li><p>장교가 쓰러지면 제국은 <strong>다음 장교</strong>를 보낸다. 전임자의 작전 기록이 그대로 넘어간다(D12·D25).</p></li>
+<li><p>불어난 식민지의 산출은 <strong>공납</strong>으로 거둔다. 공적을 쌓은 전선일수록 제국은 더 많이 돌려준다(D21·D101).</p></li>
+<li><p>지하인 이유: 지표는 시온의 감시와 퓨라의 포자에 덮여 있어, 들키지 않고 불어날 수 있는 곳은 지하뿐이다.</p></li>
+</ul>
+<h3 id="12-톤-d118">1.2 톤 (D118)</h3>
+<p><strong>진지한 그림다크.</strong> 유머는 없다. 제국은 장교를 소모품으로 셈하고, 보고서는 차갑다. 적들은 각자의 신념으로 움직이며, 누구도 선하지 않다.</p>
+<h3 id="13-종족의-시선">1.3 종족의 시선</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">종족</th><th scope="col">이 행성에서 무엇을 하는가</th></tr></thead>
+<tbody>
+<tr><td>인류 제국</td><td>정복. 장교를 계속 보내 지하를 차지한다</td></tr>
+<tr><td>시온</td><td>우주의 질서를 지키는 간수. 요새 아래 악마를 가둬 두었고, 하등 종족의 무단 점거를 &quot;처벌&quot;한다</td></tr>
+<tr><td>퓨라</td><td>하나가 되려는 하이퍼마인드. 행성의 모든 생명을 같은 개체로 만든다</td></tr>
+<tr><td>오라클</td><td>종족이 아니라 현상. 죽음이 쌓인 곳에 개념이 응결한다</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="2-이름-짓는-방식-d119">2. 이름 짓는 방식 (D119)</h2>
+<ul>
+<li><p><strong>고유명사</strong>(기관·인물·유닛·건물·재화)는 종족 언어풍을 따른다.</p></li>
+<li><p><strong>시스템 용어</strong>(굴착 방침, 목표 수, 우선순위 등)는 이해가 먼저라 한국어로 둔다.</p></li>
+<li><p>화면에는 고유명사 옆에 뜻을 작게 붙인다. 예) <strong>트리부툼</strong>(공납).</p></li>
+</ul>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">종족</th><th scope="col">언어풍</th></tr></thead>
+<tbody>
+<tr><td>인류 제국</td><td>라틴어풍</td></tr>
+<tr><td>시온</td><td>히브리어·성경풍</td></tr>
+<tr><td>퓨라</td><td>생물학·바이러스 용어</td></tr>
+<tr><td>오라클</td><td>한국어 개념어</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="3-인류-제국의-이름-제안">3. 인류 제국의 이름 [제안]</h2>
+<h3 id="31-기관과-재화">3.1 기관과 재화</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">무엇</th><th scope="col">이름</th><th scope="col">뜻</th></tr></thead>
+<tbody>
+<tr><td>장교를 보내고 공납을 거두는 제국 행정 지성</td><td><strong>콘실리움</strong></td><td>평의회</td></tr>
+<tr><td>공적금 (강화 재화)</td><td><strong>트리부툼</strong></td><td>공납</td></tr>
+<tr><td>영입 인장</td><td><strong>시길룸</strong></td><td>인장</td></tr>
+<tr><td>유물 조각</td><td><strong>렐리퀴아 파편</strong></td><td>유물 조각</td></tr>
+<tr><td>제국 공적 등급</td><td><strong>메리툼 등급</strong></td><td>공적</td></tr>
+<tr><td>이번 행성</td><td><strong>카르케르</strong> (정복 목록 KD-417)</td><td>감옥 — 시온이 악마를 가둔 곳</td></tr>
+</tbody></table></div>
+<h3 id="32-병과-호칭과-색">3.2 병과 호칭과 색</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">병과</th><th scope="col">호칭</th><th scope="col">색</th></tr></thead>
+<tbody>
+<tr><td>보병</td><td>레기오 페디툼</td><td>짙은 녹색</td></tr>
+<tr><td>기갑</td><td>레기오 페레아</td><td>강철 회색</td></tr>
+<tr><td>항공</td><td>레기오 아퀼라</td><td>하늘색</td></tr>
+<tr><td>함대</td><td>클라시스</td><td>남색</td></tr>
+<tr><td>공병</td><td>파브리</td><td>황토색</td></tr>
+<tr><td>군종</td><td>사케르도테스</td><td>흰색과 금색</td></tr>
+<tr><td>화생방</td><td>푸르가토레스</td><td>독성 녹색과 검정</td></tr>
+<tr><td>의무</td><td>메디키</td><td>흰색과 붉은색</td></tr>
+<tr><td>통신</td><td>벡실라리이</td><td>주황색</td></tr>
+<tr><td>정보</td><td>스페쿨라토레스</td><td>검정</td></tr>
+</tbody></table></div>
+<h3 id="33-장교와-동료-병과마다-한-명씩">3.3 장교와 동료 (병과마다 한 명씩)</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">병과</th><th scope="col">장교</th><th scope="col">동료</th></tr></thead>
+<tbody>
+<tr><td>보병</td><td>루키우스 벨라토르</td><td>가이우스 스쿠툼</td></tr>
+<tr><td>기갑</td><td>마르쿠스 페라투스</td><td>발레리아 로타</td></tr>
+<tr><td>항공</td><td>아퀼리나 세베라</td><td>펠릭스 벤투스</td></tr>
+<tr><td>함대</td><td>티베리우스 클라시쿠스</td><td>네르바 안코라</td></tr>
+<tr><td>공병</td><td>파비아 템페라</td><td>섹스투스 말레우스</td></tr>
+<tr><td>군종</td><td>세바스티아누스 피우스</td><td>클라라 칸델라</td></tr>
+<tr><td>화생방</td><td>옥타비아 푸르가</td><td>루푸스 킨니스</td></tr>
+<tr><td>의무</td><td>율리아 메디카</td><td>아울루스 수투라</td></tr>
+<tr><td>통신</td><td>퀸투스 벡실루스</td><td>리비아 시그나</td></tr>
+<tr><td>정보</td><td>카시아 움브라</td><td>데키무스 오쿨루스</td></tr>
+</tbody></table></div>
+<h3 id="34-영입-조건-병과마다-장교동료-공통-d103">3.4 영입 조건 (병과마다, 장교·동료 공통) (D103)</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">병과</th><th scope="col">조건</th></tr></thead>
+<tbody>
+<tr><td>보병</td><td>처음부터 영입됨</td></tr>
+<tr><td>공병</td><td>한 판에 블록 5,000개 굴착 (공병 동료는 처음부터 — P8)</td></tr>
+<tr><td>기갑</td><td>한 판에 전차 20대 생산</td></tr>
+<tr><td>항공</td><td>비행선으로 용암·독가스 지역의 적 기지 파괴</td></tr>
+<tr><td>함대</td><td>전함으로 암반 100블록 굴착</td></tr>
+<tr><td>군종</td><td>오라클 화신 처치</td></tr>
+<tr><td>화생방</td><td>감염 0회로 퓨라 영역 하나 소멸</td></tr>
+<tr><td>의무</td><td>유닛을 잃지 않고 원수 진영 격파</td></tr>
+<tr><td>통신</td><td>연결선 50개를 동시에 가동</td></tr>
+<tr><td>정보</td><td>포탈 10개를 열리기 전에 발견</td></tr>
+</tbody></table></div>
+<h3 id="35-유닛과-건물">3.5 유닛과 건물</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">우리 유닛</th><th scope="col">이름</th><th scope="col"></th><th scope="col">건물</th><th scope="col">이름</th></tr></thead>
+<tbody>
+<tr><td>굴착병</td><td>포소르</td><td></td><td>본부</td><td>프라이토리움</td></tr>
+<tr><td>돌격병</td><td>글라디우스</td><td></td><td>전진 기지</td><td>카스트라</td></tr>
+<tr><td>소총병</td><td>밀레스</td><td></td><td>조합 건물</td><td>파브리카</td></tr>
+<tr><td>중화기병</td><td>발리스타</td><td></td><td>병참 건물</td><td>아르마멘타리움</td></tr>
+<tr><td>전차</td><td>테스투도</td><td></td><td>제련소</td><td>푸르나</td></tr>
+<tr><td>비행선</td><td>누비스</td><td></td><td>조선소</td><td>나발리아</td></tr>
+<tr><td>전함</td><td>콜로수스</td><td></td><td>창고 확장</td><td>호레움</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>채굴기·정제소·설치 벽은 기능 이름 그대로 둔다.</p></li>
+</ul>
+<hr>
+<h2 id="4-적의-이름-제안">4. 적의 이름 [제안]</h2>
+<h3 id="41-시온-히브리어성경풍">4.1 시온 (히브리어·성경풍)</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">무엇</th><th scope="col">이름</th><th scope="col">뜻</th></tr></thead>
+<tbody>
+<tr><td>본진</td><td>미크다쉬</td><td>성소</td></tr>
+<tr><td>신성영역</td><td>케두샤</td><td>거룩함</td></tr>
+<tr><td>제단</td><td>미즈베아흐</td><td>제단</td></tr>
+<tr><td>제사장</td><td>코헨</td><td>제사장</td></tr>
+<tr><td>성전 수호자</td><td>쇼메르</td><td>지키는 자</td></tr>
+<tr><td>성기사</td><td>기보르</td><td>용사</td></tr>
+<tr><td>창기병</td><td>로마흐</td><td>창</td></tr>
+<tr><td>빛의 궁수</td><td>케셰트</td><td>활</td></tr>
+<tr><td>날개 천사</td><td>하쉬말</td><td>빛나는 자</td></tr>
+<tr><td>수호 천사</td><td>마겐</td><td>방패</td></tr>
+<tr><td>쇄석 천사</td><td>파티쉬</td><td>망치</td></tr>
+<tr><td>심판자</td><td>쇼페트</td><td>심판자</td></tr>
+<tr><td>영웅</td><td>오파님·세라핌·케루빔 (확정, D97)</td><td></td></tr>
+<tr><td>봉인된 악마</td><td>레비아탄·베엘제붑·맘몬·아스모데우스 (확정, D98)</td><td></td></tr>
+</tbody></table></div>
+<h3 id="42-퓨라-생물학바이러스-용어">4.2 퓨라 (생물학·바이러스 용어)</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">무엇</th><th scope="col">이름</th></tr></thead>
+<tbody>
+<tr><td>감염 영역</td><td>감염막</td></tr>
+<tr><td>감염 핵</td><td>게놈 핵</td></tr>
+<tr><td>소형 감염체</td><td>비리온</td></tr>
+<tr><td>감염 굴착체</td><td>천공 비리온</td></tr>
+<tr><td>산성 감염체</td><td>산성 분사체</td></tr>
+<tr><td>버프 감염체</td><td>촉매체</td></tr>
+<tr><td>거대 감염체</td><td>융합체</td></tr>
+<tr><td>비행 감염체</td><td>포자 날개</td></tr>
+<tr><td>거대 숙주</td><td>모체</td></tr>
+<tr><td>군단급 감염체</td><td>콜로니 거체</td></tr>
+<tr><td>영웅</td><td>원형체·산란 여왕·포식 군주 (확정, D97)</td></tr>
+</tbody></table></div>
+<h3 id="43-오라클-한국어-개념어">4.3 오라클 (한국어 개념어)</h3>
+<ul>
+<li><p>개념 13가지와 화신 3종(원소의 화신·생사의 저울·감정의 합창)은 이미 한국어 개념어라 그대로 쓴다(D96·D97).</p></li>
+</ul>
+<hr>
+<h2 id="5-지역-유형-제안">5. 지역 유형 [제안]</h2>
+<p>지역 하나하나는 &quot;유형 + 번호&quot;로 부른다. 예) 베나 메탈리카 III.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">지역 유형</th><th scope="col">이름</th><th scope="col">특징 (D34)</th></tr></thead>
+<tbody>
+<tr><td>시작 지역</td><td>프리마 스트라타</td><td>균형 잡힌 1~2등급</td></tr>
+<tr><td>금속 광맥 지대</td><td>베나 메탈리카</td><td>금속 많음</td></tr>
+<tr><td>결정 지대</td><td>크리스탈룸</td><td>결정 많음</td></tr>
+<tr><td>용암 지대</td><td>이그니스</td><td>용암 블록</td></tr>
+<tr><td>독가스 지대</td><td>미아스마</td><td>독가스 주머니</td></tr>
+<tr><td>붕괴 지대</td><td>루이나</td><td>불안정 암반</td></tr>
+<tr><td>심층 지대</td><td>프로푼둠</td><td>5~6등급, 희귀 자원</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="6-유물-제안--1차-10종">6. 유물 [제안 — 1차 10종]</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">유물</th><th scope="col">효과</th></tr></thead>
+<tbody>
+<tr><td>프라이토르의 인장</td><td>본부 체력 +20%</td></tr>
+<tr><td>첫 굴착자의 곡괭이</td><td>굴착 속도 +15%</td></tr>
+<tr><td>녹슨 공납 장부</td><td>세율 −5%p</td></tr>
+<tr><td>정화의 불씨</td><td>폭발 피해 +10%</td></tr>
+<tr><td>순교자의 견장</td><td>유닛이 쓰러질 때 주변 아군 회복</td></tr>
+<tr><td>고요한 종</td><td>레드존 경고 +2초</td></tr>
+<tr><td>봉인 사슬 조각</td><td>봉인된 악마 제한 시간 +30초</td></tr>
+<tr><td>포자를 태운 재</td><td>감염 확률 −15%</td></tr>
+<tr><td>끊어진 날개 깃</td><td>비행 유닛에게 주는 피해 +15%</td></tr>
+<tr><td>첫 장교의 유언</td><td>원수 진영에서 되찾는 자원 +20%</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>유물 이름은 뜻이 바로 읽히도록 한국어로 둔다. 성급이 오르면 효과가 커진다(P8).</p></li>
+</ul>
+<hr>
+<h2 id="7-이야기-전달-d120">7. 이야기 전달 (D120)</h2>
+<h3 id="71-판-시작-브리핑--콘실리움-작전-명령서">7.1 판 시작 브리핑 — 콘실리움 작전 명령서</h3>
+<p>출격 직전에 한 화면으로 보여 준다. 예시:</p>
+<blockquote>
+<p><strong>콘실리움 작전 명령 — 카르케르 / 프리마 스트라타</strong><br>
+파견: 기갑 장교 마르쿠스 페라투스 (레기오 페레아)<br>
+전임자: 율리아 메디카, 작전 2시간 41분 만에 전사. 프라이토리움은 퓨라에게 함락되었다.<br>
+원수 좌표: 전임 지점 북동 42. 회수 대상 자원이 남아 있다.<br>
+메리툼 등급 12. 공납률 14%.<br>
+명령: 지하를 확보하고, 공납을 이행하라.</p>
+</blockquote>
+<h3 id="72-판-종료-보고서--전사-보고와-공납-정산">7.2 판 종료 보고서 — 전사 보고와 공납 정산</h3>
+<p>본부가 무너지면 콘실리움이 쓰는 차가운 기록. 예시:</p>
+<blockquote>
+<p><strong>전사 보고 — 마르쿠스 페라투스</strong><br>
+작전 시간 3시간 12분. 진출 지역 4. 최고 레벨 23.<br>
+격파: 원수 진영 1, 포탈 7.<br>
+공납 정산: 트리부툼 8,420 수령 (공납률 14% 공제 후).<br>
+시길룸 3 획득.<br>
+사인: 프라이토리움 함락. 가해 세력: 시온.<br>
+다음 장교 파견을 준비한다.</p>
+</blockquote>
+<ul>
+<li><p>두 문서는 모두 <strong>판 데이터에서 자동으로 채우는 틀</strong>이다. 문장 틀과 값만 있으면 된다.</p></li>
+</ul>
+<hr>
+<h2 id="8-남은-가정과-열린-점">8. 남은 가정과 열린 점</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">항목</th><th scope="col">현재</th><th scope="col">결정 시점</th></tr></thead>
+<tbody>
+<tr><td>모든 이름 목록 (3~6장)</td><td>제안</td><td>이번 검토</td></tr>
+<tr><td>게임 최종 제목</td><td>&quot;CraftDefenseDungeon&quot;은 작업용 이름</td><td>출시 전</td></tr>
+<tr><td>퓨라·시온·오라클을 플레이어블로 낼 때의 브리핑·보고서 문체</td><td>미정</td><td>각 DLC 기획 때</td></tr>
+<tr><td>영문 표기</td><td>해외 출시 때</td><td>출시 전</td></tr>
+</tbody></table></div>
+</article>
+<nav class="pager" aria-label="같은 종류의 문서"><a class="prev" href="2026-09-28-p1-p9-setup-liveops-design.html"><span>← 이전 설계서</span>P1 프로젝트 준비 + P9 운영 서버 설계서</a><a class="next" href="2026-09-29-p5b-enemy-bases-design.html"><span>다음 설계서 →</span>P5b 적 기지와 전선 설계서</a></nav>
+</main>
+</div>
+<footer class="site-footer">
+  <div class="wrap">
+    <p><strong>CraftDefenseDungeon</strong>(작업용 이름) — 기획서 v0.63 · 2026-09-29 기준.</p>
+    <p>이 저장소는 소개 페이지와 기획·설계 문서만 공개합니다. 게임 소스 코드와 구현 계획서는 비공개 저장소에서 관리합니다. 라이선스 미정.</p>
+  </div>
+</footer>
+</body>
+</html>

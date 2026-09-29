@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>P8 성장·메타 진행 설계서 · CraftDefenseDungeon</title>
+<meta name="description" content="설계서 — P8 성장·메타 진행 설계서">
+<link rel="stylesheet" href="../assets/site.css">
+<script src="../assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html" aria-label="CraftDefenseDungeon 소개"><svg class="brand-mark" viewBox="0 0 24 26" width="22" height="24" aria-hidden="true"><path d="M12 1.5 22.5 7.5v11L12 24.5 1.5 18.5v-11z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 6.5 17 9.5v6l-5 3-5-3v-6z" fill="currentColor" opacity=".85"/></svg><span>CraftDefenseDungeon</span></a>
+    <nav class="site-nav" aria-label="사이트"><a href="../index.html">소개</a><a href="../game-plan.html">기획서</a><a href="../index.html#docs">문서 목록</a><a href="../index.html#roadmap">로드맵</a></nav>
+  </div>
+</header>
+<div class="wrap doc-layout">
+<aside class="doc-aside"><details class="toc" open><summary>목차</summary><nav aria-label="목차"><ol><li><a href="#1-목적과-범위">1. 목적과 범위</a></li><li><a href="#2-한-판-안의-성장">2. 한 판 안의 성장</a><ol><li><a href="#21-판-안-레벨-d30d110d111">2.1 판 안 레벨 (D30·D110·D111)</a></li><li><a href="#22-유물-발굴-d107">2.2 유물 발굴 (D107)</a></li></ol></li><li><a href="#3-영구-재화-d100d111">3. 영구 재화 (D100·D111)</a><ol><li><a href="#31-제국-송금과-세금-d21d22d62">3.1 제국 송금과 세금 (D21·D22·D62)</a></li><li><a href="#32-제국-공적-등급-d23d32d101d111">3.2 제국 공적 등급 (D23·D32·D101·D111)</a></li></ol></li><li><a href="#4-영구-이점">4. 영구 이점</a><ol><li><a href="#41-강화-트리-d102d111">4.1 강화 트리 (D102·D111)</a></li><li><a href="#42-장교동료-영입-d103d111">4.2 장교·동료 영입 (D103·D111)</a></li><li><a href="#43-유물-d107d111">4.3 유물 (D107·D111)</a></li></ol></li><li><a href="#5-작전-계획서-d25d47d63d108">5. 작전 계획서 (D25·D47·D63·D108)</a></li><li><a href="#6-판의-시작과-끝">6. 판의 시작과 끝</a><ol><li><a href="#61-작전-준비-화면-d111">6.1 작전 준비 화면 (D111)</a></li><li><a href="#62-판-도중">6.2 판 도중</a></li><li><a href="#63-판-종료-d13">6.3 판 종료 (D13)</a></li></ol></li><li><a href="#7-오프라인-보상-d38d111">7. 오프라인 보상 (D38·D111)</a></li><li><a href="#8-기록-d39d109">8. 기록 (D39·D109)</a></li><li><a href="#9-저장-구조-d11d17d111">9. 저장 구조 (D11·D17·D111)</a></li><li><a href="#10-구조-unity-구현-방향">10. 구조 (Unity 구현 방향)</a></li><li><a href="#11-수치-가정--회색-박스에서-조정">11. 수치 [가정 — 회색 박스에서 조정]</a></li><li><a href="#12-앞-단계의-가정-중-여기서-확정된-것">12. 앞 단계의 가정 중 여기서 확정된 것</a></li><li><a href="#13-다른-단계와의-접점">13. 다른 단계와의 접점</a></li><li><a href="#14-테스트와-검증">14. 테스트와 검증</a></li><li><a href="#15-남은-가정과-열린-점">15. 남은 가정과 열린 점</a></li></ol></nav></details></aside>
+<main id="main" class="doc-main">
+<nav class="crumbs" aria-label="현재 위치"><a href="../index.html">소개</a><span aria-hidden="true">/</span><a href="../index.html#docs">설계서</a><span aria-hidden="true">/</span><span aria-current="page">P8 성장·메타 진행 설계서</span></nav>
+<p class="doc-src">원본 <code>docs/superpowers/specs/2026-09-26-p8-progression-design.md</code> · 258줄</p>
+<article class="md">
+<h1 id="p8-성장메타-진행-설계서">P8 성장·메타 진행 설계서</h1>
+<ul>
+<li><p>상태: <strong>승인</strong> (2026-09-26)</p></li>
+<li><p>작성: 2026-09-26</p></li>
+<li><p>상위 문서: <a href="../game-plan.html">게임 기획서</a> — 결정 번호(D…)는 기획서 2장 &quot;결정 기록&quot;을 따른다.</p></li>
+<li><p>앞 단계: <a href="2026-09-25-p2-digging-design.html">P2</a>, <a href="2026-09-25-p3-economy-design.html">P3</a>, <a href="2026-09-25-p4-units-design.html">P4</a>, <a href="2026-09-25-p5-encounters-design.html">P5</a></p></li>
+<li><p>이 단계의 결정: D100~D103, D107~D111 (전제: D11~D14·D16~D19·D21~D23·D25·D30·D32·D37~D39·D47·D62·D63·D75·D77·D99)</p></li>
+</ul>
+<hr>
+<h2 id="1-목적과-범위">1. 목적과 범위</h2>
+<p>한 판 안의 성장(레벨·유물)과 판과 판 사이에 남는 것(재화·강화·해금·작전 계획서·기록), 그리고 저장 구조를 정의한다.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">포함</th><th scope="col">포함하지 않음 (담당 단계)</th></tr></thead>
+<tbody>
+<tr><td>판 안 레벨, 유물 발굴</td><td>재화 이름, 영입 조건 전체 목록, 유물 목록 (P7)</td></tr>
+<tr><td>영구 재화 3종, 송금·세금·공적 등급</td><td>강화·유물·영입 데이터를 편집하는 도구 (P6)</td></tr>
+<tr><td>강화 트리, 장교·동료 영입, 유물 수집·강화</td><td>화면 디자인 (구현 단계)</td></tr>
+<tr><td>작전 계획서, 판 시작·종료, 오프라인, 기록, 저장</td><td></td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="2-한-판-안의-성장">2. 한 판 안의 성장</h2>
+<h3 id="21-판-안-레벨-d30d110d111">2.1 판 안 레벨 (D30·D110·D111)</h3>
+<ul>
+<li><p>경험치: 적 처치, 굴착·영역 확장, 생산·건물 가동, 포탈 파괴·원수 격파(D30).</p></li>
+<li><p><strong>필요 경험치 = 100 × 1.15^(레벨 − 1)</strong>. 상한은 없다.</p></li>
+<li><p>레벨이 주는 것:</p>
+<ul>
+<li><p>굴착 가능 영역 반경 +4칸(P2, 지역 크기에 닿으면 멈춤)</p></li>
+<li><p>영웅 레벨 = 판 안 레벨(D77), 5·10·15레벨에서 능력 강화</p></li>
+<li><p>굴착 반경이 한계에 닿은 뒤로는 레벨마다 모든 능력치 +1%</p></li>
+</ul></li>
+<li><p>판이 끝나면 초기화된다. &quot;최고 레벨&quot;은 기록 항목이다(8장).</p></li>
+</ul>
+<h3 id="22-유물-발굴-d107">2.2 유물 발굴 (D107)</h3>
+<ul>
+<li><p>유물 매장지(P2)를 파면 유물을 얻는다. <strong>그 판에 바로 효과</strong>가 있고, 영구 수집된다(4.3).</p></li>
+</ul>
+<hr>
+<h2 id="3-영구-재화-d100d111">3. 영구 재화 (D100·D111)</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">재화 [이름 가정]</th><th scope="col">쓰임</th><th scope="col">얻는 곳과 양</th><th scope="col">세금</th></tr></thead>
+<tbody>
+<tr><td><strong>공적금</strong></td><td>강화 트리</td><td>적 처치 등급당 1, 레벨업 10 × 레벨, 포탈 파괴 50, 창고 넘침 N등급 1단위 = N</td><td>적용</td></tr>
+<tr><td><strong>영입 인장</strong></td><td>장교·동료 영입</td><td>원수 격파 3, 봉인된 악마 2, 오라클 화신 2, 적 영웅 1</td><td>없음</td></tr>
+<tr><td><strong>유물 조각</strong></td><td>유물 강화</td><td>중복 유물 5, 감염 핵 1, 제단 1</td><td>없음</td></tr>
+</tbody></table></div>
+<h3 id="31-제국-송금과-세금-d21d22d62">3.1 제국 송금과 세금 (D21·D22·D62)</h3>
+<ul>
+<li><p>공적금은 버는 즉시 자동으로 제국에 송금되고, <strong>그 순간의 세율</strong>이 적용된다. 받는 양 = 번 양 × (1 − 세율).</p></li>
+<li><p>창고 한도를 넘친 판 안 자원도 같은 방식으로 송금된다(P3 4.4).</p></li>
+<li><p>판이 끝나도 잃지 않는다(D18).</p></li>
+</ul>
+<h3 id="32-제국-공적-등급-d23d32d101d111">3.2 제국 공적 등급 (D23·D32·D101·D111)</h3>
+<ul>
+<li><p>제국 전체에 하나. <strong>누적 송금액</strong>(세금을 떼기 전 금액 [가정])으로 오르고, 내려가지 않는다.</p></li>
+<li><p>사이 구간은 비례로 계산한다. 25등급의 −30%가 <strong>웃돈 상한</strong>이다.</p></li>
+</ul>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">등급</th><th scope="col">1</th><th scope="col">5</th><th scope="col">10</th><th scope="col">15</th><th scope="col">20</th><th scope="col">25</th></tr></thead>
+<tbody>
+<tr><td>누적 송금액</td><td>0</td><td>2,000</td><td>10,000</td><td>30,000</td><td>70,000</td><td>150,000</td></tr>
+<tr><td>세율</td><td>50%</td><td>35%</td><td>20%</td><td>0%</td><td>−15% (웃돈)</td><td>−30% (웃돈 상한)</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="4-영구-이점">4. 영구 이점</h2>
+<h3 id="41-강화-트리-d102d111">4.1 강화 트리 (D102·D111)</h3>
+<p>분야 5개, 항목마다 <strong>5단계</strong>, 단계마다 비용 <strong>2배</strong>(1단계 공적금 100 [가정]).</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">분야</th><th scope="col">항목</th></tr></thead>
+<tbody>
+<tr><td>본부</td><td>본부 체력, 창고 한도, 건설 드론 +1</td></tr>
+<tr><td>굴착</td><td>굴착 속도, 시작 스캐너 단계, 시작 탐사 단계</td></tr>
+<tr><td>생산</td><td>채굴기 속도, 가공·조합 속도, 연결선 운반량</td></tr>
+<tr><td>군사</td><td>병참 건물당 칸, 유닛 체력·공격, 재무장 시간</td></tr>
+<tr><td>작전</td><td>시작 자원, 동료 자리(최대 4), 유물 칸(최대 6), 오프라인 상한</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>&quot;시작 조건 개선&quot;(D19)은 작전·굴착 분야의 시작 항목이 맡는다.</p></li>
+</ul>
+<h3 id="42-장교동료-영입-d103d111">4.2 장교·동료 영입 (D103·D111)</h3>
+<ol>
+<li><p>병과마다 <strong>그 병과다운 공적 조건</strong>이 있다. 달성하면 그 병과의 장교·동료가 영입 목록에 올라온다.</p></li>
+<li><p>영입 인장으로 영입한다: <strong>장교 5인장, 동료 3인장</strong>.</p></li>
+</ol>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">병과</th><th scope="col">조건 예시 [가정 — 전체 목록은 P7]</th></tr></thead>
+<tbody>
+<tr><td>보병</td><td>처음부터 영입됨</td></tr>
+<tr><td>기갑</td><td>한 판에 전차 20대 생산</td></tr>
+<tr><td>공병</td><td>한 판에 블록 5,000개 굴착</td></tr>
+<tr><td>화생방</td><td>감염 0회로 퓨라 영역 하나를 소멸</td></tr>
+<tr><td>군종</td><td>오라클 화신 처치</td></tr>
+<tr><td>정보</td><td>포탈 10개를 열리기 전에 발견</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>[가정] 처음에는 보병 장교 1명과 동료 2명(보병·공병)이 영입된 상태로 시작한다.</p></li>
+</ul>
+<h3 id="43-유물-d107d111">4.3 유물 (D107·D111)</h3>
+<ul>
+<li><p>발굴한 유물은 영구 수집된다. 판을 시작할 때 <strong>3개</strong>(작전 분야 강화로 최대 6개)를 골라 가져간다.</p></li>
+<li><p>이미 가진 유물을 또 얻으면 <strong>유물 조각 5개</strong>가 된다.</p></li>
+<li><p>유물 조각으로 <strong>1~3성</strong>까지 강화한다[가정: 2성 10조각, 3성 25조각].</p></li>
+</ul>
+<hr>
+<h2 id="5-작전-계획서-d25d47d63d108">5. 작전 계획서 (D25·D47·D63·D108)</h2>
+<ul>
+<li><p><strong>담는 것</strong>:</p>
+<ul>
+<li><p>배치: 건물·벽·연결선(본부 기준 상대 위치)</p></li>
+<li><p>방침: 굴착 방침 목록, 병종별 목표 수, 전투 방침, 건물 우선순위</p></li>
+</ul></li>
+<li><p><strong>칸</strong>: 직전 판 자동 저장 1 + 직접 저장 5.</p></li>
+<li><p><strong>적용</strong>: 판을 시작할 때 방침은 바로 적용된다. 배치는 자원이 모이면 우선순위 순서로 자동 건설된다(P3 4.3). 지형이 막힌 자리는 건너뛴다(D28).</p></li>
+<li><p><strong>저장 형태</strong>: 명령 목록(D8)이다 — <code>PlaceBuilding</code>, <code>PlaceWall</code>, <code>Link</code>, <code>SetPriority</code>, <code>SetDigPolicies</code>, <code>SetUnitTargets</code>, <code>SetCombatPolicies</code>.</p></li>
+</ul>
+<hr>
+<h2 id="6-판의-시작과-끝">6. 판의 시작과 끝</h2>
+<h3 id="61-작전-준비-화면-d111">6.1 작전 준비 화면 (D111)</h3>
+<p><strong>장교 → 동료 → 유물 → 작전 계획서 → 출격.</strong> 직전 선택을 기억해 &quot;그대로 출격&quot;할 수 있다.</p>
+<h3 id="62-판-도중">6.2 판 도중</h3>
+<ul>
+<li><p>중단 저장만 허용한다(D17). 불러오면 그 저장은 지워진다.</p></li>
+</ul>
+<h3 id="63-판-종료-d13">6.3 판 종료 (D13)</h3>
+<ol>
+<li><p>본부가 파괴된다.</p></li>
+<li><p>결과 화면에 이번 판 기록, 번 재화, 원수 정보가 나온다.</p></li>
+<li><p><strong>원수 기록</strong>을 남긴다(D27·D29): 마지막으로 공격한 종족, 전임자 지점(본부 기준 상대 위치), 전임 창고의 30%, 연승 수.</p></li>
+<li><p>작전 준비 화면으로 돌아간다.</p></li>
+</ol>
+<hr>
+<h2 id="7-오프라인-보상-d38d111">7. 오프라인 보상 (D38·D111)</h2>
+<ul>
+<li><p>상한 <strong>8시간·생산량의 50%</strong>. 작전 분야 강화로 최대 <strong>16시간·75%</strong>.</p></li>
+<li><p>계산 방법은 P3 7장(병목 속도 × 꺼진 시간).</p></li>
+</ul>
+<hr>
+<h2 id="8-기록-d39d109">8. 기록 (D39·D109)</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">항목</th><th scope="col">개인 최고</th><th scope="col">Steam 리더보드</th></tr></thead>
+<tbody>
+<tr><td>진출한 지역 수</td><td>예</td><td>예</td></tr>
+<tr><td>최고 판 안 레벨</td><td>예</td><td>예</td></tr>
+<tr><td>생존 시간</td><td>예</td><td>예</td></tr>
+<tr><td>격파한 원수 수</td><td>예</td><td>예</td></tr>
+<tr><td>누적 송금액</td><td>예</td><td>예</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="9-저장-구조-d11d17d111">9. 저장 구조 (D11·D17·D111)</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">구분</th><th scope="col">담는 것</th><th scope="col">수명</th></tr></thead>
+<tbody>
+<tr><td><strong>판 데이터</strong></td><td>판 시드, 명령 기록, 현재 상태 스냅샷(칸 배열·건물·유닛·영역), 판 안 레벨·유물</td><td>판이 끝나거나 불러오면 삭제</td></tr>
+<tr><td><strong>영구 데이터</strong></td><td>재화 3종, 누적 송금액, 강화 트리 단계, 영입한 장교·동료, 유물과 성급, 작전 계획서 6칸, 원수 기록, 개인 기록, 설정</td><td>계속</td></tr>
+</tbody></table></div>
+<ul>
+<li><p><strong>시드 + 명령 기록</strong>만으로 판을 다시 만들 수 있다(D8·D28). 불러오기를 빠르게 하려고 스냅샷을 함께 저장한다.</p></li>
+<li><p>영구 데이터는 <strong>임시 파일에 쓴 뒤 바꿔치기</strong>해서, 저장 도중 꺼져도 날아가지 않게 한다[가정].</p></li>
+<li><p>로컬과 Steam 클라우드에 저장한다[가정].</p></li>
+</ul>
+<hr>
+<h2 id="10-구조-unity-구현-방향">10. 구조 (Unity 구현 방향)</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">데이터 (ScriptableObject)</th><th scope="col">주요 내용</th></tr></thead>
+<tbody>
+<tr><td><code>LevelCurve</code></td><td>필요 경험치 공식, 레벨별 보상</td></tr>
+<tr><td><code>CurrencyConfig</code></td><td>재화별 획득량</td></tr>
+<tr><td><code>MeritTable</code></td><td>누적 송금액 → 등급 → 세율</td></tr>
+<tr><td><code>UpgradeDef</code></td><td>분야, 단계별 효과와 비용</td></tr>
+<tr><td><code>RecruitDef</code></td><td>장교·동료, 병과, 공적 조건, 영입 비용</td></tr>
+<tr><td><code>RelicDef</code></td><td>효과, 성급별 강화</td></tr>
+<tr><td><code>RecordDef</code></td><td>기록 항목과 리더보드 이름</td></tr>
+</tbody></table></div>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">시스템 (순수 C#)</th><th scope="col">하는 일</th></tr></thead>
+<tbody>
+<tr><td><code>RunProgression</code></td><td>판 안 경험치·레벨과 그 보상</td></tr>
+<tr><td><code>MetaWallet</code></td><td>재화, 즉시 송금, 세금, 누적 송금액</td></tr>
+<tr><td><code>UpgradeTree</code>·<code>RecruitRegistry</code>·<code>RelicCollection</code></td><td>영구 이점</td></tr>
+<tr><td><code>OperationPlanStore</code></td><td>작전 계획서 저장·적용</td></tr>
+<tr><td><code>RunSaveService</code>·<code>ProfileSaveService</code></td><td>판 / 영구 저장</td></tr>
+<tr><td><code>LeaderboardService</code></td><td>Steam 리더보드 연동 (Steamworks)</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="11-수치-가정--회색-박스에서-조정">11. 수치 [가정 — 회색 박스에서 조정]</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">항목</th><th scope="col">값</th></tr></thead>
+<tbody>
+<tr><td>필요 경험치</td><td>100 × 1.15^(레벨 − 1)</td></tr>
+<tr><td>레벨당 굴착 반경</td><td>+4칸 (지역 크기까지), 이후 모든 능력치 +1%</td></tr>
+<tr><td>공적금</td><td>적 처치 등급당 1, 레벨업 10 × 레벨, 포탈 50</td></tr>
+<tr><td>영입 인장</td><td>원수 3, 악마 2, 화신 2, 적 영웅 1</td></tr>
+<tr><td>유물 조각</td><td>중복 5, 감염 핵 1, 제단 1</td></tr>
+<tr><td>세율</td><td>3.2 표, 웃돈 상한 −30%</td></tr>
+<tr><td>강화 비용</td><td>1단계 100, 단계마다 2배, 5단계</td></tr>
+<tr><td>영입 비용</td><td>장교 5, 동료 3</td></tr>
+<tr><td>유물</td><td>시작 3칸(최대 6), 2성 10조각, 3성 25조각</td></tr>
+<tr><td>작전 계획서</td><td>자동 1 + 저장 5</td></tr>
+<tr><td>오프라인</td><td>8시간·50% → 최대 16시간·75%</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="12-앞-단계의-가정-중-여기서-확정된-것">12. 앞 단계의 가정 중 여기서 확정된 것</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">설계서</th><th scope="col">가정</th><th scope="col">확정</th></tr></thead>
+<tbody>
+<tr><td>P2 8장</td><td>스캐너는 판 안 업그레이드, 영구 강화로 시작 단계</td><td>확정 — 굴착 분야 &quot;시작 스캐너 단계&quot;(4.1)</td></tr>
+<tr><td>P2 8장·P4 7.4</td><td>방침·목표 수·전투 방침을 프리셋에 넣음</td><td>확정 — 작전 계획서(D108)</td></tr>
+<tr><td>P3 12장</td><td>오프라인 상한 8시간·50%</td><td>확정 — 강화로 16시간·75%까지(D111)</td></tr>
+<tr><td>P4 3.5</td><td>영구 강화로 병참 건물당 칸 증가</td><td>확정 — 군사 분야(4.1)</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="13-다른-단계와의-접점">13. 다른 단계와의 접점</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">단계</th><th scope="col">넘겨주는 것</th><th scope="col">거기서 정할 것</th></tr></thead>
+<tbody>
+<tr><td>P6 확장</td><td><code>UpgradeDef</code>·<code>RecruitDef</code>·<code>RelicDef</code> 등</td><td>새 종족의 판 사이 기믹(4.7 대응표)을 데이터로 추가</td></tr>
+<tr><td>P7 세계관</td><td>재화·병과·유물</td><td>재화 이름, 영입 조건 전체 목록, 유물 목록과 설정</td></tr>
+<tr><td>구현</td><td>저장 구조, Steamworks 연동</td><td>화면 디자인, 저장 파일 형식</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="14-테스트와-검증">14. 테스트와 검증</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">무엇을</th><th scope="col">어떻게</th></tr></thead>
+<tbody>
+<tr><td>레벨 곡선</td><td>레벨 1~50의 필요 경험치 표, 반경 한계 이후 보너스로 넘어가는지</td></tr>
+<tr><td>송금·세금</td><td>번 양 × (1 − 세율)이 받는 양이고, 누적 송금액이 등급을 올리는지</td></tr>
+<tr><td>공적 등급</td><td>표의 경계값과 사이 구간 비례, −30% 상한</td></tr>
+<tr><td>강화 비용</td><td>단계마다 2배, 5단계 한도</td></tr>
+<tr><td>영입</td><td>조건 달성 전엔 목록에 없고, 달성 후 인장으로만 영입되는지</td></tr>
+<tr><td>유물</td><td>중복 획득이 조각 5개가 되고, 성급 강화 비용이 맞는지</td></tr>
+<tr><td>작전 계획서</td><td>저장한 명령을 다음 판에 다시 실행하면 같은 방침과 배치(막힌 곳 제외)가 되는지</td></tr>
+<tr><td>저장</td><td>판 데이터가 불러온 뒤 지워지는지, 영구 저장 도중 끊겨도 이전 파일이 남는지</td></tr>
+<tr><td>결정성</td><td>같은 시드와 명령 기록으로 판을 다시 만들면 스냅샷과 같은지</td></tr>
+<tr><td>회색 박스 체감</td><td>판이 끝났을 때 &quot;무엇이 남았는지&quot;가 결과 화면에서 바로 읽히는가</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="15-남은-가정과-열린-점">15. 남은 가정과 열린 점</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">항목</th><th scope="col">현재</th><th scope="col">결정 시점</th></tr></thead>
+<tbody>
+<tr><td>재화 이름</td><td>공적금·영입 인장·유물 조각 [가정]</td><td>P7</td></tr>
+<tr><td>공적 등급이 세전 금액으로 오름</td><td>예 [가정]</td><td>회색 박스</td></tr>
+<tr><td>처음 영입된 장교·동료</td><td>보병 장교 + 보병·공병 동료 [가정]</td><td>P7</td></tr>
+<tr><td>영입 조건 전체 목록, 유물 목록</td><td>예시만</td><td>P7</td></tr>
+<tr><td>영구 저장의 원자적 쓰기, Steam 클라우드</td><td>[가정]</td><td>구현</td></tr>
+<tr><td>오라클 플레이어블의 패배 조건 (D106)</td><td>미정</td><td>P6·P7</td></tr>
+</tbody></table></div>
+</article>
+<nav class="pager" aria-label="같은 종류의 문서"><a class="prev" href="2026-09-26-p6-extension-design.html"><span>← 이전 설계서</span>P6 종족·지역 확장 프레임워크 + 관리자 도구 설계서</a><a class="next" href="2026-09-28-p1-p9-setup-liveops-design.html"><span>다음 설계서 →</span>P1 프로젝트 준비 + P9 운영 서버 설계서</a></nav>
+</main>
+</div>
+<footer class="site-footer">
+  <div class="wrap">
+    <p><strong>CraftDefenseDungeon</strong>(작업용 이름) — 기획서 v0.63 · 2026-09-29 기준.</p>
+    <p>이 저장소는 소개 페이지와 기획·설계 문서만 공개합니다. 게임 소스 코드와 구현 계획서는 비공개 저장소에서 관리합니다. 라이선스 미정.</p>
+  </div>
+</footer>
+</body>
+</html>

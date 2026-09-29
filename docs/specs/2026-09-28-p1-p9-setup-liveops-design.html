@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>P1 프로젝트 준비 + P9 운영 서버 설계서 · CraftDefenseDungeon</title>
+<meta name="description" content="설계서 — P1 프로젝트 준비 + P9 운영 서버 설계서">
+<link rel="stylesheet" href="../assets/site.css">
+<script src="../assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html" aria-label="CraftDefenseDungeon 소개"><svg class="brand-mark" viewBox="0 0 24 26" width="22" height="24" aria-hidden="true"><path d="M12 1.5 22.5 7.5v11L12 24.5 1.5 18.5v-11z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 6.5 17 9.5v6l-5 3-5-3v-6z" fill="currentColor" opacity=".85"/></svg><span>CraftDefenseDungeon</span></a>
+    <nav class="site-nav" aria-label="사이트"><a href="../index.html">소개</a><a href="../game-plan.html">기획서</a><a href="../index.html#docs">문서 목록</a><a href="../index.html#roadmap">로드맵</a></nav>
+  </div>
+</header>
+<div class="wrap doc-layout">
+<aside class="doc-aside"><details class="toc" open><summary>목차</summary><nav aria-label="목차"><ol><li><a href="#1부-p1-프로젝트-준비">1부. P1 프로젝트 준비</a><ol><li><a href="#11-도구-d122d123d124">1.1 도구 (D122·D123·D124)</a></li><li><a href="#12-저장소와-폴더-d124">1.2 저장소와 폴더 (D124)</a></li><li><a href="#13-시뮬레이션-루프-d124">1.3 시뮬레이션 루프 (D124)</a></li><li><a href="#14-패키지">1.4 패키지</a></li><li><a href="#15-git-설정-d124">1.5 Git 설정 (D124)</a></li><li><a href="#16-설치-순서-체크리스트">1.6 설치 순서 (체크리스트)</a></li></ol></li><li><a href="#2부-p9-운영-서버">2부. P9 운영 서버</a><ol><li><a href="#21-목표-d125">2.1 목표 (D125)</a></li><li><a href="#22-통신은-두-번뿐-d126">2.2 통신은 두 번뿐 (D126)</a></li><li><a href="#23-관리자가-통제하는-것-d127--ugs-remote-config">2.3 관리자가 통제하는 것 (D127) — UGS Remote Config</a></li><li><a href="#24-관리자가-확인하는-것-d128--ugs-cloud-save--player-management">2.4 관리자가 확인하는 것 (D128) — UGS Cloud Save + Player Management</a></li><li><a href="#25-플레이어-식별">2.5 플레이어 식별</a></li><li><a href="#26-게임-쪽-구성">2.6 게임 쪽 구성</a></li><li><a href="#27-비용과-전환-d126d128">2.7 비용과 전환 (D126·D128)</a></li></ol></li><li><a href="#3-테스트와-검증">3. 테스트와 검증</a></li><li><a href="#4-남은-가정과-열린-점">4. 남은 가정과 열린 점</a></li></ol></nav></details></aside>
+<main id="main" class="doc-main">
+<nav class="crumbs" aria-label="현재 위치"><a href="../index.html">소개</a><span aria-hidden="true">/</span><a href="../index.html#docs">설계서</a><span aria-hidden="true">/</span><span aria-current="page">P1 프로젝트 준비 + P9 운영 서버 설계서</span></nav>
+<p class="doc-src">원본 <code>docs/superpowers/specs/2026-09-28-p1-p9-setup-liveops-design.md</code> · 170줄</p>
+<article class="md">
+<h1 id="p1-프로젝트-준비--p9-운영-서버-설계서">P1 프로젝트 준비 + P9 운영 서버 설계서</h1>
+<ul>
+<li><p>상태: <strong>승인</strong> (2026-09-28, D129)</p></li>
+<li><p>작성: 2026-09-28</p></li>
+<li><p>상위 문서: <a href="../game-plan.html">게임 기획서</a> — 결정 번호(D…)는 기획서 2장 &quot;결정 기록&quot;을 따른다.</p></li>
+<li><p>이 단계의 결정: D122~D128 (전제: D1·D8·D28·D36·D40, 4.1 설계 원칙, P6·P8 설계서)</p></li>
+</ul>
+<hr>
+<h2 id="1부-p1-프로젝트-준비">1부. P1 프로젝트 준비</h2>
+<h3 id="11-도구-d122d123d124">1.1 도구 (D122·D123·D124)</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">항목</th><th scope="col">선택</th></tr></thead>
+<tbody>
+<tr><td>엔진</td><td>설치 시점의 최신 <strong>Unity 6 LTS</strong>. 개발 중에는 큰 버전을 올리지 않고 패치만 받는다</td></tr>
+<tr><td>렌더 파이프라인</td><td><strong>URP</strong> (로우폴리 3D, Bloom 발광)</td></tr>
+<tr><td>코드 편집기</td><td><strong>Visual Studio 2022 Community</strong></td></tr>
+<tr><td>입력</td><td>새 <strong>Input System</strong></td></tr>
+<tr><td>테스트</td><td><strong>Unity Test Framework</strong> EditMode</td></tr>
+</tbody></table></div>
+<h3 id="12-저장소와-폴더-d124">1.2 저장소와 폴더 (D124)</h3>
+<pre class="code"><code>D:\CraftDefenseDungeon\
+  docs\                    기획서·설계서 (지금 그대로)
+  Game\                    Unity 프로젝트
+    Assets\_Project\
+      Scripts\
+        Simulation\        게임 규칙 — 순수 C#, UnityEngine 참조 금지
+        View\              화면·입력 (MonoBehaviour)
+        Online\            운영 서버 연결 (2부)
+        Editor\            관리자 창 (에디터 전용, P6)
+      Data\                ScriptableObject 데이터
+      Tests\EditMode\      규칙 테스트
+      Art\  Prefabs\  Scenes\</code></pre>
+<ul>
+<li><p>각 Scripts 폴더는 <strong>어셈블리 정의(asmdef)</strong> 하나다. 참조 방향: View → Simulation, View → Online, Editor → 전부. <strong>Simulation은 아무것도 참조하지 않고 UnityEngine도 못 쓴다</strong>(asmdef의 &quot;No Engine References&quot;).</p></li>
+<li><p>데이터(<code>ScriptableObject</code>)는 판이 시작될 때 순수 C# 값으로 옮겨 Simulation에 넘긴다.</p></li>
+</ul>
+<h3 id="13-시뮬레이션-루프-d124">1.3 시뮬레이션 루프 (D124)</h3>
+<ul>
+<li><p>초당 <strong>20틱</strong> 고정. View가 경과 시간을 모아 틱을 돌리고, 화면은 틱 사이를 보간한다.</p></li>
+<li><p>플레이어 입력은 명령 객체로 틱에 들어간다(D8). 난수는 시드 기반 자체 생성기(P2 3장).</p></li>
+</ul>
+<h3 id="14-패키지">1.4 패키지</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">처음부터</th><th scope="col">나중에</th></tr></thead>
+<tbody>
+<tr><td>URP, Input System, Test Framework</td><td>Addressables (종족 DLC, P6), Steamworks.NET (리더보드·클라우드·Steam 로그인, P8·2부), UGS 패키지 (2부)</td></tr>
+</tbody></table></div>
+<p>회색 박스 프로토타입에는 &quot;처음부터&quot;만 쓴다.</p>
+<h3 id="15-git-설정-d124">1.5 Git 설정 (D124)</h3>
+<ul>
+<li><p>Unity용 <code>.gitignore</code> (Library, Temp, Obj, Build, Logs, UserSettings 제외).</p></li>
+<li><p><strong>Git LFS</strong>: <code>*.fbx *.png *.psd *.wav *.ogg *.mp3 *.tga *.exr</code>.</p></li>
+<li><p>Project Settings: Asset Serialization = <strong>Force Text</strong>, Version Control = <strong>Visible Meta Files</strong>.</p></li>
+</ul>
+<h3 id="16-설치-순서-체크리스트">1.6 설치 순서 (체크리스트)</h3>
+<ol>
+<li><p>Unity Hub 설치</p></li>
+<li><p>Unity 6 LTS 설치 — 모듈: Visual Studio 2022 Community, Windows Build Support</p></li>
+<li><p>Git LFS 설치 (<code>git lfs install</code>)</p></li>
+<li><p>Unity Hub → 새 프로젝트 → <strong>Universal 3D (URP)</strong> 템플릿 → 위치 <code>D:\CraftDefenseDungeon\Game</code></p></li>
+<li><p>Project Settings에서 1.5 설정, Package Manager에서 Input System·Test Framework 확인</p></li>
+<li><p>1.2 폴더와 asmdef 만들기 → 빈 EditMode 테스트 하나가 통과하는지 확인</p></li>
+</ol>
+<p><strong>설치 결과 (2026-09-28)</strong> — 개발 도구는 모두 D 드라이브에 둔다.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">항목</th><th scope="col">버전</th><th scope="col">위치</th></tr></thead>
+<tbody>
+<tr><td>Unity Hub</td><td>—</td><td><code>&lt;개발 폴더&gt;</code></td></tr>
+<tr><td>Unity 에디터</td><td>6000.3.25f1 (Unity 6.3 LTS) + Windows Build Support (IL2CPP)</td><td><code>&lt;개발 폴더&gt;</code></td></tr>
+<tr><td>Hub 다운로드 폴더</td><td><code>%APPDATA%\UnityHub\downloads</code> → D로 정션</td><td><code>&lt;개발 폴더&gt;</code></td></tr>
+<tr><td>Visual Studio 2022 Community</td><td>17.14 + Unity 게임 개발 워크로드</td><td><code>&lt;개발 폴더&gt;</code> (캐시 <code>&lt;개발 폴더&gt;</code>, 공유 <code>&lt;개발 폴더&gt;</code>)</td></tr>
+<tr><td>Git LFS</td><td>3.7.1</td><td>설치됨, <code>git lfs install</code>은 프로젝트 만들 때</td></tr>
+<tr><td>Unity 패키지 캐시</td><td>사용자 환경 변수 <code>UPM_CACHE_ROOT</code></td><td><code>&lt;개발 폴더&gt;</code></td></tr>
+</tbody></table></div>
+<ul>
+<li><p>C에 남는 것: VS Installer(약 0.1GB)와 Windows 공용 구성요소뿐이다.</p></li>
+</ul>
+<hr>
+<h2 id="2부-p9-운영-서버">2부. P9 운영 서버</h2>
+<h3 id="21-목표-d125">2.1 목표 (D125)</h3>
+<ul>
+<li><p>관리자가 <strong>일부 내용을 서버로 통제</strong>한다.</p></li>
+<li><p>관리자가 <strong>플레이어의 진행을 확인</strong>한다.</p></li>
+<li><p><strong>서버 부담은 적어야</strong> 한다. 게임은 서버가 없어도 돌아가야 한다.</p></li>
+</ul>
+<h3 id="22-통신은-두-번뿐-d126">2.2 통신은 두 번뿐 (D126)</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">언제</th><th scope="col">무엇</th><th scope="col">크기</th></tr></thead>
+<tbody>
+<tr><td>게임을 켤 때</td><td>관리자 설정 받기 → 로컬에 캐시</td><td>수 KB</td></tr>
+<tr><td>판이 끝날 때</td><td>플레이어 진행 요약 올리기</td><td>약 2 KB</td></tr>
+</tbody></table></div>
+<ul>
+<li><p><strong>게임 중에는 서버와 통신하지 않는다.</strong></p></li>
+<li><p>서버에 닿지 못하면: 설정은 마지막 캐시(없으면 기본값), 요약은 로컬 대기열에 두었다가 다음 접속 때 보낸다.</p></li>
+</ul>
+<h3 id="23-관리자가-통제하는-것-d127--ugs-remote-config">2.3 관리자가 통제하는 것 (D127) — UGS Remote Config</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">항목</th><th scope="col">예</th><th scope="col">게임 쪽 처리</th></tr></thead>
+<tbody>
+<tr><td>밸런스 수치</td><td>세율 표, 위협도 증가량, 레드존 구간, 포탈 간격, 오프라인 상한</td><td>데이터 기본값을 덮어씀. <strong>범위를 벗어나면 기본값</strong></td></tr>
+<tr><td>지역 운영·기간 이벤트</td><td>빌드에 들어 있는 지역 켜기·끄기, &quot;이번 주 침공 강화&quot;, 보상 배율</td><td>시작·종료 시각이 있는 값</td></tr>
+<tr><td>공지·최소 버전</td><td>브리핑 상단 콘실리움 공지, 최소 빌드 번호</td><td>빌드가 낮으면 업데이트 안내</td></tr>
+<tr><td>리더보드·플레이어 조치</td><td>불가능한 기록 숨김, 제재, 세이브 복구 지원</td><td>대시보드·Steam Web API에서 관리자가 처리</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>설정은 <strong>판이 시작될 때만</strong> 적용된다. 판 도중에 값이 바뀌지 않아 결정성(D8)이 깨지지 않는다. 적용된 설정 버전은 판 데이터에 기록한다.</p></li>
+</ul>
+<h3 id="24-관리자가-확인하는-것-d128--ugs-cloud-save--player-management">2.4 관리자가 확인하는 것 (D128) — UGS Cloud Save + Player Management</h3>
+<p><strong>플레이어별 진행 요약만</strong> 올린다. 판 보고서와 전체 통계는 서버로 보내지 않는다.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">요약 항목</th></tr></thead>
+<tbody>
+<tr><td>메리툼 등급, 누적 송금액</td></tr>
+<tr><td>재화 3종(트리부툼·시길룸·렐리퀴아 파편)</td></tr>
+<tr><td>강화 트리 단계, 영입한 장교·동료, 유물과 성급</td></tr>
+<tr><td>판 수, 개인 최고 기록(P8 8장), 마지막 접속, 빌드 번호</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>관리자는 UGS 대시보드의 <strong>Player Management</strong>에서 플레이어별로 본다.</p></li>
+<li><p>리더보드 검증: 최고 기록이 누적 플레이 판 수·송금액에 비해 불가능하면 표시해 두고 관리자가 판단한다. 세이브는 여전히 Steam 클라우드가 원본이다(P8).</p></li>
+</ul>
+<h3 id="25-플레이어-식별">2.5 플레이어 식별</h3>
+<ul>
+<li><p><strong>Steam 로그인</strong>(UGS Authentication의 Steam 연동). 별도 계정 없음. Steam ID와 게임 데이터만 다룬다 — 출시 전 개인정보 처리방침 필요.</p></li>
+</ul>
+<h3 id="26-게임-쪽-구성">2.6 게임 쪽 구성</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">구성</th><th scope="col">하는 일</th></tr></thead>
+<tbody>
+<tr><td><code>IOnlineServices</code></td><td>온라인 기능의 틀. 구현은 <strong>UGS용</strong>과 <strong>오프라인용</strong>(아무것도 안 함) 두 가지. 나중에 <strong>Supabase용</strong>을 더할 수 있다</td></tr>
+<tr><td><code>RemoteConfigService</code></td><td>시작할 때 설정을 받아 캐시하고 범위를 검사</td></tr>
+<tr><td><code>ProgressSummaryQueue</code></td><td>판 종료 시 요약을 로컬 파일에 넣고, 온라인일 때 올림</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>Simulation은 서버를 모른다. View가 판 시작 때 설정을 데이터로 넘기고, 판 종료 때 요약을 대기열에 넣는다.</p></li>
+</ul>
+<h3 id="27-비용과-전환-d126d128">2.7 비용과 전환 (D126·D128)</h3>
+<ul>
+<li><p>공식 요금(2026-09-28 확인) 기준, 요약만 올리면 Analytics를 쓰지 않아 <strong>15만 MAU에서도 월 약 $1</strong>(Cloud Save)이다. Authentication·Remote Config는 무료.</p></li>
+<li><p><strong>주의</strong>: 무료 한도를 넘었는데 결제 수단이 없으면 30일 유예 후 서비스가 정지된다 → 출시 전 결제 수단 등록.</p></li>
+<li><p>요금이 바뀌거나 통제력이 더 필요해지면 <code>IOnlineServices</code>에 Supabase + Cloudflare 구현을 더해 갈아탄다(월 $25 고정 수준).</p></li>
+</ul>
+<hr>
+<h2 id="3-테스트와-검증">3. 테스트와 검증</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">무엇을</th><th scope="col">어떻게</th></tr></thead>
+<tbody>
+<tr><td>asmdef 경계</td><td>Simulation에서 UnityEngine을 쓰면 컴파일이 실패하는지</td></tr>
+<tr><td>틱</td><td>같은 명령·시드로 두 번 돌리면 같은 상태인지</td></tr>
+<tr><td>설정 범위 검사</td><td>범위를 벗어난 원격 값이 기본값으로 바뀌는지</td></tr>
+<tr><td>오프라인</td><td>서버 없이 게임이 시작되고 판이 끝나는지, 요약이 대기열에 남는지</td></tr>
+<tr><td>대기열</td><td>다시 온라인이 되면 쌓인 요약이 한 번씩만 올라가는지</td></tr>
+<tr><td>판 중 설정 고정</td><td>판 도중 원격 값이 바뀌어도 그 판의 값이 그대로인지</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="4-남은-가정과-열린-점">4. 남은 가정과 열린 점</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">항목</th><th scope="col">현재</th><th scope="col">결정 시점</th></tr></thead>
+<tbody>
+<tr><td>UGS 요금·한도</td><td>2026-09-28 기준</td><td>도입 직전에 다시 확인</td></tr>
+<tr><td>요약을 올리는 빈도</td><td>판 종료 시 1번</td><td>회색 박스 이후</td></tr>
+<tr><td>개인정보 처리방침</td><td>필요</td><td>출시 전</td></tr>
+<tr><td>멀티플레이(D8)용 서버</td><td>이 설계 밖</td><td>출시 후</td></tr>
+</tbody></table></div>
+</article>
+<nav class="pager" aria-label="같은 종류의 문서"><a class="prev" href="2026-09-26-p8-progression-design.html"><span>← 이전 설계서</span>P8 성장·메타 진행 설계서</a><a class="next" href="2026-09-28-p7-lore-design.html"><span>다음 설계서 →</span>P7 세계관·서사 설계서</a></nav>
+</main>
+</div>
+<footer class="site-footer">
+  <div class="wrap">
+    <p><strong>CraftDefenseDungeon</strong>(작업용 이름) — 기획서 v0.63 · 2026-09-29 기준.</p>
+    <p>이 저장소는 소개 페이지와 기획·설계 문서만 공개합니다. 게임 소스 코드와 구현 계획서는 비공개 저장소에서 관리합니다. 라이선스 미정.</p>
+  </div>
+</footer>
+</body>
+</html>
