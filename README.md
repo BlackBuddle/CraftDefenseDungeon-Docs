@@ -45,9 +45,11 @@
 - **시온** (적) — 자기 종족 외 모두를 저급 종족으로 보면서도 "고등 종족의 의무"로 우주 경찰을 자처하는 천사들.
 - **오라클** (현상) — 기쁨·증오·빛·물 같은 "개념 그 자체". 처음 버전에서는 맵 전체에 번지는 위험 구역으로 나타납니다.
 
-## 지금 어디까지 왔나요? (2026-09-29 기준)
+## 지금 어디까지 왔나요? (2026-10-01 기준)
 
-굴착, 자원·도구 경제, 유닛 생산과 병참, 전투, 적 기지와 전선이 회색 박스로 만들어져 있습니다. 지금은 좁은 굴에서 유닛이 서로 밀고 지나가는 이동·충돌 방식을 새로 다듬는 단계입니다. 단계별 상태는 [소개 페이지의 개발 로드맵](https://blackbuddle.github.io/CraftDefenseDungeon-Docs/#roadmap)에서 볼 수 있습니다.
+굴착, 자원·도구 경제, 유닛 생산과 병참, 전투, 적 기지와 전선, 좁은 굴에서 유닛이 서로 밀고 지나가는 이동·충돌까지 회색 박스로 만들어져 있습니다. 병종의 체력·공격·발사 간격은 이제 **전투력 환산 엔진**이 생산 비용에서 계산하고, 밸런스는 병종마다 배수 하나로 조정합니다. 다음은 퓨라·시온의 나머지 병종이 실제로 움직이게 만드는 단계입니다.
+
+단계별 상태는 [소개 페이지의 개발 로드맵](https://blackbuddle.github.io/CraftDefenseDungeon-Docs/#roadmap)에서, 출시까지의 마일스톤은 [기획서 0장](https://blackbuddle.github.io/CraftDefenseDungeon-Docs/game-plan.html)에서 볼 수 있습니다.
 
 ## 문서
 
@@ -62,6 +64,7 @@
   - [P5 조우·침공](https://blackbuddle.github.io/CraftDefenseDungeon-Docs/specs/2026-09-25-p5-encounters-design.html)
   - [P5b 적 기지와 전선](https://blackbuddle.github.io/CraftDefenseDungeon-Docs/specs/2026-09-29-p5b-enemy-bases-design.html)
   - [P5c 이동·충돌 모델 개편](https://blackbuddle.github.io/CraftDefenseDungeon-Docs/specs/2026-09-29-p5c-movement-collision-design.html)
+  - [P5d 전투력 환산 엔진](https://blackbuddle.github.io/CraftDefenseDungeon-Docs/specs/2026-10-01-p5d-combat-power-engine-design.html)
   - [P6 종족·지역 확장 프레임워크와 관리자 도구](https://blackbuddle.github.io/CraftDefenseDungeon-Docs/specs/2026-09-26-p6-extension-design.html)
   - [P7 세계관·서사](https://blackbuddle.github.io/CraftDefenseDungeon-Docs/specs/2026-09-28-p7-lore-design.html)
   - [P8 성장·메타 진행](https://blackbuddle.github.io/CraftDefenseDungeon-Docs/specs/2026-09-26-p8-progression-design.html)

@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>P5d 전투력 환산 엔진 설계서 (스탯 산정·패치 체계·설계된 전체 로스터의 스탯 데이터) · CraftDefenseDungeon</title>
+<meta name="description" content="설계서 — P5d 전투력 환산 엔진 설계서 (스탯 산정·패치 체계·설계된 전체 로스터의 스탯 데이터)">
+<link rel="stylesheet" href="../assets/site.css">
+<script src="../assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html" aria-label="CraftDefenseDungeon 소개"><svg class="brand-mark" viewBox="0 0 24 26" width="22" height="24" aria-hidden="true"><path d="M12 1.5 22.5 7.5v11L12 24.5 1.5 18.5v-11z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 6.5 17 9.5v6l-5 3-5-3v-6z" fill="currentColor" opacity=".85"/></svg><span>CraftDefenseDungeon</span></a>
+    <nav class="site-nav" aria-label="사이트"><a href="../index.html">소개</a><a href="../game-plan.html">기획서</a><a href="../index.html#docs">문서 목록</a><a href="../index.html#roadmap">로드맵</a></nav>
+  </div>
+</header>
+<div class="wrap doc-layout">
+<aside class="doc-aside"><details class="toc" open><summary>목차</summary><nav aria-label="목차"><ol><li><a href="#1-목적과-범위">1. 목적과 범위</a><ol><li><a href="#11-왜">1.1 왜</a></li><li><a href="#12-목표-성공-기준">1.2 목표 (성공 기준)</a></li><li><a href="#13-범위">1.3 범위</a></li></ol></li><li><a href="#2-결정-확정--2026-10-01-승인-기획서-v066">2. 결정 [확정 — 2026-10-01 승인, 기획서 v0.66]</a></li><li><a href="#3-용어">3. 용어</a></li><li><a href="#4-현재-상태와-문제">4. 현재 상태와 문제</a><ol><li><a href="#41-지금-표">4.1 지금 표</a></li><li><a href="#42-조사가-찾은-사실">4.2 조사가 찾은 사실</a></li><li><a href="#43-로스터-공백-d152">4.3 로스터 공백 (D152)</a></li></ol></li><li><a href="#5-엔진">5. 엔진</a><ol><li><a href="#51-한눈에">5.1 한눈에</a></li><li><a href="#52-입력-행">5.2 입력 행</a></li><li><a href="#53-효율-k-기울기근접-보정은-초기값--t3-확정">5.3 효율 K [기울기·근접 보정은 초기값 — T3 확정]</a></li><li><a href="#54-환산수와-전투력">5.4 환산수와 전투력</a></li><li><a href="#55-화력과-체력의-분배-d151">5.5 화력과 체력의 분배 (D151)</a></li><li><a href="#56-역할-표-초기값--t3-확정">5.6 역할 표 [초기값 — T3 확정]</a></li><li><a href="#57-정수-실현-곱-우선">5.7 정수 실현 (곱 우선)</a></li><li><a href="#58-유형-중립-결정-7">5.8 유형 중립 (결정 7)</a></li><li><a href="#59-엔진-밖">5.9 엔진 밖</a></li></ol></li><li><a href="#6-값-입력">6. 값 입력</a><ol><li><a href="#61-칸-가격-제국시온">6.1 칸 가격 (제국·시온)</a></li><li><a href="#62-레시피-정렬-검사-읽기-전용">6.2 레시피 정렬 검사 (읽기 전용)</a></li><li><a href="#63-퓨라-환율">6.3 퓨라 환율</a></li><li><a href="#64-동결과-신선도">6.4 동결과 신선도</a></li><li><a href="#65-다른-종족영웅-어댑터-가정--p5e에서-확정">6.5 다른 종족·영웅 어댑터 [가정 — P5e에서 확정]</a></li></ol></li><li><a href="#7-병종-표">7. 병종 표</a><ol><li><a href="#71-구현-병종-t3-관문-사전-결정-반영--범위-세금-100-전차-간격-26">7.1 구현 병종 [T3 관문 사전 결정 반영 — 범위 세금 100‰, 전차 간격 26]</a></li><li><a href="#72-로스터-데이터-행-power-rosterjson-가정">7.2 로스터 데이터 행 (power-roster.json) [가정]</a></li></ol></li><li><a href="#8-패치-체계">8. 패치 체계</a><ol><li><a href="#81-손잡이-지도">8.1 손잡이 지도</a></li><li><a href="#82-절차">8.2 절차</a></li><li><a href="#83-리포트-표-power-tablemd">8.3 리포트 표 (power-table.md)</a></li></ol></li><li><a href="#9-검증">9. 검증</a><ol><li><a href="#91-l1-정의-불변식-기본-실행-시뮬-없음--powerenginetestspowerrostertests">9.1 L1 정의 불변식 (기본 실행, 시뮬 없음 — PowerEngineTests·PowerRosterTests)</a></li><li><a href="#92-l2-보고서-explicit--실제-worldcombatsim-결정적">9.2 L2 보고서 (Explicit — 실제 World·CombatSim, 결정적)</a></li><li><a href="#93-결정-1의-보증-방식">9.3 결정 1의 보증 방식</a></li><li><a href="#94-l3-b9-확장-baseflowteststier1base_vs12rifles_fallsintargetminutes">9.4 L3 B9 확장 (BaseFlowTests.Tier1Base_Vs12Rifles_FallsInTargetMinutes)</a></li><li><a href="#95-l4-회귀성능">9.5 L4 회귀·성능</a></li></ol></li><li><a href="#10-이행">10. 이행</a><ol><li><a href="#101-선행-p--시험-마법-숫자-정리-동작단정-의미-불변">10.1 선행 P — 시험 마법 숫자 정리 (동작·단정 의미 불변)</a></li><li><a href="#102-태스크">10.2 태스크</a></li><li><a href="#103-대형-3종의-간격만-바꾸는-pin-t4">10.3 대형 3종의 간격만 바꾸는 pin (T4)</a></li><li><a href="#104-연결-방식-unitscs">10.4 연결 방식 (Units.cs)</a></li><li><a href="#105-t3-승인-관문에서-정할-것">10.5 T3 승인 관문에서 정할 것</a></li></ol></li><li><a href="#11-기존-값시험-영향">11. 기존 값·시험 영향</a></li><li><a href="#12-데이터-형식">12. 데이터 형식</a><ol><li><a href="#121-powertable-행-c">12.1 PowerTable 행 (C#)</a></li><li><a href="#122-balance-checksjson의-power-블록">12.2 balance-checks.json의 power 블록</a></li><li><a href="#123-power-rosterjson">12.3 power-roster.json</a></li></ol></li><li><a href="#13-위험열린-점">13. 위험·열린 점</a></li><li><a href="#부록-a-손-계산-예-시험-③과-같은-값">부록 A. 손 계산 예 (시험 ③과 같은 값)</a></li><li><a href="#부록-b-근거-자료-superpowersp5d--커밋하지-않는-작업-폴더">부록 B. 근거 자료 (.superpowers/p5d/ — 커밋하지 않는 작업 폴더)</a></li></ol></nav></details></aside>
+<main id="main" class="doc-main">
+<nav class="crumbs" aria-label="현재 위치"><a href="../index.html">소개</a><span aria-hidden="true">/</span><a href="../index.html#docs">설계서</a><span aria-hidden="true">/</span><span aria-current="page">P5d 전투력 환산 엔진 설계서 (스탯 산정·패치 체계·설계된 전체 로스터의 스탯 데이터)</span></nav>
+<p class="doc-src">원본 <code>docs/superpowers/specs/2026-10-01-p5d-combat-power-engine-design.md</code> · 786줄</p>
+<article class="md">
+<h1 id="p5d-전투력-환산-엔진-설계서-스탯-산정패치-체계설계된-전체-로스터의-스탯-데이터">P5d 전투력 환산 엔진 설계서 (스탯 산정·패치 체계·설계된 전체 로스터의 스탯 데이터)</h1>
+<ul>
+<li><p>상태: <strong>구현 완료(main 병합)</strong> (2026-10-01) — 승인 2026-10-01, 구현 계획, 결과는 1.2 끝. T3 승인 관문은 계획 검토 때 사용자가 정했다(권고 조합: 범위 세금 몸당 100‰, 전차 간격 26 — 10.5)</p></li>
+<li><p>작성: 2026-10-01</p></li>
+<li><p>상위 문서: <a href="../game-plan.html">게임 기획서</a> — 결정 번호(D…)는 기획서 2장 &quot;결정 기록&quot;을 따른다.</p></li>
+<li><p>앞 단계: <a href="2026-09-25-p4-units-design.html">P4 유닛</a> (6장 스탯), <a href="2026-09-25-p5-encounters-design.html">P5 조우·전투</a> (2장 피해표·4장 퓨라·5장 시온·6장 오라클), <a href="2026-09-29-p5b-enemy-bases-design.html">P5b 적 기지</a> (11장 퓨라 수치), <a href="2026-09-29-p5c-movement-collision-design.html">P5c 이동·충돌</a> (1.3·13장)</p></li>
+<li><p>기준 코드: <code>main</code> <code>d6c9b70</code>에서 브랜치 <code>feat/p5d-power-engine</code>으로 이어 간다.</p></li>
+<li><p>이 단계의 결정: D151 [원안]을 구체화하고 D152 [확정]을 따른다. 새 결정 <strong>D153~D158</strong> [확정] — 사용자가 2026-10-01에 &quot;권고대로&quot;로 확정한 결정 11개와, 그것을 엔진으로 옮기며 정한 규칙이다. 설계서 승인(2026-10-01)과 함께 기획서 v0.66 결정 기록에 올렸다(2장).</p></li>
+<li><p>다음 설계서: P5e 적 병종 완성 (퓨라 나머지 5종·합체·감염 → 시온 → 오라클)</p></li>
+<li><p>설계 근거:</p>
+<ul>
+<li><p>탐색 워크플로우: 조사 3, 설계안 A(스칼라 환산식)·B(교환비 표)·C(역할 예산), 심사 3.</p></li>
+<li><p>로스터 추출: 3명.</p></li>
+<li><p>원본은 <code>.superpowers/p5d/</code>(커밋하지 않는 작업 폴더)에 있다.</p></li>
+<li><p>이 설계서의 수치는 node 정수 모형 <code>.superpowers/p5d/model/engine.js</code>·<code>roster.js</code>로 계산했다(5장 식 그대로).</p></li>
+</ul></li>
+</ul>
+<p>표기는 기획서를 따른다: <strong>[확정]</strong> 합의 · <strong>[원안]</strong> 사용자 제시 · <strong>[가정]</strong> Claude가 채운 추측 · <strong>[초기값 — T3 확정]</strong> 승인 관문(10.2 T3)에서 사용자가 확정할 값.</p>
+<hr>
+<h2 id="1-목적과-범위">1. 목적과 범위</h2>
+<h3 id="11-왜">1.1 왜</h3>
+<p>지금 병종 스탯(체력·공격·간격)은 P4·P5·P5b에서 손으로 넣은 [가정] 값이다. 맞춰 보면 세 곳이 어긋난다.</p>
+<ul>
+<li><p><strong>대형이 값에 비해 약하다.</strong> 소총병 몇 명 몫인가(환산수)를 값으로 나누면 전차 0.83, 비행선 0.37, 전함 0.70이다(소총병 1.0, 4.1). 더 비싼 비행선(5칸)이 전차(3칸)보다 약하다.</p></li>
+<li><p><strong>중화기병이 너무 세다.</strong> 범위 피해 덕에 같은 값의 소총병 2~4명 몫이다. &quot;보병은 전차·비행선보다 확연히 약하게&quot;(D151)와 거꾸로다.</p></li>
+<li><p><strong>대형의 간격이 2~3초다.</strong> 전차·비행선은 40틱, 전함은 60틱이라 D151의 0.7~1.5초 밖이다.</p></li>
+</ul>
+<p>사용자는 D151에서 이렇게 요청했다. 스탯은 규칙(환산 엔진)이 산정하고, 밸런스 패치는 엔진 값을 올리고 내려서 한다.</p>
+<p>D152(2026-10-01)는 범위를 넓혔다. 엔진은 아직 코드에 없는 병종까지 같은 규칙으로 스탯을 산정해 데이터로 남긴다. 대상은 퓨라 8종, 시온 9종, 종족 영웅, 봉인된 악마다. 동작 구현은 P5e가 한다.</p>
+<h3 id="12-목표-성공-기준">1.2 목표 (성공 기준)</h3>
+<ol>
+<li><p><strong>산정:</strong> 전투 병종 9종(굴착병 제외)의 체력·1발 피해·간격을 엔진이 산정한다. 간격은 모두 14~30틱(0.7~1.5초)이다.</p></li>
+<li><p><strong>앵커:</strong> 소총병 70/10/20과 소형 감염체 30/5/20(1등급 체력/공격/간격 틱)이 그대로다. 값이 바뀐 뒤에도 P5b·P5c 시험과 B9가 통과한다.</p></li>
+<li><p><strong>보병은 확연히 약하다:</strong> 교환 창에서 잰 개체 환산수가 전차는 보병 최강의 3배 이상, 비행선은 5배 이상이다(9.3).</p></li>
+<li><p><strong>B9:</strong> 1등급 기지가 소총병 12명에게 10~20분에 무너진다. 소총병 손실 ≤ 3, 닫힌 식과의 차이 ±1.5분, 구성 무관 하한도 지킨다(9.1⑦·9.4).</p></li>
+<li><p><strong>패치는 한 줄이다:</strong> &quot;전차 +10%&quot;는 표 한 칸(m 1000 → 1100)을 고치고 엔진 → 리포트 표 → 시험 → 커밋으로 끝난다. 사용자는 코드를 쓰지 않는다.</p></li>
+<li><p><strong>로스터 데이터:</strong> 설계된 적 병종·영웅·악마·화신 28행의 입력과 산정값이 <code>power-roster.json</code>에 있다. 모든 행이 엔진 불변식을 지킨다(P5e의 입력).</p></li>
+<li><p><strong>결정성·성능:</strong> 엔진은 정수만 쓰고, 병종 표 정적 초기화 때 한 번만 돈다(틱 비용 0).</p></li>
+</ol>
+<p><strong>구현 뒤 결과</strong> (2026-10-01, <code>feat/p5d-power-engine</code>, 워크플로 — Sonnet 구현 6·리뷰 6·수정 4·브랜치 리뷰 1):</p>
+<ul>
+<li><p><strong>전체 시험:</strong> 435개 중 432개 통과, 실패 0(Explicit 3개 건너뜀 — 기준선 410/408에서 +25). 브랜치 전체 리뷰는 승인(Critical·Important 0)이고, 리뷰어가 엔진을 따로 옮겨 골든 9줄·로스터 28행을 대조해 불일치 0이었다.</p></li>
+<li><p><strong>병합 전 Minor 정리:</strong> 브랜치 리뷰 Minor 12건과 그 재리뷰 지적 5건을 고쳐 454개 중 451개 통과(시험 19개 추가 — 범위 제한·진단값·골든 종류·KilledByKind 칸·보고서 판정 함수·피해표·공격 없는 행). 보고서는 &quot;지금(전)&quot; = 커밋된 골든, &quot;엔진(후)&quot; = 엔진 출력이고, &quot;요청 → 실현&quot;·&quot;반영 안 됨/계단&quot;·&quot;1발 임계 넘음&quot;을 경고한다(8.2·8.3).</p></li>
+<li><p><strong>1·2 산정·앵커:</strong> 9종이 엔진 값이고 간격은 전차 26, 비행선·전함 30, 나머지 20틱이다. 소총병 70/10/20·소형 30/5/20은 그대로이고 P5b·P5c 시험이 모두 통과한다.</p></li>
+<li><p><strong>3 결정 1:</strong> 1.0칸 교환 창은 전차 = 소총병 10명 몫, 비행선 35명, 전함 59명이다. 전차 ÷ 보병 최강 7.06~8.00배, 비행선 14.4~25.5배로 통과한다.</p></li>
+<li><p><strong>4 B9:</strong> 12.8분에 무너지고 잃은 소총병 1명, 닫힌 식 12.7분(×0.64 → 19.8분, ×1.28 → 10.0분)으로 통과한다.</p></li>
+<li><p><strong>5 패치:</strong> 시연(전차 m 1000 → 1100, 커밋 안 함)에서 골든이 새 값(1등급 저장 540/46 → 569/48, 기준 등급 810/69 → 853/72, 전투력 +9.9%)을 찍었다.</p>
+<ul>
+<li><p>1발 72가 1등급 소총병 체력 70을 넘어 <strong>한 방 임계를 건너</strong>, 교환 창이 15/10/10 → 35/25/20으로 뛰었다. 보고서 2절이 이를 바로 보여 준다(8.2 주의).</p></li>
+<li><p>시연에서 국소성 시험이 절대값 m 1100을 써서 이 패치에 잘못 깨지는 결함을 찾아 고쳤다(상대값 +100).</p></li>
+</ul></li>
+<li><p><strong>6 로스터:</strong> 28행 모두 불변식을 지킨다.</p></li>
+<li><p><strong>7 성능:</strong> 성능 시험 4종 통과(예: 유닛 200 재경로 0.595 ms/틱, 기지 6곳 교전 1.782 ms/틱).</p></li>
+<li><p><strong>판 E(T4, 보병·퓨라가 엔진 값):</strong> P5c 판 E와 분 단위 기록 20곳이 모두 같다(20분에 핵 −48.2%, 본부 유지).</p>
+<ul>
+<li><p>소총병·소형은 앵커이고, 가시 60 → 55·굴착체 120 → 119는 소총병이 쓰러뜨리는 발 수(6·12발)가 그대로라 같은 판이 나온다.</p></li>
+</ul></li>
+</ul>
+<h3 id="13-범위">1.3 범위</h3>
+<p><strong>포함:</strong></p>
+<ul>
+<li><p>(a) 환산 엔진: 규칙, 역할 표, 정수 실현.</p></li>
+<li><p>(b) 값 입력: 칸 가격, 퓨라 환율, 동결 스냅샷, 신선도 시험, 레시피 정렬 검사.</p></li>
+<li><p>(c) 구현 9종의 스탯 재산정과 pin 단계 이행.</p></li>
+<li><p>(d) 패치 체계: 손잡이 m, 리포트.</p></li>
+<li><p>(e) 검증 4층: 불변식·골든, 교환 창 보고서, B9 확장, 회귀.</p></li>
+<li><p>(f) 로스터 데이터 행 28개.</p></li>
+<li><p>(g) 기지 사다리 리포트(BP/초 — 경고만).</p></li>
+<li><p>(h) 문서.</p></li>
+</ul>
+<p><strong>제외(결정 10):</strong></p>
+<ul>
+<li><p>경제값 유도: 칸·생산 초·재료·퓨라 생산 틱은 그대로다. 엔진은 값을 읽기만 한다.</p></li>
+<li><p>난이도·F3 페이싱 <em>동작</em> 변경: 리포트와 경고 밴드까지만 한다.</p></li>
+<li><p>방어 방침 왕복·히스테리시스, D150 근접 겹침, 정착 반경(P5c 13장).</p></li>
+<li><p>굴착병 정리: 쓰이지 않는 전투 값과 이동 틱 이중(<code>UnitDef</code> 10 대 <code>DigRules</code>). 별도 작은 태스크다.</p></li>
+<li><p>스탯 ×10 해상도: 시온 도입 전에 다시 결정한다.</p></li>
+<li><p>합체·감염·제단·강림·레드존 같은 동작, <code>UnitKind</code>에 새 병종 추가(P5e).</p></li>
+<li><p>우리 영웅(장교·동료)의 스탯: 영웅·병과 계획.</p></li>
+<li><p>원격 밸런스(D127)와 판 시작 때 m 덮어쓰기: P9.</p></li>
+<li><p>시험 마법 숫자의 JSON 이전: 이 계획의 <strong>선행 태스크 P</strong>(10.1)로 따로 둔다.</p></li>
+</ul>
+<hr>
+<h2 id="2-결정-확정--2026-10-01-승인-기획서-v066">2. 결정 [확정 — 2026-10-01 승인, 기획서 v0.66]</h2>
+<p>사용자가 2026-10-01 확정한 결정 11개(권고안 채택)와, 그것을 엔진으로 옮기며 정한 규칙이다.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">번호</th><th scope="col">결정</th><th scope="col">출처</th></tr></thead>
+<tbody>
+<tr><td>D153</td><td><strong>환산 엔진 규칙.</strong> 전투력 예산 BP(소총병 100), 환산수 N, 전투력 P = 체력 × 초당 화력 = 700·N²(3장). <strong>초당 화력은 값 × 화력 몫 f에 비례한다</strong>(f 기본 100 — D151). 효율 계수 K(근접·사거리·기동·범위·특수 몫)는 체력으로 간다. 간격은 역할 기본값(14~30틱). 1발은 명목값에 가장 가까운 정수로 잡고, 반올림 오차는 체력이 흡수한다(곱 우선). 엔진은 유형 중립이다(방어 유형 보정 없음)</td><td>결정 3·6·7, 설계안 A·B</td></tr>
+<tr><td>D154</td><td><strong>값 입력.</strong> 칸 가격이 1차 축이다(1칸 보병 100 BP, 3칸 이상은 칸당 250 BP). 레시피 원석 환산은 읽기 전용 정렬 검사로만 쓴다(전차·전함 ±3%, 비행선은 예외 표시). 퓨라는 생체질량 10 = 30.3 BP(소형 앵커에서 역산). 값은 표에 동결하고, 신선도 시험이 원본과 대조한다</td><td>결정 2·5, 설계안 C</td></tr>
+<tr><td>D155</td><td><strong>균형 기준.</strong> &quot;보병은 확연히 약하게&quot; = 교환 창 개체 환산수가 전차 ≥ 보병 최강 × 3, 비행선 ≥ × 5. 앵커 소총병 70/10/20·소형 30/5/20은 영구 고정이다. 가시·굴착체는 소총병 처치 발수(6발, 12발 이하)와 초당 화력을 지키는 범위에서만 바뀐다. B9: 10~20분 + 소총병 손실 ≤ 3 + 닫힌 식 ±1.5분 + 구성 무관 하한(같은 값 부대 함락 ≥ 10분, 칸당 구조물 화력 ≤ 소총병의 2배)</td><td>결정 1·4·5</td></tr>
+<tr><td>D156</td><td><strong>패치.</strong> 병종당 힘 배수 m 하나(전투력 배수, 내부는 √m)로 한다. 값(칸·생산 초·재료)은 움직이지 않고, 리포트의 값 효율 열로 괴리만 보인다</td><td>결정 6</td></tr>
+<tr><td>D157</td><td><strong>검증·이행.</strong> 종료 게이트는 정수 불변식·골든·행 완전성·B9뿐이다. 교환 창은 보고서(Explicit)다. 전 병종을 pin으로 연결해 값 불변 관문을 지난 뒤 묶음별로 pin을 푼다. 대형 3종 간격은 이번에 바꾸고, 체력·화력 재스케일은 마지막 별도 커밋이다</td><td>결정 8·9</td></tr>
+<tr><td>D158</td><td><strong>로스터 데이터.</strong> <code>UnitKind</code>에 없는 병종은 <code>power-roster.json</code> 데이터 행(입력 + 산정값)으로만 둔다. 종족 어댑터(퓨라 합체 = 재료 합, 시온 = 칸 가격, 영웅·악마·화신 = 등장 규칙 [가정])는 엔진 밖에 둔다</td><td>D152</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="3-용어">3. 용어</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">용어</th><th scope="col">뜻</th></tr></thead>
+<tbody>
+<tr><td><strong>BP</strong> (전투력 예산)</td><td>엔진의 단위. 소총병 1명 = 100 BP. 체력과 초당 화력 각각에 선형이다(같은 모양에서 BP가 2배면 체력·화력도 각각 2배). 엔진 안에서는 <strong>mR</strong>(소총병 1 = 1000)로 센다</td></tr>
+<tr><td><strong>값 c</strong></td><td>병종 하나를 얻는 데 드는 값을 BP로 적은 것(동결). 제국·시온은 칸 가격, 퓨라는 생체질량 × 환율</td></tr>
+<tr><td><strong>효율 K</strong></td><td>같은 값으로 얼마나 센지 정하는 계수(‰): 근접·사거리·기동·범위·특수 몫의 곱. 기본 1000</td></tr>
+<tr><td><strong>환산수 N</strong></td><td>소총병 몇 명 몫인가. N = (c ÷ 100 BP) × (K ÷ 1000) × √(m/1000)</td></tr>
+<tr><td><strong>전투력 P</strong></td><td>체력 × 초당 화력. 소총병 = 700. <strong>P = 700 × N²</strong> — 란체스터 제곱 법칙의 근사(전투력이 같은 두 무리는 맞붙어 비긴다)</td></tr>
+<tr><td><strong>화력 몫 f</strong></td><td>값 대비 초당 화력의 비율(%). f = 100이면 소총병과 같은 비율이다(D151 &quot;화력 ∝ 값&quot;)</td></tr>
+<tr><td><strong>모양 τ</strong></td><td>체력 ÷ 초당 화력, 즉 버티는 초. 소총병 7초</td></tr>
+<tr><td><strong>힘 배수 m</strong></td><td>패치 손잡이(‰). 전투력을 m/1000배로 만든다 — 체력과 화력이 각각 √(m/1000)배</td></tr>
+<tr><td><strong>특수 몫</strong></td><td>공격 밖 능력(굴착·오라·소환)에 쓰고 남은 예산 비율(‰). 1000이 아니면 이유(why)가 필수다</td></tr>
+<tr><td><strong>앵커</strong></td><td>엔진이 정확히 재현해야 하는 값(소총병·소형 감염체). 근접 보정과 퓨라 환율은 앵커에서 역산했다</td></tr>
+<tr><td><strong>pin</strong></td><td>행에 붙인 고정 스탯. pin이 있으면 엔진 산정값 대신 쓴다(이행 단계용)</td></tr>
+<tr><td><strong>골든</strong></td><td>엔진 출력의 스냅샷(<code>balance-checks.json</code>의 <code>power.golden</code>). 패치마다 일부러 깨져서 눈에 띈다</td></tr>
+<tr><td><strong>교환 창</strong></td><td>실제 <code>CombatSim</code>에서 1등급 소총병 n명과 병종 m대를 맞붙여, 소총병이 이기는 최소 n/m(측정 환산수)을 3대형(0.5/1.0/1.5칸 간격)에서 잰 값</td></tr>
+<tr><td><strong>g0</strong></td><td>병종의 최소 등급(전차 3·비행선 4·전함 5, 그 밖 1). 엔진은 g0에서 산정하고, 저장값은 1등급으로 되돌린다</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="4-현재-상태와-문제">4. 현재 상태와 문제</h2>
+<h3 id="41-지금-표">4.1 지금 표</h3>
+<p>g0 값이다. 값 c는 6장의 칸 가격과 퓨라 환율로 바꿨다.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">병종</th><th scope="col">g0</th><th scope="col">체력</th><th scope="col">1발</th><th scope="col">간격(틱)</th><th scope="col">초당 화력</th><th scope="col">전투력 P</th><th scope="col">환산수 N</th><th scope="col">값 c (BP)</th><th scope="col">N ÷ (c/100)</th></tr></thead>
+<tbody>
+<tr><td>굴착병</td><td>1</td><td>50</td><td>3</td><td>20</td><td>(안 씀)</td><td>–</td><td>–</td><td>100</td><td>–</td></tr>
+<tr><td>돌격병</td><td>1</td><td>120</td><td>15</td><td>20</td><td>15</td><td>1,800</td><td>1.60</td><td>100</td><td>1.60</td></tr>
+<tr><td>소총병</td><td>1</td><td>70</td><td>10</td><td>20</td><td>10</td><td>700</td><td>1.00</td><td>100</td><td>1.00</td></tr>
+<tr><td>중화기병</td><td>1</td><td>90</td><td>8</td><td>20</td><td>8</td><td>720</td><td>1.01</td><td>100</td><td>1.01</td></tr>
+<tr><td>전차</td><td>3</td><td>900</td><td>60</td><td>40</td><td>30</td><td>27,000</td><td>6.21</td><td>750</td><td>0.83</td></tr>
+<tr><td>비행선</td><td>4</td><td>700</td><td>43</td><td>40</td><td>21.5</td><td>15,050</td><td>4.64</td><td>1,250</td><td>0.37</td></tr>
+<tr><td>전함</td><td>5</td><td>4,000</td><td>160</td><td>60</td><td>53.3</td><td>213,333</td><td>17.46</td><td>2,500</td><td>0.70</td></tr>
+<tr><td>소형 감염체</td><td>1</td><td>30</td><td>5</td><td>20</td><td>5</td><td>150</td><td>0.46</td><td>30.3</td><td>1.53</td></tr>
+<tr><td>가시 감염체</td><td>1</td><td>60</td><td>8</td><td>20</td><td>8</td><td>480</td><td>0.83</td><td>75.8</td><td>1.09</td></tr>
+<tr><td>굴착체</td><td>1</td><td>120</td><td>3</td><td>20</td><td>3</td><td>360</td><td>0.72</td><td>90.9</td><td>0.79</td></tr>
+</tbody></table></div>
+<p>N = √(P/700)이다. 중화기병의 N에는 범위 피해가 빠져 있다(넣으면 4.2-2).</p>
+<h3 id="42-조사가-찾은-사실">4.2 조사가 찾은 사실</h3>
+<ol>
+<li><p><strong>B9는 구조물 체력 경주다.</strong></p>
+<ul>
+<li><p>12.8분의 구성: 서쪽 둥지 20000 + 핵 60000을 소총병 12명의 구조물 화력 120/초로 나누면 약 667초이고, 여기에 이동·교전 약 101초가 더해진다.</p></li>
+<li><p>퓨라 스탯에는 둔감하다. 소총병 구조물 화력이 ×0.61~×1.34를 벗어나면 창이 깨진다.</p></li>
+<li><p>퓨라가 쓴 값의 약 52%는 핵이 굴착체를 다시 사는 데 나간다.</p></li>
+<li><p>2026-10-01 실측: <code>fell=12.8min riflesLost=1 killed=166</code>.</p></li>
+</ul></li>
+<li><p><strong>중화기병은 범위 피해로 강하다.</strong> 같은 값·칸에서 소총병 2.1~4.2명 몫이다(대형 간격에 따라 다르다).</p></li>
+<li><p><strong>비행선·전함은 실제 판에서 볼 수 없다.</strong> 시작 지역 광맥은 1~3등급뿐이라 4등급 이상 재료가 없다. 이번에 가장 크게 바뀌는 두 병종이 계산과 시험으로만 검증된다.</p></li>
+<li><p><strong>대형은 공성도 값 대비 약하다.</strong> 같은 값 부대의 핵 함락 시간(닫힌 식)은 전차 25.5분, 비행선 37.2분, 전함 64.3분이다.</p></li>
+<li><p><strong>시험이 고정하지 않은 값이 있다.</strong></p>
+<ul>
+<li><p>제국 병종의 간격·이동 틱·높이에는 값 고정 시험이 없다(→ T0).</p></li>
+<li><p>굴착병의 공격·사거리·간격은 쓰이지 않는다. 굴착병은 <code>World.Diggers</code>의 몸이다.</p></li>
+</ul></li>
+<li><p><strong>정수 내림.</strong> 피해(<code>DamageTable.Damage</code>)와 등급(<code>Stats.Scale</code>) 배율이 모두 내림이다. 그래서 엔진은 이 둘을 그대로 불러야 실제 값과 어긋나지 않는다.</p></li>
+<li><p><strong>기록만 하고 이번에 안 고치는 것</strong>(knownIssues, 9.2):</p>
+<ul>
+<li><p>등급 사다리·재무장 정합: 소총병 6등급은 값이 6.6배인데 환산수는 2.25배다.</p></li>
+<li><p>비행선 값-칸 불일치: 레시피로는 857 BP, 칸으로는 1250 BP(6.2).</p></li>
+<li><p>2·3등급 기지의 둥지 천장(9.2 기지 사다리).</p></li>
+<li><p>처치 보상 비율.</p></li>
+</ul></li>
+</ol>
+<h3 id="43-로스터-공백-d152">4.3 로스터 공백 (D152)</h3>
+<ul>
+<li><p>코드의 적 병종은 퓨라 3종뿐이다: 소형 감염체, 가시 감염체(≈ 산성 감염체), 굴착체(≈ 감염 굴착체).</p></li>
+<li><p>설계서에 있는 적 로스터:</p>
+<ul>
+<li><p>퓨라: 병종 8종 + 영웅 3.</p></li>
+<li><p>시온: 병종 9종 + 강림 영웅 3 + 봉인된 악마 4 + 파리 떼.</p></li>
+<li><p>오라클: 화신 3.</p></li>
+</ul></li>
+<li><p>문서에 있는 수치는 크기·역할·피해/방어 유형·합체 재료 정도다. 체력·공격·사거리·이동·값은 거의 없다(로스터 추출, 7.2).</p></li>
+</ul>
+<hr>
+<h2 id="5-엔진">5. 엔진</h2>
+<h3 id="51-한눈에">5.1 한눈에</h3>
+<pre class="code"><code>값 c ─────────┐
+효율 K ───────┼─▶ 환산수 N = c·K·√m ─▶ 전투력 P = 700·N²
+힘 배수 m ────┘                                │
+값 c · 화력 몫 f · √m ─▶ 명목 초당 화력 W = 10·c·f·√m
+역할 간격 t ─▶ 1발 = W·t/20 의 가장 가까운 정수 ─▶ 실현 화력 W'
+                                      체력 = P ÷ W' 의 가장 가까운 정수
+g0에서 산정 → 저장값(1등급) = Stats.Scale(b, g0)가 그 값이 되는 정수 b</code></pre>
+<p>이 그림에서 c는 소총병 몫, f·m은 배수로 읽는다. 정확한 정수 식은 5.7에 있다.</p>
+<h3 id="52-입력-행">5.2 입력 행</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">칸</th><th scope="col">뜻</th><th scope="col">예(전차)</th></tr></thead>
+<tbody>
+<tr><td>kind</td><td>병종 키. 구현 병종은 <code>UnitKind</code>, 로스터는 문자열 id</td><td><code>Tank</code></td></tr>
+<tr><td>cost</td><td>값 c, mR(소총병 1 = 1000). 동결값</td><td>7500</td></tr>
+<tr><td>role</td><td>역할(5.6). f·간격·τ 대역의 기본값을 준다</td><td>공성</td></tr>
+<tr><td>f</td><td>화력 몫 %(0 = 역할 기본). 역할 기본과 다르면 why 필수</td><td>0 (→ 70)</td></tr>
+<tr><td>cooldown</td><td>간격 틱(0 = 역할 기본). 14~30</td><td>0 (→ 30)</td></tr>
+<tr><td>m</td><td>힘 배수 ‰. 500~2000, 기본 1000. 앵커는 1000 고정</td><td>1000</td></tr>
+<tr><td>share</td><td>특수 몫 ‰. 기본 1000, 그 밖이면 why 필수</td><td>1000</td></tr>
+<tr><td>why</td><td>예외 이유 한 줄</td><td>—</td></tr>
+<tr><td>pin</td><td>고정 스탯(선택, 이행용)</td><td>없음</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>몸 특성은 병종 표(<code>UnitDef</code>)의 같은 줄 값을 읽는다: 사거리, 칸당 이동 틱, 지나갈 곳(지상·공중·굴착), 범위 반경, 최소 등급 g0.</p></li>
+<li><p>공격·방어 유형은 엔진이 쓰지 않는다(5.8).</p></li>
+</ul>
+<h3 id="53-효율-k-기울기근접-보정은-초기값--t3-확정">5.3 효율 K [기울기·근접 보정은 초기값 — T3 확정]</h3>
+<p>K = Kr × Km × Ks × share. 각 계수는 ‰이고, 곱할 때마다 ÷1000 반올림한다.</p>
+<ul>
+<li><p><strong>Kr 사거리:</strong></p>
+<ul>
+<li><p>근접(사거리 1)은 <strong>1650</strong> [역산 상수 — 6.3의 소형 앵커]. 맞닿아야 치므로 다가가는 동안 맞는 손해를 돌려받는다.</p></li>
+<li><p>그 밖은 1000 + 50 × (5 − 사거리칸), 하한 500. 5칸보다 길면 먼저 쏘는 이득만큼 낸다.</p></li>
+<li><p>공격 없는 행은 1000이다.</p></li>
+</ul></li>
+<li><p><strong>Km 기동:</strong> (1000 + 25 × (이동 틱 − 10)) × 지나갈 곳 ÷ 1000.</p>
+<ul>
+<li><p>지나갈 곳: 지상 1000, 공중 950, 굴착 900.</p></li>
+<li><p>빠를수록(이동 틱이 작을수록) 내고, 지형을 무시하는 이동도 낸다.</p></li>
+</ul></li>
+<li><p><strong>Ks 범위:</strong> 1000 − 100 × (K10 − 10) ÷ 10 — 몸당 100‰(T3 관문 사전 결정, 처음 안 50).</p>
+<ul>
+<li><p>K10은 표준 대형에서 한 발이 맞히는 몸 수의 평균 ×10이다. 표준 대형은 소총병 4×3(중심 간격 1칸, 반지름 32)이다.</p></li>
+<li><p>판정은 실제 <code>CombatSim.Splash</code>와 같다: 맞은 몸 중심에서 다른 몸 가장자리까지가 반경 이내.</p></li>
+<li><p>결과: 범위 0.5칸 → K10 10(세금 0), 1칸 → 38(−28%), 1.5칸 → 58(−48%).</p></li>
+<li><p>0.5/1.5칸 대형의 K10은 리포트용이다: 0.5칸 간격에서 38/98/117, 1.5칸 간격에서 10/10/38.</p></li>
+</ul></li>
+<li><p><strong>share 특수 몫:</strong> 굴착체 480이다. 굴을 파는 능력에 쓰고, 결정 5의 12발 이하를 지키도록 정했다.</p></li>
+</ul>
+<h3 id="54-환산수와-전투력">5.4 환산수와 전투력</h3>
+<p>N = c × K ÷ 1000 × √(m/1000) (mR) — P = 700 × N² ÷ 10⁶ (체력 × 초당 화력)</p>
+<ul>
+<li><p>효율이 같으면 값이 같을 때 전투력도 같다. 값어치가 같은 두 부대는 공칭으로 비긴다.</p></li>
+<li><p>대형 1대의 전투력은 값의 제곱으로 자란다. 전차(값 7.5 = 소총병 7.5명 몫)는 소총병 7.5명과 공칭으로 비기지만, 개체 전투력은 소총병의 56배다.</p></li>
+</ul>
+<h3 id="55-화력과-체력의-분배-d151">5.5 화력과 체력의 분배 (D151)</h3>
+<ul>
+<li><p><strong>초당 화력</strong> W = 10 × (c ÷ 1000) × (f ÷ 100) × √(m/1000).</p>
+<ul>
+<li><p>값과 f만으로 정해진다. D151 &quot;초당 화력은 생산 비용에 비례&quot;를 그대로 읽은 것이다(설계안 B).</p></li>
+<li><p>효율 K는 화력에 들어가지 않는다.</p></li>
+</ul></li>
+<li><p><strong>체력</strong> = P ÷ W.</p>
+<ul>
+<li><p>그래서 효율 K는 전부 체력으로 간다(체력 ∝ K²).</p></li>
+<li><p>근접 병종은 체력이 많고, 범위 공격·특수 능력 병종은 체력이 적다.</p></li>
+</ul></li>
+<li><p><strong>f 예외</strong> — 역할 기본(5.6)과 다르거나 100이 아닌 것. 모두 why가 필요하다.</p></li>
+</ul>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">병종</th><th scope="col">f</th><th scope="col">이유</th></tr></thead>
+<tbody>
+<tr><td>중화기병</td><td>80</td><td>범위 피해가 실제 화력을 늘린다</td></tr>
+<tr><td>전차</td><td>70</td><td>장갑 — 체력 몫이 크다</td></tr>
+<tr><td>전함</td><td>60</td><td>요새 — 체력 몫이 크다</td></tr>
+<tr><td>굴착체</td><td>30</td><td>전투는 부업이다</td></tr>
+<tr><td>비행선</td><td><strong>50</strong></td><td>결정 4의 공성 하한. f 100이면 폭발 → 구조물 150%와 범위 때문에 칸당 구조물 화력이 37.5(소총병의 3.75배)가 되고, 같은 값 부대가 7.4분에 핵을 부순다</td></tr>
+<tr><td>소형 감염체</td><td>165</td><td>앵커 — 빠르고 약한 떼(역할 '떼'의 기본)</td></tr>
+</tbody></table></div>
+<h3 id="56-역할-표-초기값--t3-확정">5.6 역할 표 [초기값 — T3 확정]</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">역할</th><th scope="col">f</th><th scope="col">간격(틱)</th><th scope="col">τ 대역(초)</th><th scope="col">병종</th></tr></thead>
+<tbody>
+<tr><td>사격</td><td>100</td><td>20</td><td>4~25</td><td>소총병, 가시 감염체</td></tr>
+<tr><td>근접</td><td>100</td><td>20</td><td>8~60</td><td>돌격병</td></tr>
+<tr><td>떼</td><td>165</td><td>20</td><td>3~10</td><td>소형 감염체</td></tr>
+<tr><td>제압</td><td>80</td><td>20</td><td>6~16</td><td>중화기병</td></tr>
+<tr><td>공성</td><td>70</td><td>30</td><td>5~30</td><td>전차(간격 26 — 행에서 덮어씀)</td></tr>
+<tr><td>공중</td><td>100</td><td>30</td><td>4~40</td><td>비행선(f 50 예외)</td></tr>
+<tr><td>요새</td><td>60</td><td>30</td><td>8~40</td><td>전함</td></tr>
+<tr><td>굴착</td><td>30</td><td>20</td><td>20~80</td><td>굴착체</td></tr>
+<tr><td>영웅</td><td>70</td><td>20</td><td>3~40</td><td>로스터 영웅·화신</td></tr>
+<tr><td>보스</td><td>10</td><td>30</td><td>100~2000</td><td>봉인된 악마</td></tr>
+<tr><td>지원</td><td>공격 없음</td><td>–</td><td>τ 7 (영웅은 20)</td><td>버프 감염체·제사장·지원형 영웅</td></tr>
+<tr><td>생산</td><td>공격 없음</td><td>–</td><td>τ 30</td><td>거대 숙주</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>간격 기본값: 보병·퓨라는 지금 값(20틱)을 그대로 두어 P5c 시험을 지킨다. 대형은 D151 상한 30틱(1.5초 — &quot;큰 한 방&quot;)이다.</p></li>
+<li><p>전차만 26틱이다(T3 관문 사전 결정). 3등급 1발이 69가 되어 1등급 소총병(70)을 한 방에 쓰러뜨리지 않는다 — 30틱이면 79로 한 방이고, 교환 창이 소총병 18명 몫에서 10명 몫으로 내려온다.</p></li>
+<li><p>τ 대역은 시험이 지키는 &quot;모양 범위&quot;다(9.1⑨). 패치가 모양을 이상하게 만들면 걸린다.</p></li>
+<li><p>공격 없는 행(지원·생산)은 체력 = √(P × τ)이고, 1발·간격은 0이다.</p></li>
+</ul>
+<h3 id="57-정수-실현-곱-우선">5.7 정수 실현 (곱 우선)</h3>
+<p>모든 곱은 <code>long</code>이다. 반올림 나눗셈은 <code>Div(a, b) = (2a + b) / (2b)</code>(양수만), <code>Isqrt</code>는 정수 뉴턴법이다. 실수와 <code>Math.Sqrt</code>는 쓰지 않는다. s0 = 100 + 25 × (g0 − 1).</p>
+<pre class="code"><code>K  = Div(Div(Div(Kr*Km, 1000)*Ks, 1000)*share, 1000)
+sm = Isqrt(clamp(m, 500, 2000) * 1000)               // √(m/1000) × 1000
+N  = Div(Div(c*K, 1000)*sm, 1000)                    // mR
+Pm = Div(700*N*N, 1000)                              // 전투력 × 1000
+Wm = Div(c*f*sm, 10000)                              // 명목 초당 화력 × 1000
+t  = clamp(행 간격 ?? 역할 간격, 14, 30)
+a  = Fit(목표 = Wm·t/20000, g0)                     // 1발 (g0)
+W' = a·20/t                                          // 실현 초당 화력
+h  = Fit(목표 = Pm/(W'·1000), g0)                   // 체력 (g0)
+Fit(v, g0): b ∈ {⌊v·100/s0⌋, +1, +2} 중 Stats.Scale(b, g0)가 v에 가장 가까운 b (동률이면 큰 b)
+           → 저장값(1등급) b, 실현값 Stats.Scale(b, g0)</code></pre>
+<ul>
+<li><p>비교는 정수 교차곱으로 한다. 예를 들어 1발은 |Scale(b,g0)·20000 − Wm·t|가 가장 작은 b다.</p></li>
+<li><p>1발 반올림 오차는 체력이 흡수한다. 전투력 곱 오차는 ≤ 1/(2h)이다(체력 30이면 1.7%). m 500~2000 훑기에서 최대 1.9%였다.</p></li>
+<li><p>화력은 m에 대해 줄지 않는다(1발이 명목값의 반올림이라서). 체력 단독은 1발이 한 칸 오를 때 곱을 맞추느라 조금 내려갈 수 있다. 그래서 단조성 불변식은 전투력과 화력에 건다(9.1⑤).</p></li>
+<li><p><strong>모양 이탈</strong> = |τ' ÷ τ − 1|(τ' = h ÷ W', τ = 명목). 10%를 넘으면 리포트 경고만 낸다. 1발이 작은 병종의 해상도 한계다: 굴착체 17%, 가시 11%.</p></li>
+<li><p>엔진은 <code>Stats.Scale</code>을 그대로 부르고, 검증(9장)은 <code>DamageTable.Damage</code>를 그대로 부른다.</p></li>
+</ul>
+<h3 id="58-유형-중립-결정-7">5.8 유형 중립 (결정 7)</h3>
+<ul>
+<li><p>엔진은 공격·방어 유형을 보지 않는다. 설계안 A의 방어 유형 보정 Kd는 뺐다.</p></li>
+<li><p>상성(관통 → 중장갑 150% 등)은 전투 중에 <code>DamageTable</code>이 처리하고, 교환 창(9.2)이 실제 표로 잰다.</p></li>
+<li><p>(구현 결과) 기준 적 혼합표는 두지 않았다. 보고서의 1발 임계·교환 창이 실제 피해표로 표적마다 잰다.</p></li>
+</ul>
+<h3 id="59-엔진-밖">5.9 엔진 밖</h3>
+<ul>
+<li><p>굴착병은 전투 병종이 아니라서 엔진에 넣지 않는다. 표에는 &quot;수동 pin&quot; 행(50/3/1/20)으로 남고, 행 완전성 시험(9.1⑩)이 이를 확인한다.</p></li>
+<li><p>쓰이지 않는 전투 값의 정리는 별도 태스크다.</p></li>
+</ul>
+<hr>
+<h2 id="6-값-입력">6. 값 입력</h2>
+<h3 id="61-칸-가격-제국시온">6.1 칸 가격 (제국·시온)</h3>
+<ul>
+<li><p>1칸 보병은 <strong>100 BP</strong>(1000 mR)이다.</p></li>
+<li><p>3칸 이상은 <strong>칸당 250 BP</strong>다: 전차 3칸 750, 비행선 5칸 1250, 전함 10칸 2500.</p></li>
+<li><p>근거:</p>
+<ul>
+<li><p>칸(병력 상한을 차지하는 몫)은 플레이어가 실제로 아끼는 자원이다.</p></li>
+<li><p>대형의 칸당 250은 레시피 원석 환산과 맞는다(6.2 — 전차·전함 ±2% 안).</p></li>
+</ul></li>
+<li><p>시온도 같은 칸 가격을 쓴다 [가정]. 크기 1×1 = 1칸, 2×2 = 3칸, 3×3 = 5칸으로, P5 5.4 강림 제물의 칸 환산과 같은 표다.</p></li>
+</ul>
+<h3 id="62-레시피-정렬-검사-읽기-전용">6.2 레시피 정렬 검사 (읽기 전용)</h3>
+<p>BP_레시피(u) = 100 × RE(u, g0) ÷ RE(소총병, g0) × s0 ÷ 100</p>
+<p>RE는 g0의 도구 레시피(<code>Recipes.Tool</code>)와 추가 재료(<code>UnitDef.MaterialCost</code>)를 원석 수로 바꾼 합이다. 원재료 1, 주괴 2, 정제품 4, 희귀 1 = 3으로 센다.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">병종</th><th scope="col">RE(u, g0)</th><th scope="col">RE(소총병, g0)</th><th scope="col">BP_레시피</th><th scope="col">칸 가격</th><th scope="col">차이</th></tr></thead>
+<tbody>
+<tr><td>보병(g1)</td><td>5</td><td>5</td><td>100</td><td>100</td><td>0</td></tr>
+<tr><td>전차(g3)</td><td>66</td><td>13</td><td>762</td><td>750</td><td>+1.5%</td></tr>
+<tr><td>비행선(g4)</td><td>93</td><td>19</td><td>857</td><td>1250</td><td>−31% (예외 표시)</td></tr>
+<tr><td>전함(g5)</td><td>364</td><td>29</td><td>2510</td><td>2500</td><td>+0.4%</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>시험은 전차·전함 ±3%와 보병 일치를 지킨다. 비행선은 &quot;알려진 예외&quot; 목록에 남아 있는지만 본다. 목록에서 빠지거나 차이가 ±3% 안으로 들어오면 실패해서 사람이 다시 본다.</p></li>
+<li><p>엔진은 레시피를 읽지 않는다. 경제 패치가 전투 스탯을 조용히 바꾸지 못하게 하려는 것이다(결정 2).</p></li>
+</ul>
+<h3 id="63-퓨라-환율">6.3 퓨라 환율</h3>
+<ul>
+<li><p><strong>생체질량 10 = 303 mR(30.3 BP).</strong></p>
+<ul>
+<li><p>소형 감염체 앵커(30/5/20)를 근접 보정 1650과 떼 f 165로 재현하는 값이다.</p></li>
+<li><p>허용 구간은 생체질량 10당 302~305 mR이다. 이 안이면 소형이 30/5로 실현된다.</p></li>
+</ul></li>
+<li><p>환산값: 소형 10 → 30.3 BP, 가시 25 → 75.8 BP, 굴착체 30 → 90.9 BP.</p></li>
+<li><p>기지 등급이 오르면 스탯은 +25%/등급이고 값은 그대로다. 지금과 같다(결정 5).</p></li>
+<li><p>근접 보정을 바꾸면 환율을 다시 역산해야 한다. 소형 앵커 시험이 이를 잡는다.</p></li>
+</ul>
+<h3 id="64-동결과-신선도">6.4 동결과 신선도</h3>
+<ul>
+<li><p>값 c는 <code>PowerTable</code> 행에 정수로 적는다(동결). 엔진은 <code>Recipes</code>도 <code>EnemyBaseConfig</code>도 읽지 않는다.</p></li>
+<li><p>신선도 시험이 세 가지를 대조한다:</p>
+<ol>
+<li><p>제국 행의 c = 칸 가격 규칙(<code>UnitDef.Slots</code>).</p></li>
+<li><p>퓨라 행의 c = Div(<code>EnemyBaseConfig</code> 기본 값 × 303, 10).</p></li>
+<li><p>레시피 정렬(6.2).</p></li>
+</ol></li>
+<li><p>경제 값이 바뀌면 시험이 빨개지고, 동결값을 고칠지는 사람이 정한다.</p></li>
+</ul>
+<h3 id="65-다른-종족영웅-어댑터-가정--p5e에서-확정">6.5 다른 종족·영웅 어댑터 [가정 — P5e에서 확정]</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">대상</th><th scope="col">값 c</th><th scope="col">근거</th></tr></thead>
+<tbody>
+<tr><td>퓨라 합체 병종</td><td>재료 값의 합(1단계 기준 재료 = 소형 감염체), 합체 보너스 0</td><td>P5 4.3(재료 4→3→3→2), 설계안 C &quot;합체 = 재료 합&quot;</td></tr>
+<tr><td>감염된 우리 유닛</td><td>원래 BP × 0.5</td><td>D87(50% 스펙). 동작은 P5e</td></tr>
+<tr><td>퓨라 영웅</td><td>1000 BP = 감염 20명 × 소총병 100 BP × 50%</td><td>P5 4.6(20명 감염마다 깨어남)</td></tr>
+<tr><td>시온 병종</td><td>칸 가격(6.1)</td><td>P5 5.4 제물 칸 환산</td></tr>
+<tr><td>시온 강림 영웅</td><td>3000 BP = 제물 30칸 × 100 BP</td><td>P5 5.4(30칸분)</td></tr>
+<tr><td>봉인된 악마</td><td>6000 BP. 기준 부대 1만 BP가 3분 제한의 절반 안팎에 잡도록</td><td>P5 5.5</td></tr>
+<tr><td>오라클 화신</td><td>3000 BP. 적 영웅과 같은 급</td><td>P5 3.7 보상 서열</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>강림·레드존·심판의 단위(칸·누적 사망 수·체력×공격)는 그대로 둔다.</p></li>
+<li><p>엔진은 병종별 BP를 조회할 수 있게만 한다. P5e가 쓸지 정한다.</p></li>
+<li><p>산정값의 소비(가산점·보상·강림)는 이번 범위가 아니다.</p></li>
+</ul>
+<hr>
+<h2 id="7-병종-표">7. 병종 표</h2>
+<h3 id="71-구현-병종-t3-관문-사전-결정-반영--범위-세금-100-전차-간격-26">7.1 구현 병종 [T3 관문 사전 결정 반영 — 범위 세금 100‰, 전차 간격 26]</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">병종</th><th scope="col">역할 (f·간격)</th><th scope="col">c BP</th><th scope="col">K‰</th><th scope="col">N</th><th scope="col">지금 g0 체력/1발/간격 (화력)</th><th scope="col">엔진 g0</th><th scope="col">저장 1등급</th><th scope="col">바뀌는 것</th></tr></thead>
+<tbody>
+<tr><td>굴착병</td><td>엔진 밖</td><td>–</td><td>–</td><td>–</td><td>50/3/20</td><td>–</td><td>50/3 (pin)</td><td>없음</td></tr>
+<tr><td>돌격병</td><td>근접 (100·20)</td><td>100</td><td>1526</td><td>1.53</td><td>120/15/20 (15)</td><td><strong>163/10/20</strong> (10)</td><td>163/10</td><td>체력 +36%, 화력 −33%, 전투력 −9%</td></tr>
+<tr><td>소총병</td><td>사격 (100·20)</td><td>100</td><td>1000</td><td>1.00</td><td>70/10/20 (10)</td><td>70/10/20 (10)</td><td>70/10</td><td>앵커</td></tr>
+<tr><td>중화기병</td><td>제압 (80·20)</td><td>100</td><td>832</td><td>0.83</td><td>90/8/20 (8)</td><td><strong>61/8/20</strong> (8)</td><td>61/8</td><td>체력 −32%</td></tr>
+<tr><td>전차</td><td>공성 (70·26)</td><td>750</td><td>1045</td><td>7.84</td><td>900/60/40 (30)</td><td><strong>810/69/26</strong> (53.1)</td><td>540/46</td><td>체력 −10%, 화력 +77%</td></tr>
+<tr><td>비행선</td><td>공중 (50·30)</td><td>1250</td><td>494</td><td>6.17</td><td>700/43/40 (21.5)</td><td><strong>425/94/30</strong> (62.7)</td><td>243/54</td><td>체력 −39%, 화력 +191%</td></tr>
+<tr><td>전함</td><td>요새 (60·30)</td><td>2500</td><td>688</td><td>17.20</td><td>4000/160/60 (53.3)</td><td><strong>1374/226/30</strong> (150.7)</td><td>687/113</td><td>체력 −66%, 화력 +183%</td></tr>
+<tr><td>소형 감염체</td><td>떼 (165·20)</td><td>30.3</td><td>1526</td><td>0.46</td><td>30/5/20 (5)</td><td>30/5/20 (5)</td><td>30/5</td><td>앵커</td></tr>
+<tr><td>가시 감염체</td><td>사격 (100·20)</td><td>75.8</td><td>1050</td><td>0.80</td><td>60/8/20 (8)</td><td>55/8/20 (8)</td><td>55/8</td><td>체력 −8% (소총병 6발 그대로)</td></tr>
+<tr><td>굴착체</td><td>굴착 (30·20, 몫 480)</td><td>90.9</td><td>784</td><td>0.71</td><td>120/3/20 (3)</td><td>119/3/20 (3)</td><td>119/3</td><td>체력 −1% (12발 그대로)</td></tr>
+</tbody></table></div>
+<p>읽는 법:</p>
+<ul>
+<li><p><strong>보병 대 대형(개체 전투력, 소총병 = 1):</strong></p>
+<ul>
+<li><p>엔진: 돌격 2.3, 중화기 0.7, 전차 61, 비행선 38, 전함 296.</p></li>
+<li><p>지금: 2.6, 1.0, 39, 22, 305.</p></li>
+</ul></li>
+<li><p><strong>값 효율</strong> N ÷ (c/100):</p>
+<ul>
+<li><p>엔진: 돌격 1.53, 소총 1.00, 중화기 0.83, 전차 1.05, 비행선 0.49, 전함 0.69.</p></li>
+<li><p>지금: 1.60, 1.00, 1.01, 0.83, 0.37, 0.70.</p></li>
+<li><p>범위 공격 병종이 낮은 것은 범위 세금(몸당 100‰) 때문이다(중화기 K 832, 비행선 494, 전함 688). 공칭 값 효율이 낮아도 실측 교환 창에서는 범위 공격 덕에 값보다 세다(아래 결정 1).</p></li>
+</ul></li>
+<li><p><strong>결정 4 하한</strong>(9.1⑦):</p>
+<ul>
+<li><p>칸당 구조물 화력(상한 20): 소총 10, 돌격 7, 중화기 12, 전차 17.7, 비행선 18.8, 전함 15.1.</p></li>
+<li><p>같은 값 부대 핵 함락(닫힌 식, 하한 10분): 소총 12.7분, 돌격 17.5, 중화기 10.6, 전차 17.9, 비행선 16.9, 전함 22.1.</p></li>
+</ul></li>
+<li><p><strong>결정 1 — 실측 교환 창</strong>(실제 <code>World</code>·<code>CombatSim</code>, 참조 구현의 그림자 보고서 — 소총병 몇 명 몫인가, 대형 간격 0.5/1.0/1.5칸):</p>
+<ul>
+<li><p>돌격 1.38/1.38/1.25, 중화기 2.12/1.12/0.88, 전차 15/10/10, 비행선 44/35/18, 전함 93/59/41.</p></li>
+<li><p>전차 ÷ 보병 최강은 7.1/7.3/8.0배, 비행선 ÷ 보병 최강은 20.7/25.5/14.4배 — 하한(3배·5배)을 넉넉히 넘는다.</p></li>
+<li><p>지금 값은 전차 12/9/8, 비행선 25/11/10, 전함 110/65/54였다. 엔진 초기값(범위 세금 50·전차 간격 30)에서는 비행선이 100/65/39로 값의 5.2배까지 튀어 T3 관문에서 권고 조합으로 바꿨다(10.5).</p></li>
+<li><p>(구현 결과) T3 리뷰에서 &quot;이기는 최소 n&quot;을 n과 n+1이 모두 이기는 첫 n으로 고쳐 재니, 옛 값 전함은 86/61/45였다(겹침 표본도 일부 바뀜). 엔진 열은 그대로다.</p></li>
+<li><p>닫힌 식 추정(전차 3.2배·비행선 7.5배, 1.0칸)은 대형을 실측보다 낮게 낸다.</p></li>
+</ul></li>
+<li><p><strong>1발 임계</strong>(9.2 린트):</p>
+<ul>
+<li><p>전차 3등급 1발 69는 1등급 소총병(70)의 98%라 두 방이다(간격 26 — 30틱이면 79로 한 방).</p></li>
+<li><p>비행선 94는 폭발 → 생체 150%로 141, 전함 226은 에너지 → 생체 70%로 158 — 둘은 소총병을 한 방에 쓰러뜨린다.</p></li>
+</ul></li>
+<li><p><strong>B9 닫힌 식</strong>(소총병 12명): 12.74분. 지금 실측은 12.8분이다(역산 처치 수 소형 84·가시 27·굴착체 55의 체력 합이 10,740 → 10,550).</p></li>
+</ul>
+<h3 id="72-로스터-데이터-행-power-rosterjson-가정">7.2 로스터 데이터 행 (<code>power-roster.json</code>) [가정]</h3>
+<ul>
+<li><p>입력은 거의 전부 [가정]이다. 문서 근거는 크기·역할·피해/방어 유형·합체 재료뿐이다.</p></li>
+<li><p>근거 문서: P5 4.3·4.4·4.6(퓨라), 5.3·5.4·5.5(시온), 6장(오라클). 출처 줄 번호는 로스터 추출 원본에 있다.</p></li>
+<li><p>산정값은 1등급이다(적 병종의 g0 = 1, 기지 등급이 오르면 <code>Stats.Scale</code>).</p></li>
+<li><p>몸 특성 칸의 &quot;근접&quot;은 사거리 1이다. 지나갈 곳은 지상·공중·굴착 중 하나다.</p></li>
+</ul>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">id</th><th scope="col">이름</th><th scope="col">구분</th><th scope="col">크기</th><th scope="col">역할 (f)</th><th scope="col">값 BP</th><th scope="col">몸 특성 [가정]: 사거리·이동 틱·지나갈 곳·범위</th><th scope="col">유형 피해/방어</th><th scope="col">1등급 체력/1발/간격</th><th scope="col">why</th></tr></thead>
+<tbody>
+<tr><td>Pura.Buffer</td><td>버프 감염체</td><td>퓨라 2단계</td><td>1×1</td><td>지원</td><td>121</td><td>– · 10 · 지상</td><td>–/생체</td><td>42/–/–</td><td>공격 없음, 예산 절반은 강화 오라(몫 500)</td></tr>
+<tr><td>Pura.Giant</td><td>거대 감염체</td><td>퓨라 3단계</td><td>2×2</td><td>근접 (70)</td><td>364</td><td>근접 · 14 · 지상</td><td>근접/생체</td><td>1219/25/20</td><td>탱커(P5 4.4)</td></tr>
+<tr><td>Pura.Flyer</td><td>비행 감염체</td><td>퓨라 3단계</td><td>2×2</td><td>공중 (50)</td><td>364</td><td>5 · 10 · 공중 · 1칸</td><td>폭발/생체</td><td>241/27/30</td><td>산성 폭격, 비행선처럼 f 50</td></tr>
+<tr><td>Pura.Host</td><td>거대 숙주</td><td>퓨라 4단계</td><td>3×3</td><td>생산</td><td>1091</td><td>– · 20 · 지상</td><td>–/생체</td><td>988/–/–</td><td>공격 없음, 예산 절반은 소형 방출(몫 500)</td></tr>
+<tr><td>Pura.Legion</td><td>군단급 감염체</td><td>퓨라 5단계</td><td>4×4</td><td>요새</td><td>2182</td><td>근접 · 20 · 굴착</td><td>근접/생체</td><td>4940/196/30</td><td>굴착 전진 + 방출 몫 25%(몫 750)</td></tr>
+<tr><td>Pura.Prototype</td><td>원형체</td><td>퓨라 영웅</td><td>–</td><td>지원 (τ 20)</td><td>1000</td><td>– · 10 · 지상</td><td>–/생체</td><td>591/–/–</td><td>감염 부활 75% 오라(몫 500)</td></tr>
+<tr><td>Pura.Queen</td><td>산란 여왕</td><td>퓨라 영웅</td><td>–</td><td>지원 (τ 20)</td><td>1000</td><td>– · 10 · 지상</td><td>–/생체</td><td>591/–/–</td><td>스폰·숙주 생산 가속(몫 500)</td></tr>
+<tr><td>Pura.Devourer</td><td>포식 군주</td><td>퓨라 영웅</td><td>–</td><td>영웅</td><td>1000</td><td>근접 · 7 · 지상</td><td>근접/생체</td><td>1491/70/20</td><td>빠른 근접, 처치 성장 몫 20%(몫 800)</td></tr>
+<tr><td>Zion.Priest</td><td>제사장</td><td>시온</td><td>1×1</td><td>지원</td><td>100</td><td>– · 10 · 지상</td><td>–/생체</td><td>35/–/–</td><td>일꾼·소환사(몫 500)</td></tr>
+<tr><td>Zion.TempleGuard</td><td>성전 수호자</td><td>시온</td><td>1×1</td><td>근접</td><td>100</td><td>근접 · 10 · 지상</td><td>근접/방어막</td><td>122/10/20</td><td>방어막 나눠 주기(몫 800)</td></tr>
+<tr><td>Zion.Paladin</td><td>성기사</td><td>시온</td><td>1×1</td><td>근접</td><td>100</td><td>근접 · 10 · 지상</td><td>근접/중장갑</td><td>191/10/20</td><td>근접 정예</td></tr>
+<tr><td>Zion.Lancer</td><td>창기병</td><td>시온</td><td>1×1</td><td>사격</td><td>100</td><td>3 · 10 · 지상</td><td>관통/중장갑</td><td>85/10/20</td><td>중거리 3칸</td></tr>
+<tr><td>Zion.Archer</td><td>빛의 궁수</td><td>시온</td><td>1×1</td><td>사격</td><td>100</td><td>7 · 10 · 지상</td><td>에너지/중장갑</td><td>57/10/20</td><td>장거리 7칸</td></tr>
+<tr><td>Zion.WingedAngel</td><td>날개 천사</td><td>시온</td><td>2×2</td><td>공중</td><td>750</td><td>5 · 10 · 공중</td><td>관통/방어막</td><td>472/113/30</td><td>비행 사격</td></tr>
+<tr><td>Zion.WardenAngel</td><td>수호 천사</td><td>시온</td><td>1×1</td><td>사격 (60)</td><td>100</td><td>4 · 10 · 지상</td><td>에너지/방어막</td><td>129/6/20</td><td>방어막 오라 — 화력 몫 60</td></tr>
+<tr><td>Zion.BreakerAngel</td><td>쇄석 천사</td><td>시온</td><td>1×1</td><td>굴착</td><td>100</td><td>근접 · 14 · 굴착</td><td>근접/중장갑</td><td>156/3/20</td><td>높은 등급 굴착(몫 500)</td></tr>
+<tr><td>Zion.Judge</td><td>심판자</td><td>시온</td><td>3×3</td><td>공성 (50)</td><td>1250</td><td>8 · 14 · 지상 · 1.5칸</td><td>폭발/방어막</td><td>412/94/30</td><td>대형 범위 포격, f 50</td></tr>
+<tr><td>Zion.Ophanim</td><td>오파님</td><td>시온 강림 영웅</td><td>–</td><td>지원 (τ 20)</td><td>3000</td><td>– · 10 · 지상</td><td>–/생체</td><td>1774/–/–</td><td>시야·심판 강화(몫 500)</td></tr>
+<tr><td>Zion.Seraphim</td><td>세라핌</td><td>시온 강림 영웅</td><td>–</td><td>영웅 (40)</td><td>3000</td><td>6 · 10 · 공중 · 1.5칸</td><td>에너지/생체</td><td>742/120/20</td><td>범위 에너지 폭격, 방어막 재생(몫 800)</td></tr>
+<tr><td>Zion.Cherubim</td><td>케루빔</td><td>시온 강림 영웅</td><td>–</td><td>영웅</td><td>3000</td><td>근접 · 10 · 지상</td><td>근접/생체</td><td>5227/210/20</td><td>불칼, 넓은 방어막(몫 800)</td></tr>
+<tr><td>Demon.Leviathan</td><td>레비아탄</td><td>봉인된 악마</td><td>–</td><td>보스</td><td>6000</td><td>근접 · 14 · 지상</td><td>근접/생체</td><td>112138/90/30</td><td>대형 탱커, 끌어당김(몫 900)</td></tr>
+<tr><td>Demon.Beelzebub</td><td>베엘제붑</td><td>봉인된 악마</td><td>–</td><td>보스</td><td>6000</td><td>4 · 10 · 공중</td><td>관통/생체</td><td>41832/90/30</td><td>원거리 보스, 파리 떼는 따로 소환</td></tr>
+<tr><td>Demon.Mammon</td><td>맘몬</td><td>봉인된 악마</td><td>–</td><td>보스</td><td>6000</td><td>근접 · 14 · 지상</td><td>근접/생체</td><td>88549/90/30</td><td>자원 강탈 성장(몫 800)</td></tr>
+<tr><td>Demon.Asmodeus</td><td>아스모데우스</td><td>봉인된 악마</td><td>–</td><td>보스</td><td>6000</td><td>근접 · 7 · 지상</td><td>근접/생체</td><td>97804/90/30</td><td>근접 광란(유형 무시는 P5e 동작)</td></tr>
+<tr><td>Demon.Fly</td><td>파리 떼</td><td>하급 악마</td><td>–</td><td>떼</td><td>30.3</td><td>근접 · 7 · 공중</td><td>근접/생체</td><td>27/5/20</td><td>소형 감염체와 같은 값</td></tr>
+<tr><td>Oracle.Elements</td><td>원소의 화신</td><td>오라클 화신</td><td>–</td><td>영웅 (40)</td><td>3000</td><td>6 · 10 · 지상 · 1.5칸</td><td>에너지/비물질</td><td>629/120/20</td><td>네 원소 레드존 효과(몫 700)</td></tr>
+<tr><td>Oracle.Scales</td><td>생사의 저울</td><td>오라클 화신</td><td>–</td><td>영웅</td><td>3000</td><td>5 · 10 · 지상</td><td>에너지/비물질</td><td>1470/210/20</td><td>처형·부활 효과(몫 700)</td></tr>
+<tr><td>Oracle.Chorus</td><td>감정의 합창</td><td>오라클 화신</td><td>–</td><td>지원 (τ 20)</td><td>3000</td><td>– · 10 · 지상</td><td>–/비물질</td><td>1774/–/–</td><td>정신 효과(몫 500)</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>보스 4종의 체력(4만~11만)은 기준 부대 1만 BP(초당 화력 약 1000)가 40초~2분에 잡는 크기다. 3분 제한 안에서 잡을 수 있게 하려는 것이다. 근접 보정 때문에 근접 보스가 원거리 보스(베엘제붑 42초)보다 단단하다.</p></li>
+<li><p>시온 구조물(본진·제단·신성영역)은 병종이 아니라서 행이 없다. 구조물 체력은 기지 규칙(P5b의 h)으로 P5e가 정한다.</p></li>
+<li><p>우리 영웅(장교·동료 각 10명)은 영웅·병과 계획 몫이다.</p></li>
+</ul>
+<hr>
+<h2 id="8-패치-체계">8. 패치 체계</h2>
+<h3 id="81-손잡이-지도">8.1 손잡이 지도</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">손잡이</th><th scope="col">어디</th><th scope="col">움직이는 것</th><th scope="col">예</th></tr></thead>
+<tbody>
+<tr><td><strong>m</strong> (병종 하나 — 기본 손잡이)</td><td><code>PowerTable</code> 행</td><td>그 병종의 체력·화력 각 √m</td><td>전차 m 1100 → 체력·화력 각 +4.9%, 전투력 +10%</td></tr>
+<tr><td>f</td><td>행</td><td>체력 ↔ 화력, 전투력은 그대로</td><td>전함 f 60 → 70 → 화력 +17%, 체력 −14%</td></tr>
+<tr><td>간격</td><td>행</td><td>1발 크기(화력·전투력은 거의 그대로)</td><td>전차 26 → 30 → 1발 69 → 79 (소총병 한 방)</td></tr>
+<tr><td>특수 몫</td><td>행</td><td>체력(∝ 몫²)</td><td>굴착체 480 → 500</td></tr>
+<tr><td>역할 표</td><td><code>PowerRules</code></td><td>그 역할 전부</td><td>공성 간격 30 → 28</td></tr>
+<tr><td>효율 규칙(근접 보정·기울기)</td><td><code>PowerRules</code></td><td>여러 병종. 근접 보정을 바꾸면 퓨라 환율을 다시 역산</td><td>근접 1650 → 1500</td></tr>
+<tr><td>칸 가격·퓨라 환율</td><td><code>PowerRules</code></td><td>종족 전체</td><td>—</td></tr>
+<tr><td>앵커 70·10</td><td><strong>금지</strong></td><td>전 병종·B9·P5c</td><td>—</td></tr>
+</tbody></table></div>
+<p>패치 규칙:</p>
+<ul>
+<li><p>한 번에 한 계통만 바꾼다.</p></li>
+<li><p>앵커(소총병·소형)의 m은 1000으로 고정이다.</p></li>
+<li><p>m은 500~2000으로 클램프한다.</p></li>
+<li><p>값(칸·생산 초·재료)은 패치가 건드리지 않는다.</p></li>
+</ul>
+<h3 id="82-절차">8.2 절차</h3>
+<ol>
+<li><p>사용자가 말로 요청한다(예: &quot;전차를 10% 올려&quot;).</p></li>
+<li><p>Claude가 <code>PowerTable.cs</code>의 한 줄을 고친다(Tank m 1000 → 1100).</p></li>
+<li><p><code>tools\test.ps1 -Filter &quot;PowerEngine|PowerRoster&quot;</code>로 불변식·골든 시험을 돌린다. 골든이 깨지고, 실패 메시지가 새 엔진 출력(골든 JSON 줄)을 찍는다. 손 계산 시험(<code>HandExamples_MatchTheSpec</code>)에 그 병종 줄이 있으면 함께 깨지므로 부록 A 식으로 다시 계산한다.</p></li>
+<li><p>리포트(Explicit <code>PowerReportTests</code>, <code>-Filter PowerReport</code>)를 돌려 <code>.work\logs\power-table.md</code>를 만든다. 엔진 표, 1발 임계, 교환 창, 기지 사다리가 들어 있다. 엔진 표·교환 창의 &quot;지금(전)&quot;은 커밋된 골든(<code>power.golden</code>), &quot;엔진(후)&quot;은 지금 엔진 출력이라 골든을 갱신하기 전에는 패치 전후가 나란히 보인다. 엔진 표에는 &quot;요청 → 실현&quot; 열과 경고(&quot;반영 안 됨/계단&quot;, &quot;1발 임계 넘음&quot;)가 있다.</p>
+<ul>
+<li><p><strong>주의(구현 시연):</strong> 1발이 1등급 표적 체력을 넘는 순간(한 방 임계) 교환 창이 계단처럼 뛴다. 전차 +10%는 1발 69 → 72로 소총병(70)을 한 방에 쓰러뜨려 1.0칸 교환 창이 10 → 25명이 됐다. 보고서 2절을 보고, 임계를 넘으면 사용자에게 함께 보인다.</p></li>
+</ul></li>
+<li><p>사용자가 표를 보고 승인하면 골든을 갱신하고, 전체 스위트를 돌린 뒤 커밋한다. 큰 패치(대형·규칙)는 판 캡처도 보여 준다.</p></li>
+</ol>
+<h3 id="83-리포트-표-power-tablemd">8.3 리포트 표 (<code>power-table.md</code>)</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">열</th><th scope="col">뜻</th></tr></thead>
+<tbody>
+<tr><td>병종·역할</td><td>—</td></tr>
+<tr><td>값 BP·K</td><td>입력</td></tr>
+<tr><td>요청 → 실현</td><td>m 요청 배수 대비 실현 전투력 배수</td></tr>
+<tr><td>g0 체력/1발/간격/화력</td><td>전 → 후</td></tr>
+<tr><td>전투력 비</td><td>소총병 = 1</td></tr>
+<tr><td>환산수 N·값 효율 N÷(c/100)·칸당 N</td><td>결정 1의 보고 지표(칸당·값당)</td></tr>
+<tr><td>칸당 구조물 화력·같은 값 함락(분)</td><td>결정 4</td></tr>
+<tr><td>τ (대역)</td><td>모양</td></tr>
+<tr><td>경고</td><td>모양 이탈, 1발 임계, &quot;반영 안 됨/계단&quot; — 요청한 배수가 1발 계단에 막혀 실현되지 않은 경우(예: 가시 m 1030 → 1발 8 그대로, 체력 55 → 57). (구현) 실현 배수가 요청에서 1%(상대) 넘게 벗어나도 &quot;계단&quot;, 패치 전 1발 &lt; 1등급 표적 체력 ≤ 패치 후 1발이면 &quot;1발 임계 넘음&quot;(예: 전차 m 1100 → 1발 69 → 72, 소총병 70)</td></tr>
+</tbody></table></div>
+<hr>
+<h2 id="9-검증">9. 검증</h2>
+<h3 id="91-l1-정의-불변식-기본-실행-시뮬-없음--powerenginetestspowerrostertests">9.1 L1 정의 불변식 (기본 실행, 시뮬 없음 — <code>PowerEngineTests</code>·<code>PowerRosterTests</code>)</h3>
+<p>허용오차는 고정 %가 아니라 정수 해상도에서 계산한다.</p>
+<ol>
+<li><p><strong>앵커:</strong> 소총병 70/10/20(사거리 5·관통/생체), 소형 30/5/20이 엔진 출력 그대로다.</p></li>
+<li><p><strong>간격 14~30:</strong> 모든 전투 행에서, m 500~2000 훑기에서도.</p></li>
+<li><p><strong>정의:</strong> N·P·W가 5.4~5.7의 식 그대로다(손 계산 예 3개: 소총병·전차·굴착체 — 부록 A. 구현 뒤 Minor 정리에서 소형 감염체 칸을 더해 시험은 4칸 — 명목 화력 4999.5 → 5000 반올림을 지킨다).</p></li>
+<li><p><strong>D151 비례:</strong> |실현 화력 − 명목 화력| ≤ (s0/100) × 20 ÷ t(1발 정수 한 칸). f가 역할 기본이 아닌 행은 why가 있다.</p></li>
+<li><p><strong>단조성:</strong> m을 올리면 전투력(체력×화력)과 화력이 줄지 않는다.</p></li>
+<li><p><strong>국소성:</strong> 한 행의 m을 바꾸면 그 행만 바뀐다.</p></li>
+<li><p><strong>결정 4 구성 무관 하한:</strong> 제국 전투 행마다 두 가지를 본다.</p>
+<ul>
+<li><p>칸당 구조물 화력 ≤ 20(소총병의 2배).</p></li>
+<li><p>같은 값(소총병 12명 = 1200 BP) 부대의 닫힌 식 핵 함락 ≥ 10분.</p></li>
+<li><p>닫힌 식: n = 1200 ÷ c(u)대가 T(u) = 80000 ÷ (n × W'(u) × 구조물 배율) + 처치 퓨라 체력 ÷ (n × W'(u) × 생체 배율) + 10초. 배율은 <code>DamageTable</code>, 처치 퓨라 체력은 B9 역산 처치 수(소형 84·가시 27·굴착체 55) × 엔진 체력. 소총병이면 9.4의 식과 같다.</p></li>
+</ul></li>
+<li><p><strong>결정 5:</strong> 1등급 소총병의 1발(관통 10)로 소형 3발, 가시 6발, 굴착체 12발 이하다. 퓨라 초당 화력은 소형 5, 가시 8, 굴착체 3이다.</p></li>
+<li><p><strong>τ 대역:</strong> 공격 있는 행마다 역할 대역 안이다.</p></li>
+<li><p><strong>행 완전성:</strong></p>
+<ul>
+<li><p>모든 <code>UnitKind</code>에 행이 있다. kind 키로 조회하고, 배열 인덱스로 찾지 않는다.</p></li>
+<li><p>굴착병은 수동 pin 행이다.</p></li>
+<li><p>로스터 id는 <code>UnitKind</code> 이름과 겹치지 않는다.</p></li>
+</ul></li>
+<li><p><strong>신선도와 레시피 정렬</strong>(6.2·6.4).</p></li>
+<li><p><strong>골든:</strong> 엔진 출력(저장 1등급 체력·1발·간격) = <code>power.golden</code>. 실패 메시지가 전/후 표를 찍는다.</p></li>
+<li><p><strong>pin 일관성</strong>(이행 중): pin이 있는 행은 pin 값 그대로, 없는 행은 엔진 값이다.</p></li>
+<li><p><strong>로스터:</strong></p>
+<ul>
+<li><p><code>power-roster.json</code>의 모든 행이 필수 칸을 갖는다.</p></li>
+<li><p>엔진 산정값 = 파일에 적힌 기대값.</p></li>
+<li><p>②·⑤·⑨를 지킨다.</p></li>
+</ul></li>
+</ol>
+<h3 id="92-l2-보고서-explicit--실제-worldcombatsim-결정적">9.2 L2 보고서 (Explicit — 실제 <code>World</code>·<code>CombatSim</code>, 결정적)</h3>
+<ul>
+<li><p><strong>교환 창:</strong></p>
+<ul>
+<li><p>1등급 소총병 n명 대 병종 m대(g0)를 평지에서 맞붙인다. 3대형은 중심 간격 0.5/1.0/1.5칸 격자다.</p></li>
+<li><p>소총병이 이기는 최소 n(n과 n+1 모두 이김)을 찾아 측정 환산수 n/m을 낸다.</p></li>
+<li><p>대상: 돌격·중화기·전차·비행선·전함, 가시·굴착체.</p></li>
+<li><p>결정 1 하한(전차 ≥ 3 × 보병 최강, 비행선 ≥ 5×)을 대형마다 보고하고, 마진이 10% 미만이면 경고한다.</p></li>
+</ul></li>
+<li><p><strong>퓨라 둥지 사이클 창:</strong> 둥지 순서(소형 3 → 가시 1) n사이클 대 같은 값의 우리 부대(소총병 12명 기준). &quot;진짜 적&quot; 상대의 환산이다.</p></li>
+<li><p><strong>겹침 표본:</strong> 0.25칸 간격(D150 겹침) 한 판.</p></li>
+<li><p><strong>1발 임계 린트:</strong> 병종의 g0 1발(실제 <code>DamageTable</code>)이 기준 표적의 체력을 넘는지, ±10% 안인지 본다. 기준 표적은 1등급 소총병 70, 소형 30, 가시, 굴착체다.</p></li>
+<li><p><strong>기지 사다리</strong> — 생체질량 1 = 3.03 BP로 BP/초를 읽는다:</p>
+<ul>
+<li><p>1등급 기지: 수입 12.1(위협도 0) ~ 24.2(위협도 100) BP/초, 둥지 천장 18.5.</p></li>
+<li><p>2등급: 수입 19.4~38.8, 천장 18.5.</p></li>
+<li><p>3등급: 수입 31.0~62.1, 천장 27.8.</p></li>
+<li><p>2·3등급은 처음부터 천장에 막혀 난이도가 평평하다 → 경고 밴드.</p></li>
+<li><p>저축(300초치)과 첫 파도 상한도 적는다. 첫 파도 상한은 생존 40기 표준 편성(굴착체 2 + 소형:가시 3:1)으로 약 1765 BP, 소총병 17.7명 몫이다.</p></li>
+</ul></li>
+<li><p><strong>knownIssues 목록</strong>(4.2-7).</p></li>
+<li><p><strong>엔진 표</strong>(8.3).</p></li>
+</ul>
+<h3 id="93-결정-1의-보증-방식">9.3 결정 1의 보증 방식</h3>
+<p>교환 창은 게이트가 아니다(결정 8). 하한은 다음 세 가지로 지킨다.</p>
+<ol>
+<li><p>T3 그림자 보고서에서 재고, 승인 관문에서 확인한다.</p></li>
+<li><p>값이 바뀌는 커밋(T4·T5)과 모든 패치 절차(8.2)가 리포트를 돌려 확인한다.</p></li>
+<li><p>승인된 값은 골든이 잠근다. 골든을 바꾸려면 패치 절차를 거쳐야 한다.</p></li>
+</ol>
+<p>하한이 미달이면 그 병종의 m을 올려 맞춘다.</p>
+<h3 id="94-l3-b9-확장-baseflowteststier1base_vs12rifles_fallsintargetminutes">9.4 L3 B9 확장 (<code>BaseFlowTests.Tier1Base_Vs12Rifles_FallsInTargetMinutes</code>)</h3>
+<p>지금은 10~20분만 본다. 다음을 더한다.</p>
+<ul>
+<li><p><strong>소총병 손실 ≤ 3</strong>(실측 1).</p></li>
+<li><p><strong>닫힌 식 교차 점검:</strong></p>
+<ul>
+<li><p>T_닫힌 = (구조물 체력 80000 + Σ 종류별 처치 수 × 체력) ÷ (12 × 소총병 구조물 화력) + 이동 10초.</p></li>
+<li><p>처치 수는 시험이 종류별로 센다. |실측 − T_닫힌| ≤ 1.5분이어야 한다.</p></li>
+<li><p>실패하면 원인이 구조물 체력·소총병 화력·퓨라 체력 중 어디인지 바로 가려진다.</p></li>
+</ul></li>
+<li><p><strong>허용 배수:</strong> T_닫힌을 소총병 구조물 화력 ×0.64와 ×1.28로 다시 계산해도 10~20분 안이어야 한다(경계 반올림 허용). 구조물 체력이나 앵커를 바꾸면 깨진다.</p></li>
+<li><p>구성 무관 하한은 L1 ⑦이 맡는다.</p></li>
+<li><p><code>bases.source</code>의 낡은 문구(&quot;13.2분·10명 잃음·172&quot;)를 실측 12.8분·1명·166으로 고친다.</p></li>
+<li><p>판 E(실제 맵 20분)는 합격 기준이 아니다. T4에서 재측정하고 캡처만 한다.</p></li>
+</ul>
+<h3 id="95-l4-회귀성능">9.5 L4 회귀·성능</h3>
+<ul>
+<li><p>전체 스위트(약 410개)와 성능 시험 4종을 돌린다. 엔진은 틱 밖에서 돈다.</p></li>
+<li><p><strong>T0 안전망:</strong> 지금 없는 값 고정 시험을 더한다 — 제국 7종의 간격·이동 틱·높이, 퓨라 3종의 이동 틱·높이. 엔진이 의도하지 않은 값을 바꾸면 잡는다.</p></li>
+<li><p><strong>현행 기준선 기록:</strong> B9 12.8분·손실 1·처치 166, NoThrash 32.1칸.</p></li>
+</ul>
+<hr>
+<h2 id="10-이행">10. 이행</h2>
+<h3 id="101-선행-p--시험-마법-숫자-정리-동작단정-의미-불변">10.1 선행 P — 시험 마법 숫자 정리 (동작·단정 의미 불변)</h3>
+<ul>
+<li><p>대상 숫자:</p>
+<ul>
+<li><p>막다른 굴 정원 16, 도착 틱 상한 260/400, <code>Approach</code> 4.</p></li>
+<li><p><code>MinerTests</code>의 <code>+ 4</code>, <code>Infected_DamagesBuilding</code>의 <code>Run(w, 40)</code>.</p></li>
+<li><p>줄 폭 56, 굴 오프셋 ±96/±32.</p></li>
+</ul></li>
+<li><p>이 숫자들을 설정값에서 계산하거나 <code>balance-checks.json</code>으로 옮긴다. P5c 원장이 &quot;P5d 전에&quot;로 남긴 일이다.</p></li>
+<li><p>스탯이 바뀌어도 시험이 의미를 잃지 않게 하려는 것이다.</p></li>
+</ul>
+<h3 id="102-태스크">10.2 태스크</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">태스크</th><th scope="col">내용</th><th scope="col">값 변화</th></tr></thead>
+<tbody>
+<tr><td>P</td><td>선행: 시험 마법 숫자 정리(10.1)</td><td>없음</td></tr>
+<tr><td>T0</td><td>안전망: 값 고정 시험(9.5), 기준선 기록, <code>bases.source</code> 정정</td><td>없음</td></tr>
+<tr><td>T1</td><td>엔진 본체(<code>PowerRules</code>·<code>PowerEngine</code>·<code>PowerTable</code>, 로스터 JSON 읽기)와 L1 불변식·로스터 시험. 병종 표에는 아직 연결하지 않는다. node 모형과 표를 교차 검증한다</td><td>없음</td></tr>
+<tr><td>T2</td><td>연결: <code>Units.cs</code>가 엔진에서 스탯을 받되 <strong>모든 행을 pin(현행 값)</strong> 한다. 전체 스위트가 값까지 그대로 통과해야 한다(배선 관문)</td><td>없음</td></tr>
+<tr><td>T3</td><td>그림자 보고서(L2 — 교환 창·린트·사다리·엔진 표)를 만들고 <strong>승인 관문 1곳</strong>을 둔다(10.5)</td><td>없음</td></tr>
+<tr><td>T4</td><td>보병·퓨라 pin 해제(돌격·중화기·가시·굴착체 — 소총병·소형은 엔진 값 = pin 값). 대형 3종은 간격만 엔진 간격으로(전차 26, 비행선·전함 30 — 화력·체력 보존 pin, 10.3). 시험 리터럴 → 골든 읽기, B9 확장(L3), P5c 재측정, 판 E 캡처</td><td>보병·퓨라, 대형 간격</td></tr>
+<tr><td>T5</td><td>대형 3종 pin 해제(체력·화력 재스케일). <strong>마지막 별도 커밋</strong>이고, 폭은 T3에서 정한다</td><td>대형</td></tr>
+<tr><td>T6</td><td>문서(기획서 D153~·버전, P4 6장·P5b 11장 &quot;엔진 값으로 대체&quot; 표기, README·소개 페이지), <code>power-roster.json</code> 확정, 패치 시연(전차 +10% 한 번), 프로젝트 CLAUDE.md에 &quot;밸런스 패치 절차&quot; 한 줄</td><td>없음</td></tr>
+</tbody></table></div>
+<ul>
+<li><p>각 태스크는 한 커밋이다. 되돌리기는 revert나 pin 복귀로 한다.</p></li>
+<li><p>구현·리뷰 서브에이전트는 Sonnet 5.5로 약 12~14회다(결정 11).</p></li>
+</ul>
+<h3 id="103-대형-3종의-간격만-바꾸는-pin-t4">10.3 대형 3종의 간격만 바꾸는 pin (T4)</h3>
+<p>화력과 체력을 지금대로 두고 간격만 엔진 간격(전차 26, 비행선·전함 30)으로 바꾼다. 1발 = 지금 초당 화력 × 새 간격 ÷ 20.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="표"><table>
+<thead><tr><th scope="col">병종</th><th scope="col">g0 체력/1발/간격</th><th scope="col">저장 1등급</th><th scope="col">화력</th></tr></thead>
+<tbody>
+<tr><td>전차</td><td>900/39/26</td><td>600/26</td><td>30 (같음)</td></tr>
+<tr><td>비행선</td><td>700/33/30</td><td>400/19</td><td>22 (+2%, 정수)</td></tr>
+<tr><td>전함</td><td>4000/80/30</td><td>2000/40</td><td>53.3 (같음)</td></tr>
+</tbody></table></div>
+<p>T5를 되돌려도 D151 간격 규칙은 지켜진다.</p>
+<h3 id="104-연결-방식-unitscs">10.4 연결 방식 (<code>Units.cs</code>)</h3>
+<ul>
+<li><p>지금 <code>new UnitDef(..., new Stats(hp, atk, range, cooldown, hit, armor), ...)</code>가 10줄 있다. 이 중 체력·공격·간격 세 칸을 엔진 출력으로 채운다. 사거리·유형은 그대로 입력이다.</p></li>
+<li><p>엔진 입력의 몸 특성은 같은 줄의 값(칸·최소 등급·이동 틱·범위·지나갈 곳·사거리)이다.</p>
+<ul>
+<li><p>(구현 결과) 병종 표를 두 단계로 나누지 않았다. <code>UnitDef</code> 생성자가 같은 줄의 몸 특성(사거리·최소 등급·이동 틱·이동 부류·범위)을 <code>PowerTable.StatsFor</code>에 넘겨 체력·공격·간격을 받는다. 엔진 표 줄에는 엔진만의 입력(칸 가격·역할·f·간격·m·몫·고정)만 있어 같은 리터럴을 두 번 적지 않는다.</p></li>
+<li><p><code>PowerTable</code>은 <code>UnitCatalog</code>를 부르지 않아 초기화 순환이 구조로 막힌다. 그래서 초기화 순서 시험은 두지 않았다(깨지면 모든 시험이 한꺼번에 실패한다).</p></li>
+</ul></li>
+<li><p>엔진은 <code>Recipes</code>·<code>EnemyBaseConfig</code>를 부르지 않는다. 초기화 순환이 없다.</p></li>
+<li><p>소비 지점(<code>Army</code>·<code>CombatSim</code>·<code>Digger</code>·<code>Unit</code>·View)은 <code>Stats</code> 모양이 같아서 바뀌지 않는다.</p></li>
+<li><p><code>EnemyBaseConfig</code>의 퓨라 값(10/25/30)은 그대로다(인스펙터 조정 가능). 엔진의 동결값과의 일치는 신선도 시험이 지킨다.</p></li>
+</ul>
+<p><strong>파일:</strong></p>
+<ul>
+<li><p>새 파일(Simulation — 엔진 참조 없음, 정수, 한국어 주석, 사전 순회 없음):</p>
+<ul>
+<li><p><code>Scripts/Simulation/Power/PowerRules.cs</code>: 규칙 상수, 역할 표.</p></li>
+<li><p><code>Scripts/Simulation/Power/PowerEngine.cs</code>: <code>Derive(입력) → 결과</code>(g0 값·저장값·진단), <code>Div</code>·<code>Isqrt</code>·<code>Fit</code>·<code>K10</code>.</p></li>
+<li><p><code>Scripts/Simulation/Power/PowerTable.cs</code>: <code>UnitKind</code>별 행(값·역할·f·간격·m·몫·why·pin).</p></li>
+</ul></li>
+<li><p>시험(<code>Tests/EditMode/Balance</code>):</p>
+<ul>
+<li><p><code>PowerEngineTests.cs</code>(L1), <code>PowerRosterTests.cs</code>, <code>PowerReportTests.cs</code>(Explicit L2).</p></li>
+<li><p><code>power-roster.json</code>, <code>balance-checks.json</code>의 <code>power</code> 블록.</p></li>
+</ul></li>
+<li><p>바꾸는 파일: <code>Units.cs</code>, 시험 리터럴(11장), <code>BaseFlowTests.cs</code>(B9 확장), <code>balance-checks.json</code>.</p></li>
+</ul>
+<h3 id="105-t3-승인-관문에서-정할-것">10.5 T3 승인 관문에서 정할 것</h3>
+<p><strong>계획 검토 때 정했다</strong>(사용자 2026-10-01 &quot;권고로&quot;): 참조 구현의 그림자 보고서(실측 교환 창)를 보고 권고 조합을 골랐다.</p>
+<ul>
+<li><p>범위 세금 몸당 50 → 100‰, 전차 간격 26.</p></li>
+<li><p>나머지는 초기값 그대로다: 근접 보정 1650, 돌격병 f 100(163/10), 대형 재스케일은 엔진 값 전체, 비행선 f 50.</p></li>
+<li><p>로스터는 [가정] 값 그대로이고, 범위 세금이 세져 비행 감염체·심판자만 f 50으로 둔다(모양 대역 안으로).</p></li>
+<li><p>T3에서는 보고서가 이 측정값과 같은지만 확인한다.</p></li>
+</ul>
+<p>아래는 관문에서 볼 일곱 가지였다(기록):</p>
+<ol>
+<li><p><strong>근접 보정 1650을 유지할지.</strong> 바꾸면 퓨라 환율도 다시 역산한다.</p></li>
+<li><p><strong>돌격병 모양:</strong></p>
+<ul>
+<li><p>f 100(D151 그대로): 163/10, 체력형 돌격.</p></li>
+<li><p>f 150(예외): 109/15, 지금 모양.</p></li>
+</ul></li>
+<li><p><strong>간격표:</strong> 대형 30(전차 1발 79 — 1등급 소총병 한 방) 또는 전차 26(1발 69). → 전차 26</p></li>
+<li><p><strong>대형 3종 재스케일 폭:</strong> 전체(7.1), 절반(m으로 중간값), 보류 중 하나.</p></li>
+<li><p><strong>비행선 f 50 예외를 유지할지</strong>(결정 4 하한).</p></li>
+<li><p><strong>교환 창 결과로 결정 1 하한 확인.</strong> 미달인 병종은 m을 정한다.</p></li>
+<li><p><strong>로스터 [가정] 값:</strong> 영웅·악마·화신의 값 규칙(6.5), 역할·몫.</p></li>
+</ol>
+<hr>
+<h2 id="11-기존-값시험-영향">11. 기존 값·시험 영향</h2>
+<ul>
+<li><p><strong>그대로 통과할 시험</strong>(앵커·피해표·기하·경제가 그대로):</p>
+<ul>
+<li><p><code>CombatRuleTests</code>: <code>RifleVsSmallInfected_Exchange</code>(3발·14번), <code>DamageTable_*</code>, <code>SmallInfected_IsPuraSwarm</code>.</p></li>
+<li><p><code>CombatTests</code>: <code>Rifle_KillsSmallInfectedInRange</code>, <code>Infected_DamagesBuilding</code>, <code>Splash_HitsEnemiesInRadius_NotAllies</code>(중화기 1발 8 그대로 → 12씩).</p></li>
+<li><p><code>BaseCombatTests.Rifle_ShootsAwakeStructure</code>.</p></li>
+<li><p><code>CombatGeometryTests</code>, <code>UnitCatalogTests</code>(도구·칸·등급·생산 초·히트박스·범위 반경), <code>UnitConfigTests</code>.</p></li>
+<li><p><code>LootTests</code>, <code>DiggerDeathTests</code>, <code>EnemyBaseTests</code>, <code>BaseProductionTests</code>.</p></li>
+<li><p>성능 시험.</p></li>
+</ul></li>
+<li><p><strong>리터럴을 골든 읽기로 바꿀 시험</strong>(T4·T5):</p>
+<ul>
+<li><p><code>CombatRuleTests.BaseStats_MatchSpec</code>: 돌격·중화기·대형.</p></li>
+<li><p><code>CombatRuleTests.Grade_ScalesHpAndAttack</code>: 전차 3등급 900/60 → 골든.</p></li>
+<li><p><code>EnemyBaseRuleTests.NewPuraUnits_MatchSpec</code>: 가시 60 → 55, 굴착체 120 → 119.</p></li>
+<li><p><code>FactionTests</code>: 리터럴이 있으면.</p></li>
+</ul></li>
+<li><p><strong>돌격병이 들어간 시험</strong>(체력·1발이 바뀌므로 T4에서 모두 확인):</p>
+<ul>
+<li><p><code>CombatTests</code>: <code>Melee_NeedsContact</code>, <code>Infected_TurnsOnItsAttacker</code>.</p></li>
+<li><p><code>P5cFinalGapTests</code>: <code>[TestCase(UnitKind.Assault)]</code>와 돌격병 무리 판 2곳.</p></li>
+<li><p><code>UnitCatalogTests</code>.</p></li>
+</ul></li>
+<li><p><strong>재측정할 시험</strong>(시간·교전 의존):</p>
+<ul>
+<li><p>B9, <code>DefendEngagedTests</code>, <code>P5cFinalGapTests</code>, <code>BurrowerTests</code>(&lt;600틱), <code>EnemyAiTests</code>.</p></li>
+<li><p><code>MeleeSwarm_AtACore</code>(Explicit — 돌격병 163/10).</p></li>
+<li><p>퓨라 변화가 작아(가시 −8%·굴착체 −1%) 대부분 통과할 것으로 보지만, 돌려 봐야 안다.</p></li>
+</ul></li>
+</ul>
+<hr>
+<h2 id="12-데이터-형식">12. 데이터 형식</h2>
+<h3 id="121-powertable-행-c">12.1 <code>PowerTable</code> 행 (C#)</h3>
+<pre class="code" data-lang="csharp"><code>new PowerRow(UnitKind.Tank, costMilli: 7500, PowerRole.Siege, f: 0, cooldown: 0, m: 1000, share: 1000, why: &quot;&quot;, pin: null)</code></pre>
+<p>f·cooldown의 0은 역할 기본이다. pin은 이행 중에만 쓰고 T5 뒤에는 굴착병만 남는다.</p>
+<h3 id="122-balance-checksjson의-power-블록">12.2 <code>balance-checks.json</code>의 <code>power</code> 블록</h3>
+<p><code>JsonUtility</code>가 읽으므로 사전 대신 객체 배열을 쓰고, 정수만 쓴다.</p>
+<pre class="code" data-lang="json"><code>&quot;power&quot;: {
+  &quot;anchorHp&quot;: 70, &quot;anchorAttack&quot;: 10, &quot;anchorCooldown&quot;: 20,
+  &quot;cooldownMinTicks&quot;: 14, &quot;cooldownMaxTicks&quot;: 30,
+  &quot;largeOverInfantry&quot;: [ { &quot;kind&quot;: &quot;Tank&quot;, &quot;times&quot;: 3 }, { &quot;kind&quot;: &quot;Airship&quot;, &quot;times&quot;: 5 } ],
+  &quot;puraShots&quot;: [ { &quot;kind&quot;: &quot;SmallInfected&quot;, &quot;shots&quot;: 3 }, { &quot;kind&quot;: &quot;Spitter&quot;, &quot;shots&quot;: 6 }, { &quot;kind&quot;: &quot;Burrower&quot;, &quot;maxShots&quot;: 12 } ],
+  &quot;siegeMaxPerSlotPercentOfRifle&quot;: 200, &quot;sameValueRifles&quot;: 12, &quot;sameValueMinFallMinutes&quot;: 10,
+  &quot;b9StructureHp&quot;: 80000, &quot;b9MoveSeconds&quot;: 10, &quot;b9ClosedFormToleranceTenthMinutes&quot;: 15,
+  &quot;b9Killed&quot;: [ { &quot;kind&quot;: &quot;SmallInfected&quot;, &quot;count&quot;: 84 }, { &quot;kind&quot;: &quot;Spitter&quot;, &quot;count&quot;: 27 }, { &quot;kind&quot;: &quot;Burrower&quot;, &quot;count&quot;: 55 } ],
+  &quot;b9MaxRiflesLost&quot;: 3, &quot;b9RifleFireMinPercent&quot;: 64, &quot;b9RifleFireMaxPercent&quot;: 128,
+  &quot;recipeAlignTolerancePercent&quot;: 3, &quot;recipeAlignExceptions&quot;: [ &quot;Airship&quot; ],
+  &quot;golden&quot;: [ { &quot;kind&quot;: &quot;Rifle&quot;, &quot;hp&quot;: 70, &quot;attack&quot;: 10, &quot;cooldown&quot;: 20 } ],
+  &quot;source&quot;: &quot;P5d 설계서 7.1·9장 — 골든은 엔진 출력 스냅샷이고 패치마다 갱신한다&quot;
+}</code></pre>
+<h3 id="123-power-rosterjson">12.3 <code>power-roster.json</code></h3>
+<pre class="code" data-lang="json"><code>{
+  &quot;_about&quot;: &quot;UnitKind에 아직 없는 병종의 엔진 입력과 산정값(P5d D158). P5e가 병종을 구현할 때 여기서 옮긴다&quot;,
+  &quot;rows&quot;: [
+    { &quot;id&quot;: &quot;Pura.Giant&quot;, &quot;name&quot;: &quot;거대 감염체&quot;, &quot;race&quot;: &quot;퓨라&quot;, &quot;group&quot;: &quot;병종&quot;, &quot;tier&quot;: 3, &quot;size&quot;: &quot;2×2&quot;,
+      &quot;role&quot;: &quot;Melee&quot;, &quot;costMilli&quot;: 3636, &quot;f&quot;: 70, &quot;cooldown&quot;: 0, &quot;m&quot;: 1000, &quot;share&quot;: 1000, &quot;tau&quot;: 0,
+      &quot;range&quot;: 1, &quot;moveTicks&quot;: 14, &quot;move&quot;: &quot;Ground&quot;, &quot;splashFx&quot;: 0, &quot;minGrade&quot;: 1, &quot;hit&quot;: &quot;Melee&quot;, &quot;armor&quot;: &quot;Bio&quot;,
+      &quot;why&quot;: &quot;탱커(P5 4.4) — f 70&quot;, &quot;assumptions&quot;: &quot;이동 틱·사거리 [가정]&quot;, &quot;sources&quot;: &quot;P5 4.3·4.4&quot;,
+      &quot;expectHp&quot;: 1219, &quot;expectAttack&quot;: 25, &quot;expectCooldown&quot;: 20 }
+  ]
+}</code></pre>
+<hr>
+<h2 id="13-위험열린-점">13. 위험·열린 점</h2>
+<ol>
+<li><p><strong>대형 재스케일 폭이 크다.</strong></p>
+<ul>
+<li><p>전함은 체력 −66%·화력 +183%, 비행선은 체력 −39%·화력 +191%다. D151을 문자 그대로 따르고(화력 ∝ 값) 범위 세금을 체력에서 걷은 결과다.</p></li>
+<li><p>실제 판에서 볼 수 없는 구간이라 계산과 시험으로만 검증된다.</p></li>
+<li><p>→ T5 별도 커밋으로 둔다. 되돌리면 간격만 바꾼 상태(T4)다.</p></li>
+</ul></li>
+<li><p><strong>돌격병 모양:</strong> f 100으로 163/10 체력형이 된다(초기값 유지). f 150 예외를 주면 109/15(지금 모양)다 — 패치로 바꿀 수 있다.</p></li>
+<li><p><strong>전차 1발 임계:</strong> 간격 26으로 1발 69 — 1등급 소총병 70의 98%라 두 방이다(해결, T3 관문). 등급이 오르면 소총병 체력(2등급 87)이 여유를 늘린다.</p></li>
+<li><p><strong>결정 1 하한:</strong> 실측(참조 구현)으로 전차 7.3배·비행선 25배(1.0칸) — 통과. 닫힌 식(3.2배·7.5배)은 대형을 낮게 낸다. 패치 뒤에는 보고서가 다시 잰다.</p></li>
+<li><p><strong>계수는 역산이거나 감이다.</strong> 근접 1650, 사거리 50, 기동 25, 범위 50/몸, f 예외가 그렇다. 규칙 모양을 한 손튜닝이 될 위험이 있다. 교환 창 측정으로 보정한다.</p></li>
+<li><p><strong>교환 창도 휴리스틱이다.</strong> 평지 대형이라 위치·AI·시야·굴 폭·방어 방침을 단순화한다. 판 E 같은 실제 판은 따로 본다.</p></li>
+<li><p><strong>정수 해상도:</strong></p>
+<ul>
+<li><p>1발이 작은 병종(소형 5·가시 8·굴착체 3)은 모양 이탈이 10%를 넘는다(경고).</p></li>
+<li><p>m 몇 %는 반영되지 않는다(리포트 &quot;계단&quot;).</p></li>
+<li><p>×10 해상도는 시온 전에 다시 결정한다.</p></li>
+</ul></li>
+<li><p><strong>로스터 행은 거의 전부 [가정]이다.</strong> 값·역할·몸 특성·특수 몫이 그렇다. 영웅·악마·화신의 값은 등장 규칙에서 끌어온 추정이다. P5e가 동작과 함께 다시 정한다.</p></li>
+<li><p><strong>등급 저장값 역산:</strong></p>
+<ul>
+<li><p>전차·비행선·전함은 g0에서 산정해 1등급으로 되돌려 저장한다. 그래서 실제로는 만들 수 없는 1등급 값(전차 540/46)이 표에 들어간다.</p></li>
+<li><p>주석과 툴팁은 g0 값을 기준으로 적는다.</p></li>
+</ul></li>
+<li><p><strong>퓨라 환율과 근접 보정이 얽혀 있다.</strong> 근접 보정을 바꾸면 환율을 다시 역산해야 하고, 소형 앵커 시험이 이를 잡는다.</p></li>
+<li><p><strong>지금 판에 없는 재료:</strong> 4등급 이상 재료가 없어서 비행선·전함은 실제로 플레이해 볼 수 없다(4.2-3).</p></li>
+<li><p><strong>knownIssues(4.2-7)는 기록만 한다.</strong> 고치는 것은 후속 결정이다.</p></li>
+<li><p><strong>비행선 f 50은 결정 4 하한에 묶인 예외다.</strong> 공성 하한을 바꾸면 같이 바꿔야 한다.</p></li>
+<li><p><strong>범위 세금 100‰는 범위 공격 병종의 체력을 크게 줄인다</strong>(중화기 90 → 61, 비행선 700 → 425, 전함 4000 → 1374). 한 발이 맞히는 몸 수만큼 효율을 걷은 결과다. 체력 대신 화력에서 걷는 안은 D151(화력 ∝ 값)과 부딪힌다.</p></li>
+</ol>
+<hr>
+<h2 id="부록-a-손-계산-예-시험-③과-같은-값">부록 A. 손 계산 예 (시험 ③과 같은 값)</h2>
+<p><strong>소총병:</strong></p>
+<ul>
+<li><p>입력: c 1000, K 1000, m 1000 → sm 1000.</p></li>
+<li><p>N = 1000, Pm = 700,000(P 700), Wm = 1000 × 100 × 1000 ÷ 10⁴ = 10,000(W 10).</p></li>
+<li><p>t 20 → 명목 1발 10 → a 10 → W' 10 → 체력 70.</p></li>
+</ul>
+<p><strong>전차:</strong></p>
+<ul>
+<li><p>효율: c 7500, Kr 950(6칸), Km 1100(14틱·지상), Ks 1000(K10 10) → K = 1045.</p></li>
+<li><p>N = Div(7500 × 1045, 1000) = 7838 → Pm = Div(700 × 7838², 1000) = 43,003,971(P 43,004).</p></li>
+<li><p>Wm = 7500 × 70 × 1000 ÷ 10⁴ = 52,500(W 52.5).</p></li>
+<li><p>t 26 → 명목 1발 68.25 → b ∈ {45, 46, 47} → Scale(b, 3) = 67, 69, 70 → <strong>69</strong>(b 46).</p></li>
+<li><p>W' = 69 × 20 ÷ 26 = 53.08 → 목표 체력 810.2 → b ∈ {540, 541, 542} → 810, 811, 813 → <strong>810</strong>(b 540).</p></li>
+</ul>
+<p><strong>굴착체:</strong></p>
+<ul>
+<li><p>효율: c 909, Kr 1650, Km (1000 + 100) × 900 ÷ 1000 = 990, share 480 → K = Div(Div(1650 × 990, 1000) × 1000, 1000) = 1634 → Div(1634 × 480, 1000) = 784.</p></li>
+<li><p>N = Div(909 × 784, 1000) = 713 → Pm = 355,858(P 355.9).</p></li>
+<li><p>Wm = 909 × 30 × 1000 ÷ 10⁴ = 2727(W 2.73).</p></li>
+<li><p>t 20 → 명목 1발 2.73 → a <strong>3</strong> → 목표 체력 118.6 → <strong>119</strong>.</p></li>
+<li><p>모양 이탈 17%(1발 해상도) → 리포트 경고.</p></li>
+</ul>
+<h2 id="부록-b-근거-자료-superpowersp5d--커밋하지-않는-작업-폴더">부록 B. 근거 자료 (<code>.superpowers/p5d/</code> — 커밋하지 않는 작업 폴더)</h2>
+<ul>
+<li><p><code>design-brief.md</code>: 확정 결정 11개, 합성안, 계획 뼈대.</p></li>
+<li><p><code>explore-result.json</code>: 조사 3, 설계안 A/B/C, 심사 3.</p></li>
+<li><p><code>roster-result.json</code>: 로스터 추출(퓨라 11행, 시온 20행, 영웅·오라클 11행), mechanics, ambiguities.</p></li>
+<li><p><code>model/engine.js</code>·<code>model/roster.js</code>: 이 설계서 수치의 node 정수 모형. T1이 C# 엔진을 이 모형의 출력(골든·로스터 기대값)과 교차 검증한다.</p></li>
+</ul>
+</article>
+<nav class="pager" aria-label="같은 종류의 문서"><a class="prev" href="2026-09-29-p5c-movement-collision-design.html"><span>← 이전 설계서</span>P5c 이동·충돌 모델 개편 설계서 (연속 좌표·히트박스)</a></nav>
+</main>
+</div>
+<footer class="site-footer">
+  <div class="wrap">
+    <p><strong>CraftDefenseDungeon</strong>(작업용 이름) — 기획서 v0.69 · 2026-10-01 기준.</p>
+    <p>이 저장소는 소개 페이지와 기획·설계 문서만 공개합니다. 게임 소스 코드와 구현 계획서는 비공개 저장소에서 관리합니다. 라이선스 미정.</p>
+  </div>
+</footer>
+</body>
+</html>
