@@ -27,10 +27,10 @@
 <p class="lede">인류 제국이 파견한 <strong>장교 한 명</strong>이 행성의 지하를 파 넓히며 종족을 재건하고, 굴착 중 끝없이 나타나는 다른 종족들과 싸운다. 본부가 무너지면 제국은 새 능력을 가진 다음 장교를 보낸다 — <strong>키우기 + 로그라이트</strong>.</p>
 <div class="cta"><a class="btn btn-primary" href="game-plan.html">기획서 읽기 <span aria-hidden="true">→</span></a><a class="btn btn-ghost" href="#roadmap">개발 진행 상태</a></div>
 <dl class="hero-facts">
-<div><dt>기획서</dt><dd>v0.63 · 2026-09-29</dd></div>
+<div><dt>기획서</dt><dd>v0.64 · 2026-09-30</dd></div>
 <div><dt>결정 기록</dt><dd>D1–D151</dd></div>
 <div><dt>엔진</dt><dd>Unity 6000.3.25f1</dd></div>
-<div><dt>EditMode 시험</dt><dd>308개 · 실패 0</dd></div>
+<div><dt>EditMode 시험</dt><dd>410개 · 실패 0</dd></div>
 </dl>
 </div>
 <figure class="hero-art">
@@ -183,7 +183,7 @@
 <div class="split">
 <div class="card roster">
 <h3>병종과 히트박스</h3>
-<p class="note">P5c에서 이동을 칸이 아닌 연속 좌표·원 히트박스로 바꾼다. 지름은 실제 크기에 비례해 압축해, 큰 유닛도 1칸 굴을 지난다. (D148·D149 — 설계 승인)</p>
+<p class="note">P5c에서 이동을 칸이 아닌 연속 좌표·원 히트박스로 바꾼다. 지름은 실제 크기에 비례해 압축해, 큰 유닛도 1칸 굴을 지난다. (D148·D149 — 구현 완료)</p>
 <div class="table-wrap plain" tabindex="0" role="region" aria-label="병종과 히트박스 표"><table class="roster-table">
 <thead><tr><th scope="col">병종</th><th scope="col">이름</th><th scope="col">지름</th><th scope="col"><span class="sr-only">1칸과 비교한 크기</span></th></tr></thead>
 <tbody>
@@ -241,7 +241,7 @@
 <p class="refs">D71 · D74 · D78 · P7 3.2</p>
 </div>
 <div class="card" style="--accent: var(--cyan)">
-<h3>좁은 굴의 규칙 <small class="chip tone-active">P5c · 설계 승인</small></h3>
+<h3>좁은 굴의 규칙 <small class="chip tone-wait">P5c · 구현 완료</small></h3>
 <ul class="ticks">
 <li><strong>연속 좌표</strong> — 고정소수점(1칸 = 256). 칸은 지형과 길 찾기 지도에만 쓴다.</li>
 <li><strong>밀어내기</strong> — 쉬는 같은 편은 지나가는 동료에게 밀리고, 싸우는·재무장·굴착 중인 몸은 버틴다. 적과는 밀지 않는다.</li>
@@ -256,7 +256,7 @@
 <div class="rune" aria-hidden="true"><span></span></div>
 <section class="section" id="roadmap" aria-labelledby="roadmap-title">
 <div class="wrap">
-<header class="section-head"><p class="kicker" aria-hidden="true">V · Iter</p><h2 id="roadmap-title">개발 로드맵</h2><p class="section-lede">단계마다 대화로 설계 → 설계서 → 구현 계획 → 구현 순서로 간다. 기획서 표기는 기획서 0장 표(v0.63)에서, 구현 상태는 개발 기록에서 가져왔다.</p></header>
+<header class="section-head"><p class="kicker" aria-hidden="true">V · Iter</p><h2 id="roadmap-title">개발 로드맵</h2><p class="section-lede">단계마다 대화로 설계 → 설계서 → 구현 계획 → 구현 순서로 간다. 기획서 표기는 기획서 0장 표(v0.64)에서, 구현 상태는 개발 기록에서 가져왔다.</p></header>
 <ul class="legend" aria-label="범례"><li class="tone-done"><span class="chip">구현 완료</span></li><li class="tone-wait"><span class="chip">병합 대기</span></li><li class="tone-active"><span class="chip">진행 중</span></li><li class="tone-design"><span class="chip">설계만</span></li><li class="tone-todo"><span class="chip">대기</span></li></ul>
 <ol class="roadmap">
 <li class="stage tone-done"><span class="stage-code">P0</span><div class="stage-body"><h3>비전·핵심 루프 정리</h3><p class="stage-line"><span class="chip">구현 완료</span>비전 확정</p><p class="stage-doc">기획서: <strong>완료</strong> — D1~D40, 2026-09-25 사용자 승인</p></div></li>
@@ -266,7 +266,7 @@
 <li class="stage tone-done"><span class="stage-code">P4</span><div class="stage-body"><h3>유닛 생산·병참</h3><p class="stage-line"><span class="chip">구현 완료</span>회색 박스 구현</p><p class="stage-doc">기획서: <strong>완료</strong> — D65~D78, <a href="specs/2026-09-25-p4-units-design.html">설계서</a> 승인</p></div></li>
 <li class="stage tone-done"><span class="stage-code">P5</span><div class="stage-body"><h3>조우·침공 시스템 (포탈·적 종족 기지)</h3><p class="stage-line"><span class="chip">구현 완료</span>회색 박스 구현 (포탈 침공은 P5b에서 적 기지로 바뀜)</p><p class="stage-doc">기획서: <strong>완료</strong> — D79~D99, <a href="specs/2026-09-25-p5-encounters-design.html">설계서</a> 승인</p></div></li>
 <li class="stage tone-wait"><span class="stage-code">P5b</span><div class="stage-body"><h3>적 기지와 전선 (한 판 페이싱 재설계)</h3><p class="stage-line"><span class="chip">병합 대기</span>회색 박스 구현 완료</p><p class="stage-doc">기획서: <strong>구현 완료(병합 대기)</strong> — D138~D146, <a href="specs/2026-09-29-p5b-enemy-bases-design.html">설계서</a></p></div></li>
-<li class="stage tone-active"><span class="stage-code">P5c</span><div class="stage-body"><h3>이동·충돌 모델 개편 (연속 좌표·히트박스·건물 장애물)</h3><p class="stage-line"><span class="chip">진행 중</span>설계 승인, 구현 계획 완료(M0~M7)·실행 대기</p><p class="stage-doc">기획서: <strong>설계 승인</strong> — D147~D150, <a href="specs/2026-09-29-p5c-movement-collision-design.html">설계서</a></p></div></li>
+<li class="stage tone-wait"><span class="stage-code">P5c</span><div class="stage-body"><h3>이동·충돌 모델 개편 (연속 좌표·히트박스·건물 장애물)</h3><p class="stage-line"><span class="chip">병합 대기</span>회색 박스 구현 완료(병합 대기, M0~M10 — 성공 기준 1~5 달성)</p><p class="stage-doc">기획서: <strong>구현 완료(병합 대기) — 성공 기준 1~5 달성</strong> — (한계는 설계서 1.2·13장) — D147~D150, <a href="specs/2026-09-29-p5c-movement-collision-design.html">설계서</a>, 계획서</p></div></li>
 <li class="stage tone-todo"><span class="stage-code">P5d</span><div class="stage-body"><h3>전투력 환산 엔진 (스탯 재산정·밸런스 패치 체계)</h3><p class="stage-line"><span class="chip">대기</span>설계 전 (P5c 다음)</p><p class="stage-doc">기획서: <strong>설계 대기</strong> — D151 [원안], P5c 다음</p></div></li>
 <li class="stage tone-design"><span class="stage-code">P6</span><div class="stage-body"><h3>종족·지역 확장 프레임워크 + 관리자 도구</h3><p class="stage-line"><span class="chip">설계만</span>회색 박스 구현 전</p><p class="stage-doc">기획서: <strong>완료</strong> — D104~D106·D112~D116, <a href="specs/2026-09-26-p6-extension-design.html">설계서</a> 승인</p></div></li>
 <li class="stage tone-design"><span class="stage-code">P7</span><div class="stage-body"><h3>세계관·서사</h3><p class="stage-line"><span class="chip">설계만</span>회색 박스 구현 전</p><p class="stage-doc">기획서: <strong>완료</strong> — D117~D121, <a href="specs/2026-09-28-p7-lore-design.html">설계서</a> 승인</p></div></li>
@@ -284,7 +284,7 @@
 <div class="grid grid-4">
 <div class="card stat" style="--accent: var(--cyan)"><p class="stat-num">20<small>틱/초</small></p><h3>결정적</h3><p>같은 시드·같은 명령이면 같은 판. 규칙은 정수로 계산하고(배율 ×100, 수입 ×1000), 사전(Dictionary)을 순회하지 않는다. 버그가 난 판도 그대로 다시 만든다.</p></div>
 <div class="card stat" style="--accent: var(--violet-2)"><p class="stat-num">3<small>어셈블리</small></p><h3>규칙과 화면 분리</h3><p><code>Simulation</code>(엔진 참조 금지) · <code>View</code> · <code>Editor</code>. 입력은 명령 객체로 <code>World.Enqueue</code>에만 넣는다 — 나중에 명령을 네트워크로 보내면 멀티가 된다.</p></div>
-<div class="card stat" style="--accent: var(--gold)"><p class="stat-num">308<small>시험</small></p><h3>EditMode 시험</h3><p>마지막 전체 실행: 307개 통과 · 실패 0 · 1개 건너뜀(균형 조정용). 결정성·성능·수치 맞물림(<code>balance-checks.json</code>)을 잰다.</p></div>
+<div class="card stat" style="--accent: var(--gold)"><p class="stat-num">410<small>시험</small></p><h3>EditMode 시험</h3><p>마지막 전체 실행: 408개 통과 · 실패 0 · 2개 건너뜀(균형 조정용). 결정성·성능·수치 맞물림(<code>balance-checks.json</code>)을 잰다.</p></div>
 <div class="card stat" style="--accent: var(--toxic)"><p class="stat-num">3<small>ms</small></p><h3>성능 목표</h3><p>깨어난 적 기지 6 + 적 240 + 우리 200이 한꺼번에 싸워도 한 틱 3ms 안.</p></div>
 </div>
 <p class="stack-line">Unity 6000.3.25f1 (Unity 6.3 LTS) · URP 17 · Input System · Unity Test Framework (EditMode, NUnit) · C# 9 / .NET Standard 2.1 · Visual Studio 2022</p>
@@ -296,7 +296,7 @@
 <header class="section-head"><p class="kicker" aria-hidden="true">VII · Tabulae</p><h2 id="docs-title">계획 문서</h2><p class="section-lede">기획서는 결정이 날 때마다 고치는 살아 있는 문서다. 설계서는 단계마다 하나씩 쓴다. 모두 이 사이트에서 바로 읽을 수 있다. (코드 전문이 든 구현 계획서는 비공개 저장소에서만 관리한다.)</p></header>
 <article class="card doc-feature">
 <div><p class="tag">기획서</p><h3><a class="stretch" href="game-plan.html">CraftDefenseDungeon 게임 기획서</a></h3></div>
-<dl class="doc-meta"><div><dt>버전</dt><dd>v0.63</dd></div><div><dt>최종 수정</dt><dd>2026-09-29</dd></div><div><dt>결정 기록</dt><dd>D1–D151</dd></div><div><dt>분량</dt><dd>1062줄</dd></div></dl>
+<dl class="doc-meta"><div><dt>버전</dt><dd>v0.64</dd></div><div><dt>최종 수정</dt><dd>2026-09-30</dd></div><div><dt>결정 기록</dt><dd>D1–D151</dd></div><div><dt>분량</dt><dd>1063줄</dd></div></dl>
 </article>
 <h3 class="sub-title">설계서 <span class="count">10</span></h3>
 <ul class="grid grid-3 doc-cards">
@@ -309,7 +309,7 @@
 <li class="card doc-card is-spec"><p class="doc-stage">P1·P9</p><h4><a class="stretch" href="specs/2026-09-28-p1-p9-setup-liveops-design.html">P1 프로젝트 준비 + P9 운영 서버 설계서</a></h4><p class="doc-status"><strong>승인</strong> (2026-09-28, D129)</p><p class="doc-dec">결정 D122~D128</p><p class="doc-foot">작성 2026-09-28 · 170줄</p></li>
 <li class="card doc-card is-spec"><p class="doc-stage">P7</p><h4><a class="stretch" href="specs/2026-09-28-p7-lore-design.html">P7 세계관·서사 설계서</a></h4><p class="doc-status"><strong>승인</strong> (2026-09-28, D121)</p><p class="doc-dec">결정 D117~D120</p><p class="doc-foot">작성 2026-09-28 · 238줄</p></li>
 <li class="card doc-card is-spec"><p class="doc-stage">P5b</p><h4><a class="stretch" href="specs/2026-09-29-p5b-enemy-bases-design.html">P5b 적 기지와 전선 설계서</a></h4><p class="doc-status"><strong>승인</strong> (2026-09-29)</p><p class="doc-dec">결정 D138~D145</p><p class="doc-foot">작성 2026-09-29 · 231줄</p></li>
-<li class="card doc-card is-spec"><p class="doc-stage">P5c</p><h4><a class="stretch" href="specs/2026-09-29-p5c-movement-collision-design.html">P5c 이동·충돌 모델 개편 설계서 (연속 좌표·히트박스)</a></h4><p class="doc-status"><strong>승인</strong> (2026-09-29)</p><p class="doc-dec">결정 D147·D148 확정, D149~D151 새로</p><p class="doc-foot">작성 2026-09-29 · 334줄</p></li>
+<li class="card doc-card is-spec"><p class="doc-stage">P5c</p><h4><a class="stretch" href="specs/2026-09-29-p5c-movement-collision-design.html">P5c 이동·충돌 모델 개편 설계서 (연속 좌표·히트박스)</a></h4><p class="doc-status"><strong>구현 완료 — 성공 기준 1~5 달성</strong> (2026-09-30 — 계획서, 한계는 1.2 끝과 13장)</p><p class="doc-dec">결정 D147·D148 확정, D149~D151 새로</p><p class="doc-foot">작성 2026-09-29 · 355줄</p></li>
 </ul>
 
 </div>
@@ -321,14 +321,14 @@
 <div class="grid grid-3">
 <div class="card" style="--accent: var(--cyan)"><h3>공개하는 것</h3><p>이 소개 페이지, 기획서(결정 기록 D1–D151), 설계서 10개.</p></div>
 <div class="card" style="--accent: var(--violet-2)"><h3>공개하지 않는 것</h3><p>Unity 프로젝트의 게임 소스 코드, 그리고 코드 전문이 들어 있는 구현 계획서. 개발 저장소는 비공개다.</p></div>
-<div class="card" style="--accent: var(--gold)"><h3>진행 상태</h3><p>기획서 v0.63 · 2026-09-29 기준. 단계별 상태는 위 <a href="#roadmap">개발 로드맵</a>에 있다.</p></div>
+<div class="card" style="--accent: var(--gold)"><h3>진행 상태</h3><p>기획서 v0.64 · 2026-09-30 기준. 단계별 상태는 위 <a href="#roadmap">개발 로드맵</a>에 있다.</p></div>
 </div>
 </div>
 </section>
 </main>
 <footer class="site-footer">
   <div class="wrap">
-    <p><strong>CraftDefenseDungeon</strong>(작업용 이름) — 기획서 v0.63 · 2026-09-29 기준.</p>
+    <p><strong>CraftDefenseDungeon</strong>(작업용 이름) — 기획서 v0.64 · 2026-09-30 기준.</p>
     <p>이 저장소는 소개 페이지와 기획·설계 문서만 공개합니다. 게임 소스 코드와 구현 계획서는 비공개 저장소에서 관리합니다. 라이선스 미정.</p>
   </div>
 </footer>
